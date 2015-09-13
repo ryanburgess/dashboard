@@ -1,0 +1,9 @@
+// File Name: _date.scss
+// Description: styles for date
+// Used by: style.scss, 
+// Dependencies: 
+// Date created: 12/09/2015
+// ------------------------------------------------------------
+.date{
+  @include rem("font-size", $regularSize - 10);
+}

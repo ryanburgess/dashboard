@@ -1,0 +1,16 @@
+// File Name: _temp.scss
+// Description: Styles for temperature
+// Used by: style.scss, 
+// Dependencies: 
+// Date created: 12/09/2015
+// ------------------------------------------------------------
+
+.temp{
+  img{
+    width: 30px;
+  }
+  .small{
+    display: block;
+    @include rem("font-size", $regularSize / 2);
+  }
+}
