@@ -1,22 +1,22 @@
 var React = require('react');
 var output;
 var SetIntervalMixin = {
-    componentWillMount: function () {
-        this.intervals = [];
-    },
+  componentWillMount: function () {
+    this.intervals = [];
+  },
 
-    componentWillUnmount: function () {
-        this.intervals.map(clearInterval);
-    },
+  componentWillUnmount: function () {
+    this.intervals.map(clearInterval);
+  },
 
-    setInterval: function () {
-        this.intervals.push(setInterval.apply(null, arguments));
-    }
+  setInterval: function () {
+    this.intervals.push(setInterval.apply(null, arguments));
+  }
 };
 
 function renderTime() {
   var currentTime = new Date();
-  var diem = "AM";
+  var diem = 'AM';
   var h = currentTime.getHours();
   var m = currentTime.getMinutes();
   var s = currentTime.getSeconds();
@@ -44,12 +44,12 @@ function renderTime() {
 }
 
 var Clock = React.createClass({
-  mixins: [SetIntervalMixin], // Use the mixin
+  mixins: [SetIntervalMixin],
   getInitialState: function() {
     return {time: renderTime()};
   },
   componentDidMount: function() {
-    this.setInterval(this.tick, 1000); // Call a method on the mixin
+    this.setInterval(this.tick, 1000);
   },
   tick: function() {
     renderTime();

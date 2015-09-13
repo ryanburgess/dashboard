@@ -36,7 +36,7 @@ var SetIntervalMixin = {
 
 function renderTime() {
   var currentTime = new Date();
-  var diem = "AM";
+  var diem = 'AM';
   var h = currentTime.getHours();
   var m = currentTime.getMinutes();
   var s = currentTime.getSeconds();
@@ -66,12 +66,12 @@ function renderTime() {
 var Clock = React.createClass({
   displayName: 'Clock',
 
-  mixins: [SetIntervalMixin], // Use the mixin
+  mixins: [SetIntervalMixin],
   getInitialState: function getInitialState() {
     return { time: renderTime() };
   },
   componentDidMount: function componentDidMount() {
-    this.setInterval(this.tick, 1000); // Call a method on the mixin
+    this.setInterval(this.tick, 1000);
   },
   tick: function tick() {
     renderTime();
