@@ -5,10 +5,180 @@ var React = require('react');
 var App = require('./index');
 React.render(React.createElement(App, null), window.document.querySelector("#target"));
 
-},{"./index":5,"react":161}],2:[function(require,module,exports){
+},{"./index":4,"react":161}],2:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
+
+var MonthDay = React.createClass({
+  displayName: 'MonthDay',
+
+  render: function render() {
+    var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    var d = new Date();
+    var month = monthNames[d.getMonth()] + ', ' + d.getDate();
+    return React.createElement(
+      'p',
+      { className: 'date' },
+      month
+    );
+  }
+});
+
+module.exports = MonthDay;
+
+},{"react":161}],3:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+
+var Day = React.createClass({
+  displayName: 'Day',
+
+  render: function render() {
+    var d = new Date();
+    var weekday = new Array(7);
+    weekday[0] = 'Sunday';
+    weekday[1] = 'Monday';
+    weekday[2] = 'Tuesday';
+    weekday[3] = 'Wednesday';
+    weekday[4] = 'Thursday';
+    weekday[5] = 'Friday';
+    weekday[6] = 'Saturday';
+
+    var day = weekday[d.getDay()];
+    return React.createElement(
+      'p',
+      { className: 'day' },
+      day
+    );
+  }
+});
+
+module.exports = Day;
+
+},{"react":161}],4:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+var MonthDay = require('./date');
+var Day = require('./day');
+var Clock = require('react-clock');
+var Temp = require('./temp');
+
+var App = React.createClass({
+  displayName: 'App',
+
+  render: function render() {
+    return React.createElement(
+      'div',
+      null,
+      React.createElement(MonthDay, null),
+      React.createElement(Day, null),
+      React.createElement(Clock, null),
+      React.createElement(Temp, null)
+    );
+  }
+});
+
+module.exports = App;
+
+},{"./date":2,"./day":3,"./temp":5,"react":161,"react-clock":6}],5:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+var output;
+var SetIntervalMixin = {
+  componentWillMount: function componentWillMount() {
+    this.intervals = [];
+  },
+
+  componentWillUnmount: function componentWillUnmount() {
+    this.intervals.map(clearInterval);
+  },
+
+  setInterval: (function (_setInterval) {
+    function setInterval() {
+      return _setInterval.apply(this, arguments);
+    }
+
+    setInterval.toString = function () {
+      return _setInterval.toString();
+    };
+
+    return setInterval;
+  })(function () {
+    this.intervals.push(setInterval.apply(null, arguments));
+  })
+};
+var getTemp = function getTemp() {
+  var request = new XMLHttpRequest();
+  request.open('GET', 'http://api.wunderground.com/api/837fa9da3834f77b/conditions/q/CA/San_Francisco.json', true);
+
+  request.onload = function () {
+    if (request.status >= 200 && request.status < 400) {
+      var data = JSON.parse(request.responseText);
+      var temp = data.current_observation.temp_f;
+      var weather = data.current_observation.weather;
+      var feels = data.current_observation.feelslike_f;
+      var icon = data.current_observation.icon_url;
+      icon = icon.replace('http://icons.wxug.com/i/c/k/', 'public/img/').replace('.gif', '.svg').replace('_', '-');
+      temp = temp.toFixed(0);
+
+      output = {
+        temp: temp,
+        weather: weather,
+        feels: 'Feels like ' + feels,
+        icon: icon
+      };
+    }
+  };
+  request.send();
+
+  return output;
+};
+
+var Temp = React.createClass({
+  displayName: 'Temp',
+
+  mixins: [SetIntervalMixin], // Use the mixin
+  getInitialState: function getInitialState() {
+    return { temp: getTemp() };
+  },
+  componentDidMount: function componentDidMount() {
+    //this.setInterval(this.tick, 450000);
+    this.setInterval(this.tick, 450000);
+  },
+  tick: function tick() {
+    getTemp();
+    this.setState({ temp: output.temp, weather: output.weather, degree: '°F', feels: output.feels, icon: output.icon });
+  },
+  render: function render() {
+    return React.createElement(
+      'p',
+      { className: 'temp' },
+      this.state.temp,
+      this.state.degree,
+      ' ',
+      this.state.weather,
+      ' ',
+      React.createElement('img', { src: this.state.icon }),
+      React.createElement(
+        'span',
+        { className: 'small' },
+        this.state.feels,
+        this.state.degree
+      )
+    );
+  }
+});
+
+module.exports = Temp;
+
+},{"react":161}],6:[function(require,module,exports){
+var React = require('react');
+'use strict';
+
 var output;
 var SetIntervalMixin = {
   componentWillMount: function componentWillMount() {
@@ -96,177 +266,6 @@ var Clock = React.createClass({
 });
 
 module.exports = Clock;
-
-},{"react":161}],3:[function(require,module,exports){
-'use strict';
-
-var React = require('react');
-
-var MonthDay = React.createClass({
-  displayName: 'MonthDay',
-
-  render: function render() {
-    var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    var d = new Date();
-    var month = monthNames[d.getMonth()] + ', ' + d.getDate();
-    return React.createElement(
-      'p',
-      { className: 'date' },
-      month
-    );
-  }
-});
-
-module.exports = MonthDay;
-
-},{"react":161}],4:[function(require,module,exports){
-'use strict';
-
-var React = require('react');
-
-var Day = React.createClass({
-  displayName: 'Day',
-
-  render: function render() {
-    var d = new Date();
-    var weekday = new Array(7);
-    weekday[0] = 'Sunday';
-    weekday[1] = 'Monday';
-    weekday[2] = 'Tuesday';
-    weekday[3] = 'Wednesday';
-    weekday[4] = 'Thursday';
-    weekday[5] = 'Friday';
-    weekday[6] = 'Saturday';
-
-    var day = weekday[d.getDay()];
-    return React.createElement(
-      'p',
-      { className: 'day' },
-      day
-    );
-  }
-});
-
-module.exports = Day;
-
-},{"react":161}],5:[function(require,module,exports){
-'use strict';
-
-var React = require('react');
-var MonthDay = require('./date');
-var Day = require('./day');
-var Clock = require('./clock');
-var Temp = require('./temp');
-
-var App = React.createClass({
-  displayName: 'App',
-
-  render: function render() {
-    return React.createElement(
-      'div',
-      null,
-      React.createElement(MonthDay, null),
-      React.createElement(Day, null),
-      React.createElement(Clock, null),
-      React.createElement(Temp, null)
-    );
-  }
-});
-
-module.exports = App;
-
-},{"./clock":2,"./date":3,"./day":4,"./temp":6,"react":161}],6:[function(require,module,exports){
-'use strict';
-
-var React = require('react');
-var output;
-var SetIntervalMixin = {
-  componentWillMount: function componentWillMount() {
-    this.intervals = [];
-  },
-
-  componentWillUnmount: function componentWillUnmount() {
-    this.intervals.map(clearInterval);
-  },
-
-  setInterval: (function (_setInterval) {
-    function setInterval() {
-      return _setInterval.apply(this, arguments);
-    }
-
-    setInterval.toString = function () {
-      return _setInterval.toString();
-    };
-
-    return setInterval;
-  })(function () {
-    this.intervals.push(setInterval.apply(null, arguments));
-  })
-};
-var getTemp = function getTemp() {
-  var request = new XMLHttpRequest();
-  request.open('GET', 'http://api.wunderground.com/api/837fa9da3834f77b/conditions/q/CA/San_Francisco.json', true);
-
-  request.onload = function () {
-    if (request.status >= 200 && request.status < 400) {
-      var data = JSON.parse(request.responseText);
-      var temp = data.current_observation.temp_f;
-      var weather = data.current_observation.weather;
-      var feels = data.current_observation.feelslike_f;
-      var icon = data.current_observation.icon_url;
-      icon = icon.replace('http://icons.wxug.com/i/c/k/', 'public/img/').replace('.gif', '.svg').replace('_', '-');
-      temp = temp.toFixed(0);
-
-      output = {
-        temp: temp,
-        weather: weather,
-        feels: 'Feels like ' + feels,
-        icon: icon
-      };
-    }
-  };
-  request.send();
-
-  return output;
-};
-
-var Temp = React.createClass({
-  displayName: 'Temp',
-
-  mixins: [SetIntervalMixin], // Use the mixin
-  getInitialState: function getInitialState() {
-    return { temp: getTemp() };
-  },
-  componentDidMount: function componentDidMount() {
-    //this.setInterval(this.tick, 450000);
-    this.setInterval(this.tick, 5000);
-  },
-  tick: function tick() {
-    getTemp();
-    this.setState({ temp: output.temp, weather: output.weather, degree: '°F', feels: output.feels, icon: output.icon });
-  },
-  render: function render() {
-    return React.createElement(
-      'p',
-      { className: 'temp' },
-      this.state.temp,
-      this.state.degree,
-      ' ',
-      this.state.weather,
-      ' ',
-      React.createElement('img', { src: this.state.icon }),
-      React.createElement(
-        'span',
-        { className: 'small' },
-        this.state.feels,
-        this.state.degree
-      )
-    );
-  }
-});
-
-module.exports = Temp;
-
 },{"react":161}],7:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.

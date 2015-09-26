@@ -48,7 +48,7 @@ var Temp = React.createClass({
   },
   componentDidMount() {
     //this.setInterval(this.tick, 450000);
-    this.setInterval(this.tick, 5000);
+    this.setInterval(this.tick, 450000);
   },
   tick() {
     getTemp();
