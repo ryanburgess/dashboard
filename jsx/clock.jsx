@@ -14,12 +14,12 @@ var SetIntervalMixin = {
   }
 };
 
-function renderTime() {
-  var currentTime = new Date();
-  var diem = 'AM';
-  var h = currentTime.getHours();
-  var m = currentTime.getMinutes();
-  var s = currentTime.getSeconds();
+const renderTime = () => {
+  let currentTime = new Date();
+  let diem = 'AM';
+  let h = currentTime.getHours();
+  let m = currentTime.getMinutes();
+  let s = currentTime.getSeconds();
 
   if (h == 0) {
     h = 12;
@@ -43,19 +43,19 @@ function renderTime() {
   return output;
 }
 
-var Clock = React.createClass({
+const Clock = React.createClass({
   mixins: [SetIntervalMixin],
-  getInitialState: function() {
+  getInitialState() {
     return {time: renderTime()};
   },
-  componentDidMount: function() {
+  componentDidMount() {
     this.setInterval(this.tick, 1000);
   },
-  tick: function() {
+  tick() {
     renderTime();
     this.setState({hours: output.hours, minutes: output.minutes, seconds: output.seconds, diem: output.diem});
   },
-  render: function() {
+  render() {
     return (
       <p className='clock'>
         {this.state.hours}:{this.state.minutes}:{this.state.seconds}

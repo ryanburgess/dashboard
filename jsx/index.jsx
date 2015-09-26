@@ -5,7 +5,7 @@ var Clock = require('./clock');
 var Temp = require('./temp');
 
 var App = React.createClass({
-  render: function() {
+  render() {
     return (
       <div>
         <MonthDay />

@@ -34,7 +34,7 @@ var SetIntervalMixin = {
   })
 };
 
-function renderTime() {
+var renderTime = function renderTime() {
   var currentTime = new Date();
   var diem = 'AM';
   var h = currentTime.getHours();
@@ -61,7 +61,7 @@ function renderTime() {
     diem: diem
   };
   return output;
-}
+};
 
 var Clock = React.createClass({
   displayName: 'Clock',
@@ -203,7 +203,7 @@ var SetIntervalMixin = {
     this.intervals.push(setInterval.apply(null, arguments));
   })
 };
-function getTemp() {
+var getTemp = function getTemp() {
   var request = new XMLHttpRequest();
   request.open('GET', 'http://api.wunderground.com/api/837fa9da3834f77b/conditions/q/CA/San_Francisco.json', true);
 
@@ -228,7 +228,7 @@ function getTemp() {
   request.send();
 
   return output;
-}
+};
 
 var Temp = React.createClass({
   displayName: 'Temp',
@@ -239,7 +239,7 @@ var Temp = React.createClass({
   },
   componentDidMount: function componentDidMount() {
     //this.setInterval(this.tick, 450000);
-    this.setInterval(this.tick, 450000);
+    this.setInterval(this.tick, 5000);
   },
   tick: function tick() {
     getTemp();

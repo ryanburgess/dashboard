@@ -1,29 +1,29 @@
 var React = require('react');
 var output;
 var SetIntervalMixin = {
-  componentWillMount: function () {
-      this.intervals = [];
+  componentWillMount() {
+    this.intervals = [];
   },
 
-  componentWillUnmount: function () {
-      this.intervals.map(clearInterval);
+  componentWillUnmount() {
+    this.intervals.map(clearInterval);
   },
 
-  setInterval: function () {
-      this.intervals.push(setInterval.apply(null, arguments));
+  setInterval() {
+    this.intervals.push(setInterval.apply(null, arguments));
   }
 };
-function getTemp(){
-  var request = new XMLHttpRequest();
+const getTemp = () => {
+  let request = new XMLHttpRequest();
   request.open('GET', 'http://api.wunderground.com/api/837fa9da3834f77b/conditions/q/CA/San_Francisco.json', true);
 
   request.onload = function() {
     if (request.status >= 200 && request.status < 400) {
-      var data = JSON.parse(request.responseText);
-      var temp = data.current_observation.temp_f;
-      var weather = data.current_observation.weather;
-      var feels = data.current_observation.feelslike_f;
-      var icon = data.current_observation.icon_url;
+      let data = JSON.parse(request.responseText);
+      let temp = data.current_observation.temp_f;
+      let weather = data.current_observation.weather;
+      let feels = data.current_observation.feelslike_f;
+      let icon = data.current_observation.icon_url;
       icon = icon.replace('http://icons.wxug.com/i/c/k/', 'public/img/').replace('.gif', '.svg').replace('_', '-');
       temp = temp.toFixed(0);
 
@@ -43,18 +43,18 @@ function getTemp(){
 
 var Temp = React.createClass({
   mixins: [SetIntervalMixin], // Use the mixin
-  getInitialState: function() {
+  getInitialState() {
     return {temp: getTemp()};
   },
-  componentDidMount: function() {
+  componentDidMount() {
     //this.setInterval(this.tick, 450000);
-    this.setInterval(this.tick, 450000);
+    this.setInterval(this.tick, 5000);
   },
-  tick: function() {
+  tick() {
     getTemp();
     this.setState({temp: output.temp, weather: output.weather, degree: '°F', feels: output.feels, icon: output.icon});
   },
-  render: function() {
+  render() {
     return (
       <p className='temp'>
         {this.state.temp}{this.state.degree} {this.state.weather} <img src={this.state.icon} />
