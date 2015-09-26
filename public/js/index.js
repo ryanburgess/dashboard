@@ -5,29 +5,7 @@ var React = require('react');
 var App = require('./index');
 React.render(React.createElement(App, null), window.document.querySelector("#target"));
 
-},{"./index":4,"react":161}],2:[function(require,module,exports){
-'use strict';
-
-var React = require('react');
-
-var MonthDay = React.createClass({
-  displayName: 'MonthDay',
-
-  render: function render() {
-    var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    var d = new Date();
-    var month = monthNames[d.getMonth()] + ', ' + d.getDate();
-    return React.createElement(
-      'p',
-      { className: 'date' },
-      month
-    );
-  }
-});
-
-module.exports = MonthDay;
-
-},{"react":161}],3:[function(require,module,exports){
+},{"./index":3,"react":161}],2:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -57,11 +35,11 @@ var Day = React.createClass({
 
 module.exports = Day;
 
-},{"react":161}],4:[function(require,module,exports){
+},{"react":161}],3:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
-var MonthDay = require('./date');
+var MonthDay = require('react-month-day');
 var Day = require('./day');
 var Clock = require('react-clock');
 var Temp = require('./temp');
@@ -83,7 +61,7 @@ var App = React.createClass({
 
 module.exports = App;
 
-},{"./date":2,"./day":3,"./temp":5,"react":161,"react-clock":6}],5:[function(require,module,exports){
+},{"./day":2,"./temp":4,"react":161,"react-clock":5,"react-month-day":6}],4:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -175,7 +153,7 @@ var Temp = React.createClass({
 
 module.exports = Temp;
 
-},{"react":161}],6:[function(require,module,exports){
+},{"react":161}],5:[function(require,module,exports){
 var React = require('react');
 'use strict';
 
@@ -266,6 +244,28 @@ var Clock = React.createClass({
 });
 
 module.exports = Clock;
+},{"react":161}],6:[function(require,module,exports){
+'use strict';
+
+var React = require('react');
+
+var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+var d = new Date();
+var month = monthNames[d.getMonth()] + ', ' + d.getDate();
+
+var DateName = React.createClass({
+  displayName: 'DateName',
+
+  render: function render() {
+    return React.createElement(
+      'p',
+      { className: 'month-day' },
+      month
+    );
+  }
+});
+
+module.exports = DateName;
 },{"react":161}],7:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.

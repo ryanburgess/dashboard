@@ -1,5 +1,5 @@
 var React = require('react');
-var MonthDay = require('./date');
+var MonthDay = require('react-month-day');
 var Day = require('./day');
 var Clock = require('react-clock');
 var Temp = require('./temp');
