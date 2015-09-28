@@ -1,4 +1,5 @@
 var React = require('react');
+var api = require('../key.json');
 var output;
 var SetIntervalMixin = {
   componentWillMount() {
@@ -15,7 +16,7 @@ var SetIntervalMixin = {
 };
 const getTemp = () => {
   let request = new XMLHttpRequest();
-  request.open('GET', 'http://api.wunderground.com/api/<api-key>/conditions/q/CA/San_Francisco.json', true);
+  request.open('GET', 'http://api.wunderground.com/api/'+ api.weather +'/conditions/q/CA/San_Francisco.json', true);
 
   request.onload = function() {
     if (request.status >= 200 && request.status < 400) {
@@ -47,7 +48,6 @@ var Temp = React.createClass({
     return {temp: getTemp()};
   },
   componentDidMount() {
-    //this.setInterval(this.tick, 450000);
     this.setInterval(this.tick, 450000);
   },
   tick() {
