@@ -15,7 +15,7 @@ var SetIntervalMixin = {
 };
 const getTemp = () => {
   let request = new XMLHttpRequest();
-  request.open('GET', 'http://api.wunderground.com/api/837fa9da3834f77b/conditions/q/CA/San_Francisco.json', true);
+  request.open('GET', 'http://api.wunderground.com/api/<api-key>/conditions/q/CA/San_Francisco.json', true);
 
   request.onload = function() {
     if (request.status >= 200 && request.status < 400) {
