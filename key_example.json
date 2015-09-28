@@ -1,3 +1,5 @@
+// rename this file to key.json
+
 {
-  "weather": "<your_api_token>"
+  "weather": "<your_api_token>" // get an API key from http://api.wunderground.com/
 }
