@@ -4,6 +4,19 @@ var minifyCSS = require('gulp-minify-css');
 var browserify = require('browserify');
 var rename = require('gulp-rename');
 var source = require('vinyl-source-stream');
+var eslint = require('gulp-eslint');
+
+gulp.task('lint', function () {
+  return gulp.src(['jsx/**/*'])
+  .pipe(eslint({
+    rules: {
+      'strict': 2,
+      'quotes': 1
+    }
+  }))
+  .pipe(eslint.format())
+  .pipe(eslint.failAfterError());
+});
  
 // Basic usage 
 gulp.task('scripts', function() {
@@ -34,6 +47,6 @@ gulp.task('sass', function () {
 
 gulp.task('watch', function() {
   gulp.watch('sass/**/*.scss', ['sass']);
-  gulp.watch(['./jsx/**/*'], ['scripts']);
+  gulp.watch(['./jsx/**/*'], ['lint', 'scripts']);
 });
 gulp.task('default', ['watch']);

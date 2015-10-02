@@ -19,6 +19,7 @@
     "babelify": "^6.0.2",
     "browserify": "^9.0.8",
     "gulp": "^3.8.11",
+    "gulp-eslint": "^1.0.0",
     "gulp-minify-css": "^1.2.1",
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^2.0.4",
