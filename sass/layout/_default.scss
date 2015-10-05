@@ -2,7 +2,12 @@ body{
   background: black;
   color: white;
   @include rem("font-size", $regularSize);
-  padding: 30px 30px 0 0;
   line-height: 1.2;
   text-align: right;
+}
+
+.container{
+  position: absolute;
+  top: 30px;
+  right: 30px;
 }
