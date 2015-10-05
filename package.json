@@ -9,6 +9,7 @@
   "author": "Ryan Burgess @burgessdryan",
   "license": "MIT",
   "dependencies": {
+    "fbemitter": "^2.0.0",
     "react": "^0.13.3",
     "react-clock": "^1.0.2",
     "react-month-day": "^1.0.1",
