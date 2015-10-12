@@ -4,6 +4,7 @@ var Day = require('./day');
 var Clock = require('react-clock');
 var Temp = require('./temp');
 var Tasks = require('./tasks');
+var MLB = require('./mlb');
 
 var App = React.createClass({
   render() {
@@ -14,6 +15,7 @@ var App = React.createClass({
         <Clock />
         <Temp />
         <Tasks />
+        <MLB />
       </div>
     );
   }
