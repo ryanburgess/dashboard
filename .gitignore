@@ -4,6 +4,7 @@
 *.tmp
 .sass-cache
 *.log
+*.css
 node_modules/
 test.html
 stock.html
