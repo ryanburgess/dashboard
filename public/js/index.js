@@ -50,57 +50,23 @@ module.exports=[{
 'use strict';
 
 var React = require('react');
-var getDay = require('./get-day');
-
-var SetIntervalMixin = {
-  componentWillMount: function componentWillMount() {
-    this.intervals = [];
-  },
-
-  componentWillUnmount: function componentWillUnmount() {
-    this.intervals.map(clearInterval);
-  },
-
-  setInterval: (function (_setInterval) {
-    function setInterval() {
-      return _setInterval.apply(this, arguments);
-    }
-
-    setInterval.toString = function () {
-      return _setInterval.toString();
-    };
-
-    return setInterval;
-  })(function () {
-    this.intervals.push(setInterval.apply(null, arguments));
-  })
-};
 
 var Day = React.createClass({
   displayName: 'Day',
 
-  mixins: [SetIntervalMixin],
-  getInitialState: function getInitialState() {
-    return { day: getDay() };
-  },
-  componentDidMount: function componentDidMount() {
-    this.setInterval(this.tick, 1000);
-  },
-  tick: function tick() {
-    this.setState({ day: getDay() });
-  },
   render: function render() {
+    var day = this.props.day;
     return React.createElement(
       'p',
       { className: 'day' },
-      this.state.day
+      day
     );
   }
 });
 
 module.exports = Day;
 
-},{"./get-day":4,"react":166}],4:[function(require,module,exports){
+},{"react":166}],4:[function(require,module,exports){
 'use strict';
 
 module.exports = function () {
@@ -129,19 +95,54 @@ var Clock = require('react-clock');
 var Temp = require('./temp');
 var Tasks = require('./tasks');
 var MLB = require('./mlb');
+var getDay = require('./get-day');
+
+var SetIntervalMixin = {
+  componentWillMount: function componentWillMount() {
+    this.intervals = [];
+  },
+
+  componentWillUnmount: function componentWillUnmount() {
+    this.intervals.map(clearInterval);
+  },
+
+  setInterval: (function (_setInterval) {
+    function setInterval() {
+      return _setInterval.apply(this, arguments);
+    }
+
+    setInterval.toString = function () {
+      return _setInterval.toString();
+    };
+
+    return setInterval;
+  })(function () {
+    this.intervals.push(setInterval.apply(null, arguments));
+  })
+};
 
 var App = React.createClass({
   displayName: 'App',
 
+  mixins: [SetIntervalMixin],
+  getInitialState: function getInitialState() {
+    return { day: getDay() };
+  },
+  componentDidMount: function componentDidMount() {
+    this.setInterval(this.tick, 1000);
+  },
+  tick: function tick() {
+    this.setState({ day: getDay() });
+  },
   render: function render() {
     return React.createElement(
       'div',
       null,
       React.createElement(MonthDay, null),
-      React.createElement(Day, null),
+      React.createElement(Day, { day: this.state.day }),
       React.createElement(Clock, null),
       React.createElement(Temp, null),
-      React.createElement(Tasks, null),
+      React.createElement(Tasks, { day: this.state.day }),
       React.createElement(MLB, null)
     );
   }
@@ -149,7 +150,7 @@ var App = React.createClass({
 
 module.exports = App;
 
-},{"./day":3,"./mlb":6,"./tasks":7,"./temp":8,"react":166,"react-clock":10,"react-month-day":11}],6:[function(require,module,exports){
+},{"./day":3,"./get-day":4,"./mlb":6,"./tasks":7,"./temp":8,"react":166,"react-clock":10,"react-month-day":11}],6:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -258,47 +259,12 @@ module.exports = MLB;
 
 var React = require('react');
 var daily = require('../daily.json');
-var getDay = require('./get-day');
-
-var SetIntervalMixin = {
-  componentWillMount: function componentWillMount() {
-    this.intervals = [];
-  },
-
-  componentWillUnmount: function componentWillUnmount() {
-    this.intervals.map(clearInterval);
-  },
-
-  setInterval: (function (_setInterval) {
-    function setInterval() {
-      return _setInterval.apply(this, arguments);
-    }
-
-    setInterval.toString = function () {
-      return _setInterval.toString();
-    };
-
-    return setInterval;
-  })(function () {
-    this.intervals.push(setInterval.apply(null, arguments));
-  })
-};
 
 var Tasks = React.createClass({
   displayName: 'Tasks',
 
-  mixins: [SetIntervalMixin],
-  getInitialState: function getInitialState() {
-    return { day: getDay() };
-  },
-  componentDidMount: function componentDidMount() {
-    this.setInterval(this.tick, 1000);
-  },
-  tick: function tick() {
-    this.setState({ day: getDay() });
-  },
   render: function render() {
-    var today = this.state.day;
+    var today = this.props.day;
     return React.createElement(
       'ul',
       { className: 'tasks' },
@@ -320,7 +286,7 @@ var Tasks = React.createClass({
 
 module.exports = Tasks;
 
-},{"../daily.json":2,"./get-day":4,"react":166}],8:[function(require,module,exports){
+},{"../daily.json":2,"react":166}],8:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
