@@ -45,11 +45,11 @@ const getGames = () => {
         let awayTeam = game.away_team_name;
         let homeTeam = game.home_team_name;
         if(home === 'Toronto' || away === 'Toronto'){
-          output.push(homeTeam + ' vs. '  + awayTeam + ' ' + time + ' ' + timeZone + ' ' + venue);
+          output.push(homeTeam + ' vs. '  + awayTeam + ' ' + time + ' ' + timeZone);
         }
 
         if(home === 'San Francisco'){
-          output.push(homeTeam + ' vs. '  + awayTeam + ' ' + time + ' ' + timeZone + ' ' + venue);
+          output.push(homeTeam + ' vs. '  + awayTeam + ' ' + time + ' ' + timeZone);
         }
       });
       
