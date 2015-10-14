@@ -137,13 +137,16 @@ function getTemp() {
 
   request.onload = function () {
     if (request.status >= 200 && request.status < 400) {
+
       var data = JSON.parse(request.responseText);
+      console.log(data);
       var temp = data.current_observation.temp_f;
       var weather = data.current_observation.weather;
       var feels = data.current_observation.feelslike_f;
       var icon = data.current_observation.icon_url;
       icon = icon.replace('http://icons.wxug.com/i/c/k/', 'public/img/weather/').replace('.gif', '.svg').replace('_', '-');
       temp = temp.toFixed(0);
+      feels = Number(feels).toFixed(0);
 
       tempurature = {
         temp: temp,
