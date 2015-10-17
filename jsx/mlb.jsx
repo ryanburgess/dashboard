@@ -1,7 +1,7 @@
-var React = require('react');
+const React = require('react');
 
-var output = [];
-var SetIntervalMixin = {
+const output = [];
+const SetIntervalMixin = {
   componentWillMount() {
     this.intervals = [];
   },
@@ -15,10 +15,10 @@ var SetIntervalMixin = {
   }
 };
 const getGames = () => {
-  var d = new Date();
-  var m = d.getMonth() + 1;
-  var dd = d.getDate();
-  var y = d.getFullYear();
+  let d = new Date();
+  let m = d.getMonth() + 1;
+  let dd = d.getDate();
+  let y = d.getFullYear();
 
   if(m <= 9){
     m = '0' + m;
@@ -58,7 +58,7 @@ const getGames = () => {
   request.send();
 }
 
-var MLB = React.createClass({
+const MLB = React.createClass({
   mixins: [SetIntervalMixin], // Use the mixin
   getInitialState() {
     getGames();

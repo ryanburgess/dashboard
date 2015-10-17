@@ -1,25 +1,24 @@
-var React = require('react');
-var MonthDay = require('react-month-day');
-var Day = require('./day');
-var Clock = require('./clock');
-var Temp = require('./temp');
-var Tasks = require('./tasks');
-var MLB = require('./mlb');
-var getDay = require('./get-day');
-var renderTime = require('./time');
-var api = require('../key.json');
-var currentDay;
-var currentHour;
+const React = require('react');
+const MonthDay = require('react-month-day');
+const Day = require('./day');
+const Clock = require('./clock');
+const Temp = require('./temp');
+const Tasks = require('./tasks');
+const MLB = require('./mlb');
+const getDay = require('./get-day');
+const renderTime = require('./time');
+const api = require('../key.json');
+const currentDay;
+const currentHour;
 
 // tempuratur API
-var tempurature;
+const tempurature;
 function getTemp() {
   let request = new XMLHttpRequest();
   request.open('GET', 'http://api.wunderground.com/api/'+ api.weather +'/conditions/q/CA/San_Francisco.json', true);
 
   request.onload = function() {
     if (request.status >= 200 && request.status < 400) {
-
       let data = JSON.parse(request.responseText);
       console.log(data)
       let temp = data.current_observation.temp_f;
@@ -42,7 +41,7 @@ function getTemp() {
   request.send();
 }
 
-var SetIntervalMixin = {
+const SetIntervalMixin = {
   componentWillMount: function componentWillMount() {
     this.intervals = [];
   },
@@ -66,7 +65,7 @@ var SetIntervalMixin = {
   })
 };
 
-var App = React.createClass({
+const App = React.createClass({
   mixins: [SetIntervalMixin],
   getInitialState() {
     return {day: getDay()};

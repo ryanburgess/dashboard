@@ -1,6 +1,6 @@
-var React = require('react');
+const React = require('react');
 
-var Temp = React.createClass({
+const Temp = React.createClass({
   render() {
     return (
       <p className='temp'>

@@ -1,7 +1,7 @@
-var React = require('react');
-var daily = require('../daily.json');
+const React = require('react');
+const daily = require('../daily.json');
 
-var Tasks = React.createClass({
+const Tasks = React.createClass({
   render() {
     let today = this.props.day;
     return (

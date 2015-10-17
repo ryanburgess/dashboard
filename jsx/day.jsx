@@ -1,8 +1,8 @@
-var React = require('react');
+const React = require('react');
 
-var Day = React.createClass({
+const Day = React.createClass({
   render: function() {
-    var day = this.props.day;
+    let day = this.props.day;
     return (
       <p className='day'>{day}</p>
     );

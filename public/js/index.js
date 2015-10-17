@@ -137,7 +137,6 @@ function getTemp() {
 
   request.onload = function () {
     if (request.status >= 200 && request.status < 400) {
-
       var data = JSON.parse(request.responseText);
       console.log(data);
       var temp = data.current_observation.temp_f;
