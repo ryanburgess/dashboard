@@ -1,7 +1,7 @@
 const React = require('react');
 
-const output = [];
-const SetIntervalMixin = {
+var output = [];
+var SetIntervalMixin = {
   componentWillMount() {
     this.intervals = [];
   },
@@ -14,7 +14,7 @@ const SetIntervalMixin = {
     this.intervals.push(setInterval.apply(null, arguments));
   }
 };
-const getGames = () => {
+var getGames = () => {
   let d = new Date();
   let m = d.getMonth() + 1;
   let dd = d.getDate();
@@ -36,29 +36,30 @@ const getGames = () => {
       let games = data.data.games.game;
 
       output = [];
-      games.map(function(game, i){
-        let away = game.away_team_city;
-        let home = game.home_team_city;
-        let time = game.time;
-        let timeZone = game.time_zone;
-        let venue = game.venue;
-        let awayTeam = game.away_team_name;
-        let homeTeam = game.home_team_name;
-        if(home === 'Toronto' || away === 'Toronto'){
-          output.push(homeTeam + ' vs. '  + awayTeam + ' ' + time + ' ' + timeZone);
-        }
+      if(games.length !== undefined){
+        games.map(function(game, i){
+          let away = game.away_team_city;
+          let home = game.home_team_city;
+          let time = game.time;
+          let timeZone = game.time_zone;
+          let venue = game.venue;
+          let awayTeam = game.away_team_name;
+          let homeTeam = game.home_team_name;
+          if(home === 'Toronto' || away === 'Toronto'){
+            output.push(homeTeam + ' vs. '  + awayTeam + ' ' + time + ' ' + timeZone);
+          }
 
-        if(home === 'San Francisco'){
-          output.push(homeTeam + ' vs. '  + awayTeam + ' ' + time + ' ' + timeZone);
-        }
-      });
-      
+          if(home === 'San Francisco'){
+            output.push(homeTeam + ' vs. '  + awayTeam + ' ' + time + ' ' + timeZone);
+          }
+        });
+      }
     }
   };
   request.send();
 }
 
-const MLB = React.createClass({
+var MLB = React.createClass({
   mixins: [SetIntervalMixin], // Use the mixin
   getInitialState() {
     getGames();

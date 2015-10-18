@@ -132,13 +132,14 @@ var currentHour;
 // tempuratur API
 var tempurature;
 function getTemp() {
+  var city = api.city;
+  city = city.replace(/ /g, '_');
   var request = new XMLHttpRequest();
-  request.open('GET', 'http://api.wunderground.com/api/' + api.weather + '/conditions/q/CA/San_Francisco.json', true);
+  request.open('GET', 'http://api.wunderground.com/api/' + api.weather + '/conditions/q/CA/' + city + '.json', true);
 
   request.onload = function () {
     if (request.status >= 200 && request.status < 400) {
       var data = JSON.parse(request.responseText);
-      console.log(data);
       var temp = data.current_observation.temp_f;
       var weather = data.current_observation.weather;
       var feels = data.current_observation.feelslike_f;
@@ -283,22 +284,24 @@ var getGames = function getGames() {
       var games = data.data.games.game;
 
       output = [];
-      games.map(function (game, i) {
-        var away = game.away_team_city;
-        var home = game.home_team_city;
-        var time = game.time;
-        var timeZone = game.time_zone;
-        var venue = game.venue;
-        var awayTeam = game.away_team_name;
-        var homeTeam = game.home_team_name;
-        if (home === 'Toronto' || away === 'Toronto') {
-          output.push(homeTeam + ' vs. ' + awayTeam + ' ' + time + ' ' + timeZone);
-        }
+      if (games.length !== undefined) {
+        games.map(function (game, i) {
+          var away = game.away_team_city;
+          var home = game.home_team_city;
+          var time = game.time;
+          var timeZone = game.time_zone;
+          var venue = game.venue;
+          var awayTeam = game.away_team_name;
+          var homeTeam = game.home_team_name;
+          if (home === 'Toronto' || away === 'Toronto') {
+            output.push(homeTeam + ' vs. ' + awayTeam + ' ' + time + ' ' + timeZone);
+          }
 
-        if (home === 'San Francisco') {
-          output.push(homeTeam + ' vs. ' + awayTeam + ' ' + time + ' ' + timeZone);
-        }
-      });
+          if (home === 'San Francisco') {
+            output.push(homeTeam + ' vs. ' + awayTeam + ' ' + time + ' ' + timeZone);
+          }
+        });
+      }
     }
   };
   request.send();
@@ -433,7 +436,8 @@ module.exports = function () {
 
 },{}],11:[function(require,module,exports){
 module.exports={
-  "weather": "837fa9da3834f77b"
+  "weather": "837fa9da3834f77b",
+  "city": "San Francisco"
 }
 },{}],12:[function(require,module,exports){
 'use strict';

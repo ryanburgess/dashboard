@@ -8,19 +8,20 @@ const MLB = require('./mlb');
 const getDay = require('./get-day');
 const renderTime = require('./time');
 const api = require('../key.json');
-const currentDay;
-const currentHour;
+var currentDay;
+var currentHour;
 
 // tempuratur API
-const tempurature;
+var tempurature;
 function getTemp() {
+  let city = api.city;
+  city = city.replace(/ /g, '_');
   let request = new XMLHttpRequest();
-  request.open('GET', 'http://api.wunderground.com/api/'+ api.weather +'/conditions/q/CA/San_Francisco.json', true);
+  request.open('GET', 'http://api.wunderground.com/api/'+ api.weather +'/conditions/q/CA/'+ city +'.json', true);
 
   request.onload = function() {
     if (request.status >= 200 && request.status < 400) {
       let data = JSON.parse(request.responseText);
-      console.log(data)
       let temp = data.current_observation.temp_f;
       let weather = data.current_observation.weather;
       let feels = data.current_observation.feelslike_f;
@@ -41,7 +42,7 @@ function getTemp() {
   request.send();
 }
 
-const SetIntervalMixin = {
+var SetIntervalMixin = {
   componentWillMount: function componentWillMount() {
     this.intervals = [];
   },
@@ -65,7 +66,7 @@ const SetIntervalMixin = {
   })
 };
 
-const App = React.createClass({
+var App = React.createClass({
   mixins: [SetIntervalMixin],
   getInitialState() {
     return {day: getDay()};
