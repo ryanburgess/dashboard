@@ -5,6 +5,8 @@ var browserify = require('browserify');
 var rename = require('gulp-rename');
 var source = require('vinyl-source-stream');
 var eslint = require('gulp-eslint');
+var uglify = require('gulp-uglify');
+var replace = require('gulp-replace');
 
 gulp.task('lint', function () {
   return gulp.src(['jsx/**/*'])
@@ -38,6 +40,16 @@ gulp.task('scripts', function() {
     .pipe(gulp.dest('public/js/'));
 });
 
+gulp.task('compress', function() {
+  return gulp.src('./public/js/*.js')
+    .pipe(uglify())
+    .pipe(rename({
+       extname: '.min.js'
+     }))
+    .pipe(replace('./public/js/*.min.js'))
+    .pipe(gulp.dest('./public/js'));
+});
+
 gulp.task('sass', function () {
   return gulp.src('sass/**/*.scss')
     .pipe(sass())
@@ -47,6 +59,6 @@ gulp.task('sass', function () {
 
 gulp.task('watch', function() {
   gulp.watch('sass/**/*.scss', ['sass']);
-  gulp.watch(['./jsx/**/*'], ['scripts']);
+  gulp.watch(['./jsx/**/*'], ['scripts', 'compress']);
 });
 gulp.task('default', ['watch']);
