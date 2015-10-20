@@ -284,6 +284,7 @@ var getGames = function getGames() {
       var games = data.data.games.game;
 
       output = [];
+
       if (games.length !== undefined) {
         games.map(function (game, i) {
           var away = game.away_team_city;
@@ -301,6 +302,21 @@ var getGames = function getGames() {
             output.push(homeTeam + ' vs. ' + awayTeam + ' ' + time + ' ' + timeZone);
           }
         });
+      } else {
+        var away = games.away_team_city;
+        var home = games.home_team_city;
+        var time = games.time;
+        var timeZone = games.time_zone;
+        var venue = games.venue;
+        var awayTeam = games.away_team_name;
+        var homeTeam = games.home_team_name;
+        if (home === 'Toronto' || away === 'Toronto') {
+          output.push(homeTeam + ' vs. ' + awayTeam + ' ' + time + ' ' + timeZone);
+        }
+
+        if (home === 'San Francisco') {
+          output.push(homeTeam + ' vs. ' + awayTeam + ' ' + time + ' ' + timeZone);
+        }
       }
     }
   };
