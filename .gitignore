@@ -5,6 +5,7 @@
 .sass-cache
 *.log
 *.css
+*.min.js
 node_modules/
 test.html
 stock.html
