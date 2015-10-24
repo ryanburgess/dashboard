@@ -1,19 +1,17 @@
 import React from 'react';
+import config from '../config.json';
+const teams = config.sports.mlb;
 
 var output = [];
-var SetIntervalMixin = {
-  componentWillMount() {
-    this.intervals = [];
-  },
-
-  componentWillUnmount() {
-    this.intervals.map(clearInterval);
-  },
-
-  setInterval() {
-    this.intervals.push(setInterval.apply(null, arguments));
+Array.prototype.contains = function(obj) {
+  var i = this.length;
+  while (i--) {
+    if (this[i] === obj) {
+      return true;
+    }
   }
-};
+  return false;
+}
 var getGames = () => {
   let d = new Date();
   let m = d.getMonth() + 1;
@@ -37,22 +35,35 @@ var getGames = () => {
       output = [];
       
       if(games !== undefined){
-        games.map(function(game, i){
-          let away = game.away_team_city;
-          let home = game.home_team_city;
-          let time = game.time;
-          let timeZone = game.time_zone;
-          let venue = game.venue;
-          let awayTeam = game.away_team_name;
-          let homeTeam = game.home_team_name;
-          if(home === 'Toronto' || away === 'Toronto'){
-            output.push(homeTeam + ' vs. '  + awayTeam + ' ' + time + ' ' + timeZone);
-          }
+        if(games.length !== undefined){
+          games.map(function(game, i){
+            let away = game.away_team_city;
+            let home = game.home_team_city;
+            let time = game.time;
+            let timeZone = game.time_zone;
+            let venue = game.venue;
+            let awayTeam = game.away_team_name;
+            let homeTeam = game.home_team_name;
 
-          if(home === 'San Francisco'){
+            // only output teams in the config file
+            if(teams.contains(homeTeam) || teams.contains(awayTeam)){
+              output.push(homeTeam + ' vs. '  + awayTeam + ' ' + time + ' ' + timeZone);
+            }
+          });
+        }else{
+          let away = games.away_team_city;
+          let home = games.home_team_city;
+          let time = games.time;
+          let timeZone = games.time_zone;
+          let venue = games.venue;
+          let awayTeam = games.away_team_name;
+          let homeTeam = games.home_team_name;
+
+          // only output teams in the config file
+          if(teams.contains(homeTeam) || teams.contains(awayTeam)){
             output.push(homeTeam + ' vs. '  + awayTeam + ' ' + time + ' ' + timeZone);
           }
-        });
+        }
       }
     }
   };
@@ -60,17 +71,9 @@ var getGames = () => {
 }
 
 var MLB = React.createClass({
-  mixins: [SetIntervalMixin], // Use the mixin
   getInitialState() {
     getGames();
     return {games: output};
-  },
-  componentDidMount() {
-    this.setInterval(this.tick, 450000);
-  },
-  tick() {
-    getGames();
-    this.setState({games: output});
   },
   render() {
     return (

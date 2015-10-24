@@ -105,7 +105,7 @@ var App = React.createClass({
         <Clock hours={this.state.hours} minutes={this.state.minutes} seconds={this.state.seconds} diem={this.state.diem} />
         <Temp temp={this.state.temp} weather={this.state.weather} degree={this.state.degree} feels={this.state.feels} icon={this.state.icon} />
         <Tasks day={this.state.day} />
-        <MLB />
+        <MLB day={this.state.day} />
       </div>
     );
   }

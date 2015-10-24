@@ -23,6 +23,9 @@ module.exports={
   },
   "stock": {
     "symbol": "NFLX" 
+  },
+  "sports": {
+    "mlb": ["Blue Jays", "Royals"]
   }
 }
 },{}],3:[function(require,module,exports){
@@ -245,7 +248,7 @@ var App = _react2['default'].createClass({
       _react2['default'].createElement(_clock2['default'], { hours: this.state.hours, minutes: this.state.minutes, seconds: this.state.seconds, diem: this.state.diem }),
       _react2['default'].createElement(_temp2['default'], { temp: this.state.temp, weather: this.state.weather, degree: this.state.degree, feels: this.state.feels, icon: this.state.icon }),
       _react2['default'].createElement(_tasks2['default'], { day: this.state.day }),
-      _react2['default'].createElement(_mlb2['default'], null)
+      _react2['default'].createElement(_mlb2['default'], { day: this.state.day })
     );
   }
 });
@@ -261,29 +264,21 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _configJson = require('../config.json');
+
+var _configJson2 = _interopRequireDefault(_configJson);
+
+var teams = _configJson2['default'].sports.mlb;
+
 var output = [];
-var SetIntervalMixin = {
-  componentWillMount: function componentWillMount() {
-    this.intervals = [];
-  },
-
-  componentWillUnmount: function componentWillUnmount() {
-    this.intervals.map(clearInterval);
-  },
-
-  setInterval: (function (_setInterval) {
-    function setInterval() {
-      return _setInterval.apply(this, arguments);
+Array.prototype.contains = function (obj) {
+  var i = this.length;
+  while (i--) {
+    if (this[i] === obj) {
+      return true;
     }
-
-    setInterval.toString = function () {
-      return _setInterval.toString();
-    };
-
-    return setInterval;
-  })(function () {
-    this.intervals.push(setInterval.apply(null, arguments));
-  })
+  }
+  return false;
 };
 var getGames = function getGames() {
   var d = new Date();
@@ -305,42 +300,39 @@ var getGames = function getGames() {
     if (request.status >= 200 && request.status < 400) {
       var data = JSON.parse(request.responseText);
       var games = data.data.games.game;
-      console.log(data);
       output = [];
 
-      // if(games.length !== undefined){
-      //   games.map(function(game, i){
-      //     let away = game.away_team_city;
-      //     let home = game.home_team_city;
-      //     let time = game.time;
-      //     let timeZone = game.time_zone;
-      //     let venue = game.venue;
-      //     let awayTeam = game.away_team_name;
-      //     let homeTeam = game.home_team_name;
-      //     if(home === 'Toronto' || away === 'Toronto'){
-      //       output.push(homeTeam + ' vs. '  + awayTeam + ' ' + time + ' ' + timeZone);
-      //     }
+      if (games !== undefined) {
+        if (games.length !== undefined) {
+          games.map(function (game, i) {
+            var away = game.away_team_city;
+            var home = game.home_team_city;
+            var time = game.time;
+            var timeZone = game.time_zone;
+            var venue = game.venue;
+            var awayTeam = game.away_team_name;
+            var homeTeam = game.home_team_name;
 
-      //     if(home === 'San Francisco'){
-      //       output.push(homeTeam + ' vs. '  + awayTeam + ' ' + time + ' ' + timeZone);
-      //     }
-      //   });
-      // }else{
-      //   let away = games.away_team_city;
-      //   let home = games.home_team_city;
-      //   let time = games.time;
-      //   let timeZone = games.time_zone;
-      //   let venue = games.venue;
-      //   let awayTeam = games.away_team_name;
-      //   let homeTeam = games.home_team_name;
-      //   if(home === 'Toronto' || away === 'Toronto'){
-      //     output.push(homeTeam + ' vs. '  + awayTeam + ' ' + time + ' ' + timeZone);
-      //   }
+            // only output teams in the config file
+            if (teams.contains(homeTeam) || teams.contains(awayTeam)) {
+              output.push(homeTeam + ' vs. ' + awayTeam + ' ' + time + ' ' + timeZone);
+            }
+          });
+        } else {
+          var away = games.away_team_city;
+          var home = games.home_team_city;
+          var time = games.time;
+          var timeZone = games.time_zone;
+          var venue = games.venue;
+          var awayTeam = games.away_team_name;
+          var homeTeam = games.home_team_name;
 
-      //   if(home === 'San Francisco'){
-      //     output.push(homeTeam + ' vs. '  + awayTeam + ' ' + time + ' ' + timeZone);
-      //   }
-      // }
+          // only output teams in the config file
+          if (teams.contains(homeTeam) || teams.contains(awayTeam)) {
+            output.push(homeTeam + ' vs. ' + awayTeam + ' ' + time + ' ' + timeZone);
+          }
+        }
+      }
     }
   };
   request.send();
@@ -349,17 +341,9 @@ var getGames = function getGames() {
 var MLB = _react2['default'].createClass({
   displayName: 'MLB',
 
-  mixins: [SetIntervalMixin], // Use the mixin
   getInitialState: function getInitialState() {
     getGames();
     return { games: output };
-  },
-  componentDidMount: function componentDidMount() {
-    this.setInterval(this.tick, 450000);
-  },
-  tick: function tick() {
-    getGames();
-    this.setState({ games: output });
   },
   render: function render() {
     return _react2['default'].createElement(
@@ -378,7 +362,7 @@ var MLB = _react2['default'].createClass({
 
 module.exports = MLB;
 
-},{"react":166}],8:[function(require,module,exports){
+},{"../config.json":2,"react":166}],8:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
