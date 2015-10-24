@@ -34,10 +34,9 @@ var getGames = () => {
     if (request.status >= 200 && request.status < 400) {
       let data = JSON.parse(request.responseText);
       let games = data.data.games.game;
-
       output = [];
       
-      if(games.length !== undefined){
+      if(games !== undefined){
         games.map(function(game, i){
           let away = game.away_team_city;
           let home = game.home_team_city;
@@ -54,21 +53,6 @@ var getGames = () => {
             output.push(homeTeam + ' vs. '  + awayTeam + ' ' + time + ' ' + timeZone);
           }
         });
-      }else{
-        let away = games.away_team_city;
-        let home = games.home_team_city;
-        let time = games.time;
-        let timeZone = games.time_zone;
-        let venue = games.venue;
-        let awayTeam = games.away_team_name;
-        let homeTeam = games.home_team_name;
-        if(home === 'Toronto' || away === 'Toronto'){
-          output.push(homeTeam + ' vs. '  + awayTeam + ' ' + time + ' ' + timeZone);
-        }
-
-        if(home === 'San Francisco'){
-          output.push(homeTeam + ' vs. '  + awayTeam + ' ' + time + ' ' + timeZone);
-        }
       }
     }
   };

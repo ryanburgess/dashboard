@@ -305,42 +305,42 @@ var getGames = function getGames() {
     if (request.status >= 200 && request.status < 400) {
       var data = JSON.parse(request.responseText);
       var games = data.data.games.game;
-
+      console.log(data);
       output = [];
 
-      if (games.length !== undefined) {
-        games.map(function (game, i) {
-          var away = game.away_team_city;
-          var home = game.home_team_city;
-          var time = game.time;
-          var timeZone = game.time_zone;
-          var venue = game.venue;
-          var awayTeam = game.away_team_name;
-          var homeTeam = game.home_team_name;
-          if (home === 'Toronto' || away === 'Toronto') {
-            output.push(homeTeam + ' vs. ' + awayTeam + ' ' + time + ' ' + timeZone);
-          }
+      // if(games.length !== undefined){
+      //   games.map(function(game, i){
+      //     let away = game.away_team_city;
+      //     let home = game.home_team_city;
+      //     let time = game.time;
+      //     let timeZone = game.time_zone;
+      //     let venue = game.venue;
+      //     let awayTeam = game.away_team_name;
+      //     let homeTeam = game.home_team_name;
+      //     if(home === 'Toronto' || away === 'Toronto'){
+      //       output.push(homeTeam + ' vs. '  + awayTeam + ' ' + time + ' ' + timeZone);
+      //     }
 
-          if (home === 'San Francisco') {
-            output.push(homeTeam + ' vs. ' + awayTeam + ' ' + time + ' ' + timeZone);
-          }
-        });
-      } else {
-        var away = games.away_team_city;
-        var home = games.home_team_city;
-        var time = games.time;
-        var timeZone = games.time_zone;
-        var venue = games.venue;
-        var awayTeam = games.away_team_name;
-        var homeTeam = games.home_team_name;
-        if (home === 'Toronto' || away === 'Toronto') {
-          output.push(homeTeam + ' vs. ' + awayTeam + ' ' + time + ' ' + timeZone);
-        }
+      //     if(home === 'San Francisco'){
+      //       output.push(homeTeam + ' vs. '  + awayTeam + ' ' + time + ' ' + timeZone);
+      //     }
+      //   });
+      // }else{
+      //   let away = games.away_team_city;
+      //   let home = games.home_team_city;
+      //   let time = games.time;
+      //   let timeZone = games.time_zone;
+      //   let venue = games.venue;
+      //   let awayTeam = games.away_team_name;
+      //   let homeTeam = games.home_team_name;
+      //   if(home === 'Toronto' || away === 'Toronto'){
+      //     output.push(homeTeam + ' vs. '  + awayTeam + ' ' + time + ' ' + timeZone);
+      //   }
 
-        if (home === 'San Francisco') {
-          output.push(homeTeam + ' vs. ' + awayTeam + ' ' + time + ' ' + timeZone);
-        }
-      }
+      //   if(home === 'San Francisco'){
+      //     output.push(homeTeam + ' vs. '  + awayTeam + ' ' + time + ' ' + timeZone);
+      //   }
+      // }
     }
   };
   request.send();
