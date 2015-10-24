@@ -41,12 +41,11 @@ gulp.task('scripts', function() {
 });
 
 gulp.task('compress', function() {
-  return gulp.src('./public/js/*.js')
+  return gulp.src('./public/js/index.js')
     .pipe(uglify())
     .pipe(rename({
        extname: '.min.js'
      }))
-    .pipe(replace('./public/js/*.min.js'))
     .pipe(gulp.dest('./public/js'));
 });
 

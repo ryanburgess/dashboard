@@ -1,5 +1,5 @@
 const React = require('react');
-const daily = require('../daily.json');
+const daily = require('../tasks.json');
 
 const Tasks = React.createClass({
   render() {

@@ -2,5 +2,6 @@
 
 {
   "weather": "<your_api_token>", // get an API key from http://api.wunderground.com/
-  "city": "<your_city>"
+  "city": "<your_city>",
+  "stock_symbol": "NFLX"
 }
