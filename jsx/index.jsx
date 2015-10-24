@@ -1,23 +1,23 @@
-const React = require('react');
-const MonthDay = require('react-month-day');
-const Day = require('./day');
-const Clock = require('./clock');
-const Temp = require('./temp');
-const Tasks = require('./tasks');
-const MLB = require('./mlb');
-const getDay = require('./get-day');
-const renderTime = require('./time');
-const api = require('../key.json');
+import React from 'react';
+import MonthDay from 'react-month-day';
+import Day from './day';
+import Clock from './clock';
+import Temp from './temp';
+import Tasks from './tasks';
+import MLB from './mlb';
+import getDay from './get-day';
+import renderTime from './time';
+import config from '../config.json';
 var currentDay;
 var currentHour;
 
 // tempuratur API
 var tempurature;
 function getTemp() {
-  let city = api.city;
+  let city = config.settings.city;
   city = city.replace(/ /g, '_');
   let request = new XMLHttpRequest();
-  request.open('GET', 'http://api.wunderground.com/api/'+ api.weather +'/conditions/q/CA/'+ city +'.json', true);
+  request.open('GET', 'http://api.wunderground.com/api/'+ config.api.weather +'/conditions/q/CA/'+ city +'.json', true);
 
   request.onload = function() {
     if (request.status >= 200 && request.status < 400) {

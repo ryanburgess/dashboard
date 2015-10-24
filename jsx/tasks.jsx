@@ -1,4 +1,4 @@
-const React = require('react');
+import React from 'react';
 const daily = require('../tasks.json');
 
 const Tasks = React.createClass({

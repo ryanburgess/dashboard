@@ -1,0 +1,11 @@
+{ 
+  "settings": {
+    "city": "<your_city>"
+  },
+  "api": {
+    "weather": "<your_api_token>"
+  },
+  "stock": {
+    "symbol": "<stock_symbol>" 
+  }
+}

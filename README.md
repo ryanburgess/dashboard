@@ -7,7 +7,6 @@ Created with React. Using the [http://api.wunderground.com/](Wunder Ground API) 
 
 #TODO
 * Pull in TV schedule API
-* Create a config file
 * Use user location
 * Add more sports and options to follow teams
 * Add background images pulling from Flickr

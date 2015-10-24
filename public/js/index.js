@@ -1,20 +1,44 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
-var App = require('./index');
-React.render(React.createElement(App, null), window.document.querySelector("#target"));
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-},{"./index":5,"react":166}],2:[function(require,module,exports){
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _index = require('./index');
+
+var _index2 = _interopRequireDefault(_index);
+
+_react2['default'].render(_react2['default'].createElement(_index2['default'], null), window.document.querySelector("#target"));
+
+},{"./index":6,"react":166}],2:[function(require,module,exports){
+module.exports={ 
+  "settings": {
+    "city": "San Francisco"
+  },
+  "api": {
+    "weather": "837fa9da3834f77b"
+  },
+  "stock": {
+    "symbol": "NFLX" 
+  }
+}
+},{}],3:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var Clock = React.createClass({
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var Clock = _react2['default'].createClass({
   displayName: 'Clock',
 
   render: function render() {
-    return React.createElement(
+    return _react2['default'].createElement(
       'p',
       { className: 'clock' },
       this.props.hours,
@@ -22,7 +46,7 @@ var Clock = React.createClass({
       this.props.minutes,
       ':',
       this.props.seconds,
-      React.createElement(
+      _react2['default'].createElement(
         'span',
         { className: 'diem' },
         this.props.diem
@@ -33,17 +57,21 @@ var Clock = React.createClass({
 
 module.exports = Clock;
 
-},{"react":166}],3:[function(require,module,exports){
+},{"react":166}],4:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var Day = React.createClass({
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var Day = _react2['default'].createClass({
   displayName: 'Day',
 
   render: function render() {
     var day = this.props.day;
-    return React.createElement(
+    return _react2['default'].createElement(
       'p',
       { className: 'day' },
       day
@@ -53,7 +81,7 @@ var Day = React.createClass({
 
 module.exports = Day;
 
-},{"react":166}],4:[function(require,module,exports){
+},{"react":166}],5:[function(require,module,exports){
 'use strict';
 
 module.exports = function () {
@@ -72,29 +100,61 @@ module.exports = function () {
   return day;
 };
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
-var MonthDay = require('react-month-day');
-var Day = require('./day');
-var Clock = require('./clock');
-var Temp = require('./temp');
-var Tasks = require('./tasks');
-var MLB = require('./mlb');
-var getDay = require('./get-day');
-var renderTime = require('./time');
-var api = require('../key.json');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactMonthDay = require('react-month-day');
+
+var _reactMonthDay2 = _interopRequireDefault(_reactMonthDay);
+
+var _day = require('./day');
+
+var _day2 = _interopRequireDefault(_day);
+
+var _clock = require('./clock');
+
+var _clock2 = _interopRequireDefault(_clock);
+
+var _temp = require('./temp');
+
+var _temp2 = _interopRequireDefault(_temp);
+
+var _tasks = require('./tasks');
+
+var _tasks2 = _interopRequireDefault(_tasks);
+
+var _mlb = require('./mlb');
+
+var _mlb2 = _interopRequireDefault(_mlb);
+
+var _getDay = require('./get-day');
+
+var _getDay2 = _interopRequireDefault(_getDay);
+
+var _time = require('./time');
+
+var _time2 = _interopRequireDefault(_time);
+
+var _configJson = require('../config.json');
+
+var _configJson2 = _interopRequireDefault(_configJson);
+
 var currentDay;
 var currentHour;
 
 // tempuratur API
 var tempurature;
 function getTemp() {
-  var city = api.city;
+  var city = _configJson2['default'].settings.city;
   city = city.replace(/ /g, '_');
   var request = new XMLHttpRequest();
-  request.open('GET', 'http://api.wunderground.com/api/' + api.weather + '/conditions/q/CA/' + city + '.json', true);
+  request.open('GET', 'http://api.wunderground.com/api/' + _configJson2['default'].api.weather + '/conditions/q/CA/' + city + '.json', true);
 
   request.onload = function () {
     if (request.status >= 200 && request.status < 400) {
@@ -143,19 +203,19 @@ var SetIntervalMixin = {
   })
 };
 
-var App = React.createClass({
+var App = _react2['default'].createClass({
   displayName: 'App',
 
   mixins: [SetIntervalMixin],
   getInitialState: function getInitialState() {
-    return { day: getDay() };
+    return { day: (0, _getDay2['default'])() };
   },
   componentDidMount: function componentDidMount() {
     this.setInterval(this.tick, 1000);
   },
   tick: function tick() {
-    var today = getDay();
-    var time = renderTime();
+    var today = (0, _getDay2['default'])();
+    var time = (0, _time2['default'])();
 
     if (tempurature !== undefined) {
       this.setState({ temp: tempurature.temp, weather: tempurature.weather, degree: '°F', feels: tempurature.feels, icon: tempurature.icon });
@@ -177,25 +237,29 @@ var App = React.createClass({
     this.setState({ hours: time.hours, minutes: time.minutes, seconds: time.seconds, diem: time.diem });
   },
   render: function render() {
-    return React.createElement(
+    return _react2['default'].createElement(
       'div',
       null,
-      React.createElement(MonthDay, null),
-      React.createElement(Day, { day: this.state.day }),
-      React.createElement(Clock, { hours: this.state.hours, minutes: this.state.minutes, seconds: this.state.seconds, diem: this.state.diem }),
-      React.createElement(Temp, { temp: this.state.temp, weather: this.state.weather, degree: this.state.degree, feels: this.state.feels, icon: this.state.icon }),
-      React.createElement(Tasks, { day: this.state.day }),
-      React.createElement(MLB, null)
+      _react2['default'].createElement(_reactMonthDay2['default'], null),
+      _react2['default'].createElement(_day2['default'], { day: this.state.day }),
+      _react2['default'].createElement(_clock2['default'], { hours: this.state.hours, minutes: this.state.minutes, seconds: this.state.seconds, diem: this.state.diem }),
+      _react2['default'].createElement(_temp2['default'], { temp: this.state.temp, weather: this.state.weather, degree: this.state.degree, feels: this.state.feels, icon: this.state.icon }),
+      _react2['default'].createElement(_tasks2['default'], { day: this.state.day }),
+      _react2['default'].createElement(_mlb2['default'], null)
     );
   }
 });
 
 module.exports = App;
 
-},{"../key.json":10,"./clock":2,"./day":3,"./get-day":4,"./mlb":6,"./tasks":7,"./temp":8,"./time":9,"react":166,"react-month-day":11}],6:[function(require,module,exports){
+},{"../config.json":2,"./clock":3,"./day":4,"./get-day":5,"./mlb":7,"./tasks":8,"./temp":9,"./time":10,"react":166,"react-month-day":11}],7:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
 
 var output = [];
 var SetIntervalMixin = {
@@ -282,7 +346,7 @@ var getGames = function getGames() {
   request.send();
 };
 
-var MLB = React.createClass({
+var MLB = _react2['default'].createClass({
   displayName: 'MLB',
 
   mixins: [SetIntervalMixin], // Use the mixin
@@ -298,11 +362,11 @@ var MLB = React.createClass({
     this.setState({ games: output });
   },
   render: function render() {
-    return React.createElement(
+    return _react2['default'].createElement(
       'ul',
       { className: 'mlb' },
       output.map(function (item, i) {
-        return React.createElement(
+        return _react2['default'].createElement(
           'li',
           { key: i },
           item
@@ -314,29 +378,34 @@ var MLB = React.createClass({
 
 module.exports = MLB;
 
-},{"react":166}],7:[function(require,module,exports){
+},{"react":166}],8:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
 var daily = require('../tasks.json');
 
-var Tasks = React.createClass({
+var Tasks = _react2['default'].createClass({
   displayName: 'Tasks',
 
   render: function render() {
     var today = this.props.day;
-    return React.createElement(
+    return _react2['default'].createElement(
       'ul',
       { className: 'tasks' },
       daily.map(function (item, i) {
         if (item.day === today || item.day === 'All') {
           var image = 'public/img/tasks/' + item.img;
-          return React.createElement(
+          return _react2['default'].createElement(
             'li',
             { key: i },
             item.task,
             ' ',
-            React.createElement('img', { src: image })
+            _react2['default'].createElement('img', { src: image })
           );
         }
       })
@@ -346,16 +415,20 @@ var Tasks = React.createClass({
 
 module.exports = Tasks;
 
-},{"../tasks.json":167,"react":166}],8:[function(require,module,exports){
+},{"../tasks.json":167,"react":166}],9:[function(require,module,exports){
 'use strict';
 
-var React = require('react');
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-var Temp = React.createClass({
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var Temp = _react2['default'].createClass({
   displayName: 'Temp',
 
   render: function render() {
-    return React.createElement(
+    return _react2['default'].createElement(
       'p',
       { className: 'temp' },
       this.props.temp,
@@ -363,8 +436,8 @@ var Temp = React.createClass({
       ' ',
       this.props.weather,
       ' ',
-      React.createElement('img', { src: this.props.icon }),
-      React.createElement(
+      _react2['default'].createElement('img', { src: this.props.icon }),
+      _react2['default'].createElement(
         'span',
         { className: 'small' },
         this.props.feels,
@@ -376,7 +449,7 @@ var Temp = React.createClass({
 
 module.exports = Temp;
 
-},{"react":166}],9:[function(require,module,exports){
+},{"react":166}],10:[function(require,module,exports){
 'use strict';
 
 module.exports = function () {
@@ -409,12 +482,6 @@ module.exports = function () {
   return output;
 };
 
-},{}],10:[function(require,module,exports){
-module.exports={
-  "weather": "837fa9da3834f77b",
-  "city": "San Francisco",
-  "stock_symbol": "NFLX" 
-}
 },{}],11:[function(require,module,exports){
 'use strict';
 
