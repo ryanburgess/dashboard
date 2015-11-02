@@ -1,4 +1,6 @@
 import React from 'react';
+import cheerio from 'cheerio';
+import request from 'request';
 import MonthDay from 'react-month-day';
 import Day from './day';
 import Clock from './clock';
@@ -7,6 +9,7 @@ import Tasks from './tasks';
 import MLB from './mlb';
 import getDay from './get-day';
 import renderTime from './time';
+import Stock from './stock';
 import config from '../config.json';
 var currentDay;
 var currentHour;
@@ -30,6 +33,7 @@ function getTemp() {
       temp = temp.toFixed(0);
       feels = Number(feels).toFixed(0);
 
+      // create tempurate object
       tempurature = {
         temp: temp,
         weather: weather,
@@ -42,6 +46,34 @@ function getTemp() {
   request.send();
 }
 
+// get date from stock api
+var stock;
+function getStock(){
+  let symbol = config.stock.symbol;
+
+  let request = new XMLHttpRequest();
+  request.open('GET', 'http://stockz-api.herokuapp.com/api/?s='+ symbol, true);
+
+  request.onload = function() {
+    if (request.status >= 200 && request.status < 400) {
+      let data = JSON.parse(request.responseText);
+
+      stock = {
+        company: data[0].company,
+        percent_change: data[0].percent_change,
+        price_change: data[0].price_change,
+        price: data[0].stock_number,
+        symbol: data[0].symbol,
+        up_down: data[0].up_down
+      }
+
+      return stock;
+    }
+  };
+  request.send();
+}
+
+// use a set interval mixin for timer
 var SetIntervalMixin = {
   componentWillMount: function componentWillMount() {
     this.intervals = [];
@@ -66,6 +98,7 @@ var SetIntervalMixin = {
   })
 };
 
+// main react app class
 var App = React.createClass({
   mixins: [SetIntervalMixin],
   getInitialState() {
@@ -82,6 +115,10 @@ var App = React.createClass({
       this.setState({temp: tempurature.temp, weather: tempurature.weather, degree: '°F', feels: tempurature.feels, icon: tempurature.icon});
     }
 
+    if(stock !== undefined){
+      this.setState({stock: stock.price, stock_symbol: stock.symbol});
+    }
+
     // make calls by the day change
     if(today !== currentDay || currentDay === undefined){
       currentDay = today;
@@ -91,6 +128,7 @@ var App = React.createClass({
     // make calls by the hour change
     if(time.hours !== currentHour || currentHour === undefined){
       currentHour = time.hours;
+      getStock();
       getTemp();
     }
 
@@ -106,6 +144,7 @@ var App = React.createClass({
         <Temp temp={this.state.temp} weather={this.state.weather} degree={this.state.degree} feels={this.state.feels} icon={this.state.icon} />
         <Tasks day={this.state.day} />
         <MLB day={this.state.day} />
+        <Stock stock={this.state.stock} stock_symbol={this.state.stock_symbol} />
       </div>
     );
   }
