@@ -10,9 +10,26 @@ import MLB from './mlb';
 import getDay from './get-day';
 import renderTime from './time';
 import Stock from './stock';
-import config from '../config.json';
+var config;
 var currentDay;
 var currentHour;
+var daily;
+
+// get the config file
+function load() {
+  let request = new XMLHttpRequest();
+  request.open('GET', '../config.json', true);
+
+  request.onload = function() {
+    if (request.status >= 200 && request.status < 400) {
+      let data = JSON.parse(request.responseText);
+      config = data;
+      daily = data.tasks;
+    }
+  };
+  request.send();
+}
+load();
 
 // tempuratur API
 var tempurature;
@@ -102,7 +119,7 @@ var SetIntervalMixin = {
 var App = React.createClass({
   mixins: [SetIntervalMixin],
   getInitialState() {
-    return {day: getDay()};
+    return {day: getDay(), daily: ['']};
   },
   componentDidMount() {
     this.setInterval(this.tick, 1000);
@@ -122,7 +139,7 @@ var App = React.createClass({
     // make calls by the day change
     if(today !== currentDay || currentDay === undefined){
       currentDay = today;
-      this.setState({day: today});
+      this.setState({day: today, daily: daily});
     }
 
     // make calls by the hour change
@@ -142,7 +159,7 @@ var App = React.createClass({
         <Day day={this.state.day} />
         <Clock hours={this.state.hours} minutes={this.state.minutes} seconds={this.state.seconds} diem={this.state.diem} />
         <Temp temp={this.state.temp} weather={this.state.weather} degree={this.state.degree} feels={this.state.feels} icon={this.state.icon} />
-        <Tasks day={this.state.day} />
+        <Tasks day={this.state.day} daily={this.state.daily} />
         <MLB day={this.state.day} />
         <Stock stock={this.state.stock} stock_symbol={this.state.stock_symbol} />
       </div>
@@ -151,4 +168,5 @@ var App = React.createClass({
 });
 
 module.exports = App;
+
 

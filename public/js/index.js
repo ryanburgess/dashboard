@@ -27,7 +27,49 @@ module.exports={
   "sports": {
     "mlb": ["Blue Jays", "Giants"],
     "nhl": ["Maple Leafs", "Sharks"]
-  }
+  },
+  "tasks": [
+    {
+      "day": "Monday",
+      "task": "Water plants",
+      "img": "plants.svg"
+    },
+    {
+      "day": "Tuesday",
+      "task": "Meeting at 9am",
+      "img": "meeting.svg"
+    },
+    {
+      "day": "Wednesday",
+      "task": "Go to the gym",
+      "img": "gym.svg"
+    },
+    {
+      "day": "Thursday",
+      "task": "Go for a run",
+      "img": "run.svg"
+    },
+    {
+      "day": "All",
+      "task": "Walk the dog",
+      "img": "dog.svg"
+    },
+    {
+      "day": "Friday",
+      "task": "Go to the gym",
+      "img": "gym.svg"
+    },
+    {
+      "day": "Saturday",
+      "task": "Read a book",
+      "img": "read.svg"
+    },
+    {
+      "day": "Sunday",
+      "task": "Review schedule",
+      "img": "calendar.svg"
+    }
+  ]
 }
 },{}],3:[function(require,module,exports){
 'use strict';
@@ -157,20 +199,34 @@ var _stock = require('./stock');
 
 var _stock2 = _interopRequireDefault(_stock);
 
-var _configJson = require('../config.json');
-
-var _configJson2 = _interopRequireDefault(_configJson);
-
+var config;
 var currentDay;
 var currentHour;
+var daily;
+
+// get the config file
+function load() {
+  var request = new XMLHttpRequest();
+  request.open('GET', '../config.json', true);
+
+  request.onload = function () {
+    if (request.status >= 200 && request.status < 400) {
+      var data = JSON.parse(request.responseText);
+      config = data;
+      daily = data.tasks;
+    }
+  };
+  request.send();
+}
+load();
 
 // tempuratur API
 var tempurature;
 function getTemp() {
-  var city = _configJson2['default'].settings.city;
+  var city = config.settings.city;
   city = city.replace(/ /g, '_');
   var request = new XMLHttpRequest();
-  request.open('GET', 'http://api.wunderground.com/api/' + _configJson2['default'].api.weather + '/conditions/q/CA/' + city + '.json', true);
+  request.open('GET', 'http://api.wunderground.com/api/' + config.api.weather + '/conditions/q/CA/' + city + '.json', true);
 
   request.onload = function () {
     if (request.status >= 200 && request.status < 400) {
@@ -199,7 +255,7 @@ function getTemp() {
 // get date from stock api
 var stock;
 function getStock() {
-  var symbol = _configJson2['default'].stock.symbol;
+  var symbol = config.stock.symbol;
 
   var request = new XMLHttpRequest();
   request.open('GET', 'http://stockz-api.herokuapp.com/api/?s=' + symbol, true);
@@ -254,7 +310,7 @@ var App = _react2['default'].createClass({
 
   mixins: [SetIntervalMixin],
   getInitialState: function getInitialState() {
-    return { day: (0, _getDay2['default'])() };
+    return { day: (0, _getDay2['default'])(), daily: [''] };
   },
   componentDidMount: function componentDidMount() {
     this.setInterval(this.tick, 1000);
@@ -274,7 +330,7 @@ var App = _react2['default'].createClass({
     // make calls by the day change
     if (today !== currentDay || currentDay === undefined) {
       currentDay = today;
-      this.setState({ day: today });
+      this.setState({ day: today, daily: daily });
     }
 
     // make calls by the hour change
@@ -295,7 +351,7 @@ var App = _react2['default'].createClass({
       _react2['default'].createElement(_day2['default'], { day: this.state.day }),
       _react2['default'].createElement(_clock2['default'], { hours: this.state.hours, minutes: this.state.minutes, seconds: this.state.seconds, diem: this.state.diem }),
       _react2['default'].createElement(_temp2['default'], { temp: this.state.temp, weather: this.state.weather, degree: this.state.degree, feels: this.state.feels, icon: this.state.icon }),
-      _react2['default'].createElement(_tasks2['default'], { day: this.state.day }),
+      _react2['default'].createElement(_tasks2['default'], { day: this.state.day, daily: this.state.daily }),
       _react2['default'].createElement(_mlb2['default'], { day: this.state.day }),
       _react2['default'].createElement(_stock2['default'], { stock: this.state.stock, stock_symbol: this.state.stock_symbol })
     );
@@ -304,7 +360,7 @@ var App = _react2['default'].createClass({
 
 module.exports = App;
 
-},{"../config.json":2,"./clock":3,"./day":4,"./get-day":5,"./mlb":7,"./stock":8,"./tasks":9,"./temp":10,"./time":11,"cheerio":205,"react":426,"react-month-day":271,"request":427}],7:[function(require,module,exports){
+},{"./clock":3,"./day":4,"./get-day":5,"./mlb":7,"./stock":8,"./tasks":9,"./temp":10,"./time":11,"cheerio":205,"react":426,"react-month-day":271,"request":427}],7:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -455,13 +511,12 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
-var daily = require('../tasks.json');
-
 var Tasks = _react2['default'].createClass({
   displayName: 'Tasks',
 
   render: function render() {
     var today = this.props.day;
+    var daily = this.props.daily;
     return _react2['default'].createElement(
       'ul',
       { className: 'tasks' },
@@ -483,7 +538,7 @@ var Tasks = _react2['default'].createClass({
 
 module.exports = Tasks;
 
-},{"../tasks.json":521,"react":426}],10:[function(require,module,exports){
+},{"react":426}],10:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -88152,45 +88207,4 @@ Request.prototype.toJSON = requestToJSON
 module.exports = Request
 
 }).call(this,require('_process'),require("buffer").Buffer)
-},{"./lib/auth":428,"./lib/cookies":429,"./lib/getProxyFromURI":430,"./lib/har":431,"./lib/helpers":432,"./lib/multipart":433,"./lib/oauth":434,"./lib/querystring":435,"./lib/redirect":436,"./lib/tunnel":437,"_process":182,"aws-sign2":438,"bl":439,"buffer":28,"caseless":450,"forever-agent":454,"form-data":455,"hawk":484,"http":174,"http-signature":485,"https":178,"mime-types":502,"stream":198,"stringstream":511,"url":200,"util":202,"zlib":27}],521:[function(require,module,exports){
-module.exports=[{
-  "day": "Monday",
-  "task": "Water plants",
-  "img": "plants.svg"
-},
-{
-  "day": "Tuesday",
-  "task": "Meeting at 9am",
-  "img": "meeting.svg"
-},
-{
-  "day": "Wednesday",
-  "task": "Go to the gym",
-  "img": "gym.svg"
-},
-{
-  "day": "Thursday",
-  "task": "Go for a run",
-  "img": "run.svg"
-},
-{
-  "day": "All",
-  "task": "Walk the dog",
-  "img": "dog.svg"
-},
-{
-  "day": "Friday",
-  "task": "Go to the gym",
-  "img": "gym.svg"
-},
-{
-  "day": "Saturday",
-  "task": "Read a book",
-  "img": "read.svg"
-},
-{
-  "day": "Sunday",
-  "task": "Review schedule",
-  "img": "calendar.svg"
-}]
-},{}]},{},[1]);
+},{"./lib/auth":428,"./lib/cookies":429,"./lib/getProxyFromURI":430,"./lib/har":431,"./lib/helpers":432,"./lib/multipart":433,"./lib/oauth":434,"./lib/querystring":435,"./lib/redirect":436,"./lib/tunnel":437,"_process":182,"aws-sign2":438,"bl":439,"buffer":28,"caseless":450,"forever-agent":454,"form-data":455,"hawk":484,"http":174,"http-signature":485,"https":178,"mime-types":502,"stream":198,"stringstream":511,"url":200,"util":202,"zlib":27}]},{},[1]);
