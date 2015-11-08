@@ -1,5 +1,5 @@
 # Dashboard
-Dashboard to display weather, clock, date.
+Dashboard to display weather, stock, clock, date.
 
 Created with React. Using the [Wunder Ground API](http://api.wunderground.com/) for the weather.
 

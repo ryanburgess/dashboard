@@ -22,12 +22,17 @@ module.exports={
     "weather": "837fa9da3834f77b"
   },
   "stock": {
-    "symbol": "NFLX" 
+    "symbol": "NFLX"
   },
   "sports": {
     "mlb": ["Blue Jays", "Giants"],
     "nhl": ["Maple Leafs", "Sharks"]
   },
+  "shows": [
+    "The Walking Dead",
+    "Homeland", 
+    "Madam Secretary"
+  ],
   "tasks": [
     {
       "day": "Monday",
@@ -262,6 +267,7 @@ function getStock() {
       stock = {
         company: data[0].company,
         percent_change: data[0].percent_change,
+        previous: data[0].previous,
         price_change: data[0].price_change,
         price: data[0].stock_number,
         symbol: data[0].symbol,
@@ -319,7 +325,7 @@ var App = _react2['default'].createClass({
     }
 
     if (stock !== undefined) {
-      this.setState({ stock: stock.price, stock_symbol: stock.symbol });
+      this.setState({ stock: stock.price, stock_symbol: stock.symbol, stock_previous: stock.previous, up_down: stock.up_down });
     }
 
     // make calls by the day change
@@ -335,7 +341,7 @@ var App = _react2['default'].createClass({
       getTemp();
       // call latest version of config
       load();
-      this.setState({ daily: daily });
+      this.setState({ daily: daily, stock: stock.price, stock_symbol: stock.symbol, stock_previous: stock.previous, up_down: stock.up_down });
     }
 
     //set the state
@@ -351,7 +357,7 @@ var App = _react2['default'].createClass({
       _react2['default'].createElement(_temp2['default'], { temp: this.state.temp, weather: this.state.weather, degree: this.state.degree, feels: this.state.feels, icon: this.state.icon }),
       _react2['default'].createElement(_tasks2['default'], { day: this.state.day, daily: this.state.daily }),
       _react2['default'].createElement(_mlb2['default'], { day: this.state.day }),
-      _react2['default'].createElement(_stock2['default'], { stock: this.state.stock, stock_symbol: this.state.stock_symbol })
+      _react2['default'].createElement(_stock2['default'], { stock: this.state.stock, stock_symbol: this.state.stock_symbol, stock_previous: this.state.stock_previous, up_down: this.state.up_down })
     );
   }
 });
@@ -480,8 +486,10 @@ var Stock = _react2['default'].createClass({
   render: function render() {
     var stock = this.props.stock;
     var symbol = this.props.stock_symbol;
+    var previous = this.props.stock_previous;
+    var image = '/public/img/stock/' + this.props.up_down + '.svg';
     return _react2['default'].createElement(
-      'p',
+      'div',
       { className: 'stock' },
       _react2['default'].createElement(
         'span',
@@ -493,6 +501,13 @@ var Stock = _react2['default'].createClass({
         { className: 'price' },
         ' $',
         stock
+      ),
+      _react2['default'].createElement('img', { src: image }),
+      _react2['default'].createElement(
+        'p',
+        { className: 'small' },
+        'Previous: $',
+        previous
       )
     );
   }

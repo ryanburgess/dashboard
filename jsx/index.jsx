@@ -78,6 +78,7 @@ function getStock(){
       stock = {
         company: data[0].company,
         percent_change: data[0].percent_change,
+        previous: data[0].previous,
         price_change: data[0].price_change,
         price: data[0].stock_number,
         symbol: data[0].symbol,
@@ -133,7 +134,7 @@ var App = React.createClass({
     }
 
     if(stock !== undefined){
-      this.setState({stock: stock.price, stock_symbol: stock.symbol});
+      this.setState({stock: stock.price, stock_symbol: stock.symbol, stock_previous: stock.previous, up_down: stock.up_down});
     }
 
     // make calls by the day change
@@ -149,7 +150,7 @@ var App = React.createClass({
       getTemp();
       // call latest version of config
       load();
-      this.setState({daily: daily});
+      this.setState({daily: daily, stock: stock.price, stock_symbol: stock.symbol, stock_previous: stock.previous, up_down: stock.up_down});
     }
 
     //set the state
@@ -164,7 +165,7 @@ var App = React.createClass({
         <Temp temp={this.state.temp} weather={this.state.weather} degree={this.state.degree} feels={this.state.feels} icon={this.state.icon} />
         <Tasks day={this.state.day} daily={this.state.daily} />
         <MLB day={this.state.day} />
-        <Stock stock={this.state.stock} stock_symbol={this.state.stock_symbol} />
+        <Stock stock={this.state.stock} stock_symbol={this.state.stock_symbol} stock_previous={this.state.stock_previous} up_down={this.state.up_down} />
       </div>
     );
   }
