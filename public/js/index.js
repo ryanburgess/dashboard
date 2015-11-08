@@ -22,6 +22,7 @@ module.exports={
     "weather": "837fa9da3834f77b"
   },
   "stock": {
+    "show": false,
     "symbol": "NFLX"
   },
   "sports": {
@@ -487,7 +488,7 @@ var Stock = _react2['default'].createClass({
     var stock = this.props.stock;
     var symbol = this.props.stock_symbol;
     var previous = this.props.stock_previous;
-    var image = '/public/img/stock/' + this.props.up_down + '.svg';
+    var image = 'public/img/stock/' + this.props.up_down + '.svg';
     return _react2['default'].createElement(
       'div',
       { className: 'stock' },
