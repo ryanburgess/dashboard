@@ -51,18 +51,13 @@ module.exports={
     },
     {
       "day": "All",
-      "task": "Walk the dog",
+      "task": "Walk Chico",
       "img": "dog.svg"
     },
     {
       "day": "Friday",
       "task": "Go to the gym",
       "img": "gym.svg"
-    },
-    {
-      "day": "Saturday",
-      "task": "Read a book",
-      "img": "read.svg"
     },
     {
       "day": "Sunday",
@@ -207,7 +202,7 @@ var daily;
 // get the config file
 function load() {
   var request = new XMLHttpRequest();
-  request.open('GET', '../config.json', true);
+  request.open('GET', 'config.json', true);
 
   request.onload = function () {
     if (request.status >= 200 && request.status < 400) {

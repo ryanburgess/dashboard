@@ -18,7 +18,7 @@ var daily;
 // get the config file
 function load() {
   let request = new XMLHttpRequest();
-  request.open('GET', '../config.json', true);
+  request.open('GET', 'config.json', true);
 
   request.onload = function() {
     if (request.status >= 200 && request.status < 400) {
