@@ -333,6 +333,9 @@ var App = _react2['default'].createClass({
       currentHour = time.hours;
       getStock();
       getTemp();
+      // call latest version of config
+      load();
+      this.setState({ daily: daily });
     }
 
     //set the state
