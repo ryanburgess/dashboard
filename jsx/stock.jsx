@@ -6,8 +6,11 @@ const Stock = React.createClass({
     let symbol = this.props.stock_symbol;
     let previous = this.props.stock_previous;
     let image = 'public/img/stock/' + this.props.up_down + '.svg';
+    let show = this.props.stock_show;
+    let classes = 'stock ' + show;
+   
     return (
-      <div className='stock'>
+      <div className={classes}>
         <span className='symbol'>{symbol}</span>
         <span className='price'> ${stock}</span>
         <img src={image} />
