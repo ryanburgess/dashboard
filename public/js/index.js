@@ -205,9 +205,6 @@ var config;
 var currentDay;
 var currentHour;
 var daily;
-var stock_show;
-var mlb_show;
-var temp_show;
 
 // get the config file
 function load() {
@@ -268,12 +265,6 @@ function getStock() {
   request.onload = function () {
     if (request.status >= 200 && request.status < 400) {
       var data = JSON.parse(request.responseText);
-
-      if (config.stock.show === true) {
-        stock_show = 'show';
-      } else {
-        stock_show = 'hide';
-      }
 
       stock = {
         company: data[0].company,
@@ -367,8 +358,8 @@ var App = _react2['default'].createClass({
       _react2['default'].createElement(_clock2['default'], { hours: this.state.hours, minutes: this.state.minutes, seconds: this.state.seconds, diem: this.state.diem }),
       _react2['default'].createElement(_temp2['default'], { temp: this.state.temp, weather: this.state.weather, degree: this.state.degree, feels: this.state.feels, icon: this.state.icon }),
       _react2['default'].createElement(_tasks2['default'], { day: this.state.day, daily: this.state.daily }),
-      _react2['default'].createElement(_mlb2['default'], { day: this.state.day, mlb_show: mlb_show }),
-      _react2['default'].createElement(_stock2['default'], { stock: this.state.stock, stock_symbol: this.state.stock_symbol, stock_previous: this.state.stock_previous, up_down: this.state.up_down, stock_show: stock_show })
+      _react2['default'].createElement(_mlb2['default'], { day: this.state.day }),
+      _react2['default'].createElement(_stock2['default'], { stock: this.state.stock, stock_symbol: this.state.stock_symbol, stock_previous: this.state.stock_previous, up_down: this.state.up_down })
     );
   }
 });
@@ -499,12 +490,9 @@ var Stock = _react2['default'].createClass({
     var symbol = this.props.stock_symbol;
     var previous = this.props.stock_previous;
     var image = 'public/img/stock/' + this.props.up_down + '.svg';
-    var show = this.props.stock_show;
-    var classes = 'stock ' + show;
-
     return _react2['default'].createElement(
       'div',
-      { className: classes },
+      { className: 'stock' },
       _react2['default'].createElement(
         'span',
         { className: 'symbol' },

@@ -6,7 +6,6 @@
     "weather": "<your_api_token>"
   },
   "stock": {
-    "show": true,
     "symbol": "<stock_symbol>" 
   },
   "sports": {

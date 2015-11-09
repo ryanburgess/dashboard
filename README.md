@@ -13,6 +13,7 @@ Created with React. Using the [Wunder Ground API](http://api.wunderground.com/) 
 * Add world clock option
 * Create better config (alignment, color, updates, array of stocks, show/not show components, arrangement)
 * Pull in birthdays
+* Word of the day
 * Pull in Trello
 * Pull in Google Calendar
 
