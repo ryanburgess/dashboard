@@ -254,34 +254,6 @@ function getTemp() {
   request.send();
 }
 
-// get date from stock api
-var stock;
-function getStock() {
-  var symbol = config.stock.symbol;
-
-  var request = new XMLHttpRequest();
-  request.open('GET', 'http://stockz-api.herokuapp.com/api/?s=' + symbol, true);
-
-  request.onload = function () {
-    if (request.status >= 200 && request.status < 400) {
-      var data = JSON.parse(request.responseText);
-
-      stock = {
-        company: data[0].company,
-        percent_change: data[0].percent_change,
-        previous: data[0].previous,
-        price_change: data[0].price_change,
-        price: data[0].stock_number,
-        symbol: data[0].symbol,
-        up_down: data[0].up_down
-      };
-
-      return stock;
-    }
-  };
-  request.send();
-}
-
 // use a set interval mixin for timer
 var SetIntervalMixin = {
   componentWillMount: function componentWillMount() {
@@ -339,7 +311,7 @@ var App = _react2['default'].createClass({
     // make calls by the hour change
     if (time.hours !== currentHour || currentHour === undefined) {
       currentHour = time.hours;
-      getStock();
+      //getStock();
       getTemp();
       // call latest version of config
       load();
@@ -359,7 +331,7 @@ var App = _react2['default'].createClass({
       _react2['default'].createElement(_temp2['default'], { temp: this.state.temp, weather: this.state.weather, degree: this.state.degree, feels: this.state.feels, icon: this.state.icon }),
       _react2['default'].createElement(_tasks2['default'], { day: this.state.day, daily: this.state.daily }),
       _react2['default'].createElement(_mlb2['default'], { day: this.state.day }),
-      _react2['default'].createElement(_stock2['default'], { stock: this.state.stock, stock_symbol: this.state.stock_symbol, stock_previous: this.state.stock_previous, up_down: this.state.up_down })
+      _react2['default'].createElement(_stock2['default'], { stock: 'NFLX' })
     );
   }
 });
@@ -485,36 +457,48 @@ var _react2 = _interopRequireDefault(_react);
 var Stock = _react2['default'].createClass({
   displayName: 'Stock',
 
+  getInitialState: function getInitialState() {
+    return {};
+  },
+  componentDidMount: function componentDidMount() {
+    var component = this;
+    var request = new XMLHttpRequest();
+    request.open('GET', 'http://stockz-api.herokuapp.com/api/?s=' + this.props.stock, true);
+
+    request.onload = function () {
+      if (request.status >= 200 && request.status < 400) {
+        var data = JSON.parse(request.responseText);
+        component.setState(data[0]);
+      }
+    };
+    request.send();
+  },
   render: function render() {
-    var stock = this.props.stock;
-    var symbol = this.props.stock_symbol;
-    var previous = this.props.stock_previous;
-    var image = 'public/img/stock/' + this.props.up_down + '.svg';
+    var image = 'public/img/stock/' + this.state.up_down + '.svg';
     return _react2['default'].createElement(
       'div',
       { className: 'stock' },
       _react2['default'].createElement(
         'span',
         { className: 'symbol' },
-        symbol
+        this.state.symbol
       ),
       _react2['default'].createElement(
         'span',
         { className: 'price' },
         ' $',
-        stock
+        this.state.stock_number
       ),
       _react2['default'].createElement('img', { src: image }),
       _react2['default'].createElement(
         'p',
         { className: 'small' },
         'Previous: $',
-        previous
+        this.state.previous
       )
     );
   }
 });
-
 module.exports = Stock;
 
 },{"react":426}],9:[function(require,module,exports){
