@@ -117,12 +117,29 @@ var _react2 = _interopRequireDefault(_react);
 var Day = _react2['default'].createClass({
   displayName: 'Day',
 
+  getInitialState: function getInitialState() {
+    return {};
+  },
+  componentDidMount: function componentDidMount() {
+    var d = new Date();
+    var weekday = new Array(7);
+    weekday[0] = 'Sunday';
+    weekday[1] = 'Monday';
+    weekday[2] = 'Tuesday';
+    weekday[3] = 'Wednesday';
+    weekday[4] = 'Thursday';
+    weekday[5] = 'Friday';
+    weekday[6] = 'Saturday';
+
+    var day = weekday[d.getDay()];
+
+    this.setState({ day: day });
+  },
   render: function render() {
-    var day = this.props.day;
     return _react2['default'].createElement(
       'p',
       { className: 'day' },
-      day
+      this.state.day
     );
   }
 });
@@ -314,7 +331,7 @@ var App = _react2['default'].createClass({
       'div',
       null,
       _react2['default'].createElement(_reactMonthDay2['default'], null),
-      _react2['default'].createElement(_day2['default'], { day: this.state.day }),
+      _react2['default'].createElement(_day2['default'], null),
       _react2['default'].createElement(_clock2['default'], { hours: this.state.hours, minutes: this.state.minutes, seconds: this.state.seconds, diem: this.state.diem }),
       _react2['default'].createElement(_temp2['default'], { temp: this.state.temp, weather: this.state.weather, degree: this.state.degree, feels: this.state.feels, icon: this.state.icon }),
       _react2['default'].createElement(_tasks2['default'], { day: this.state.day, daily: this.state.daily }),

@@ -120,7 +120,7 @@ var App = React.createClass({
     return (
       <div>
         <MonthDay />
-        <Day day={this.state.day} />
+        <Day />
         <Clock hours={this.state.hours} minutes={this.state.minutes} seconds={this.state.seconds} diem={this.state.diem} />
         <Temp temp={this.state.temp} weather={this.state.weather} degree={this.state.degree} feels={this.state.feels} icon={this.state.icon} />
         <Tasks day={this.state.day} daily={this.state.daily} />
