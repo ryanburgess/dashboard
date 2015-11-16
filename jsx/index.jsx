@@ -10,10 +10,10 @@ import MLB from './mlb';
 import getDay from './get-day';
 import renderTime from './time';
 import Stock from './stock';
-var config;
-var currentDay;
-var currentHour;
-var daily;
+let config;
+let currentDay;
+let currentHour;
+let daily;
 
 // get the config file
 function load() {
@@ -105,10 +105,6 @@ var App = React.createClass({
       this.setState({temp: tempurature.temp, weather: tempurature.weather, degree: '°F', feels: tempurature.feels, icon: tempurature.icon});
     }
 
-    if(stock !== undefined){
-      this.setState({stock: stock.price, stock_symbol: stock.symbol, stock_previous: stock.previous, up_down: stock.up_down});
-    }
-
     // make calls by the day change
     if(today !== currentDay || currentDay === undefined){
       currentDay = today;
@@ -118,11 +114,9 @@ var App = React.createClass({
     // make calls by the hour change
     if(time.hours !== currentHour || currentHour === undefined){
       currentHour = time.hours;
-      //getStock();
       getTemp();
       // call latest version of config
       load();
-      this.setState({daily: daily, stock: stock.price, stock_symbol: stock.symbol, stock_previous: stock.previous, up_down: stock.up_down});
     }
 
     //set the state

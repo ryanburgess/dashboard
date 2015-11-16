@@ -18,7 +18,14 @@ const Stock = React.createClass({
     request.send();
   },
   render: function(){
-    let image = 'public/img/stock/' + this.state.up_down + '.svg';
+    let asset = this.state.up_down;
+    let image = 'public/img/stock/' + asset + '.svg';
+
+    // avoid undefined missing image
+    if(asset === undefined){
+      image = '';
+    }
+
     return(
       <div className='stock'>
         <span className='symbol'>{this.state.symbol}</span>

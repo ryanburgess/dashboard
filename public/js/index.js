@@ -201,10 +201,10 @@ var _stock = require('./stock');
 
 var _stock2 = _interopRequireDefault(_stock);
 
-var config;
-var currentDay;
-var currentHour;
-var daily;
+var config = undefined;
+var currentDay = undefined;
+var currentHour = undefined;
+var daily = undefined;
 
 // get the config file
 function load() {
@@ -298,10 +298,6 @@ var App = _react2['default'].createClass({
       this.setState({ temp: tempurature.temp, weather: tempurature.weather, degree: '°F', feels: tempurature.feels, icon: tempurature.icon });
     }
 
-    if (stock !== undefined) {
-      this.setState({ stock: stock.price, stock_symbol: stock.symbol, stock_previous: stock.previous, up_down: stock.up_down });
-    }
-
     // make calls by the day change
     if (today !== currentDay || currentDay === undefined) {
       currentDay = today;
@@ -311,11 +307,9 @@ var App = _react2['default'].createClass({
     // make calls by the hour change
     if (time.hours !== currentHour || currentHour === undefined) {
       currentHour = time.hours;
-      //getStock();
       getTemp();
       // call latest version of config
       load();
-      this.setState({ daily: daily, stock: stock.price, stock_symbol: stock.symbol, stock_previous: stock.previous, up_down: stock.up_down });
     }
 
     //set the state
@@ -474,7 +468,14 @@ var Stock = _react2['default'].createClass({
     request.send();
   },
   render: function render() {
-    var image = 'public/img/stock/' + this.state.up_down + '.svg';
+    var asset = this.state.up_down;
+    var image = 'public/img/stock/' + asset + '.svg';
+
+    // avoid undefined missing image
+    if (asset === undefined) {
+      image = '';
+    }
+
     return _react2['default'].createElement(
       'div',
       { className: 'stock' },
