@@ -206,22 +206,6 @@ var currentDay = undefined;
 var currentHour = undefined;
 var daily = undefined;
 
-// get the config file
-function load() {
-  var request = new XMLHttpRequest();
-  request.open('GET', 'config.json', true);
-
-  request.onload = function () {
-    if (request.status >= 200 && request.status < 400) {
-      var data = JSON.parse(request.responseText);
-      config = data;
-      daily = data.tasks;
-    }
-  };
-  request.send();
-}
-load();
-
 // tempuratur API
 var tempurature;
 function getTemp() {
@@ -288,6 +272,17 @@ var App = _react2['default'].createClass({
     return { day: (0, _getDay2['default'])(), daily: [''] };
   },
   componentDidMount: function componentDidMount() {
+    var request = new XMLHttpRequest();
+    request.open('GET', 'config.json', true);
+
+    request.onload = function () {
+      if (request.status >= 200 && request.status < 400) {
+        var data = JSON.parse(request.responseText);
+        config = data;
+        daily = data.tasks;
+      }
+    };
+    request.send();
     this.setInterval(this.tick, 1000);
   },
   tick: function tick() {
@@ -309,7 +304,6 @@ var App = _react2['default'].createClass({
       currentHour = time.hours;
       getTemp();
       // call latest version of config
-      load();
     }
 
     //set the state
