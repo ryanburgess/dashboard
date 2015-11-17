@@ -14,6 +14,7 @@ let config;
 let currentDay;
 let currentHour;
 let daily;
+let stock_symbol;
 
 // tempuratur API
 var tempurature;
@@ -83,10 +84,12 @@ var App = React.createClass({
     request.open('GET', 'config.json', true);
 
     request.onload = function() {
+      let component = this;
       if (request.status >= 200 && request.status < 400) {
         let data = JSON.parse(request.responseText);
         config = data;
         daily = data.tasks;
+        stock_symbol = config.stock.symbol;
       }
     };
     request.send();

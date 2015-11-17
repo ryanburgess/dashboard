@@ -222,6 +222,7 @@ var config = undefined;
 var currentDay = undefined;
 var currentHour = undefined;
 var daily = undefined;
+var stock_symbol = undefined;
 
 // tempuratur API
 var tempurature;
@@ -293,10 +294,12 @@ var App = _react2['default'].createClass({
     request.open('GET', 'config.json', true);
 
     request.onload = function () {
+      var component = this;
       if (request.status >= 200 && request.status < 400) {
         var data = JSON.parse(request.responseText);
         config = data;
         daily = data.tasks;
+        stock_symbol = config.stock.symbol;
       }
     };
     request.send();
