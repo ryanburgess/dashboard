@@ -224,38 +224,6 @@ var currentHour = undefined;
 var daily = undefined;
 var stock_symbol = undefined;
 
-// tempuratur API
-var tempurature;
-function getTemp() {
-  var city = config.settings.city;
-  city = city.replace(/ /g, '_');
-  var request = new XMLHttpRequest();
-  request.open('GET', 'http://api.wunderground.com/api/' + config.api.weather + '/conditions/q/CA/' + city + '.json', true);
-
-  request.onload = function () {
-    if (request.status >= 200 && request.status < 400) {
-      var data = JSON.parse(request.responseText);
-      var temp = data.current_observation.temp_f;
-      var weather = data.current_observation.weather;
-      var feels = data.current_observation.feelslike_f;
-      var icon = data.current_observation.icon_url;
-      icon = icon.replace('http://icons.wxug.com/i/c/k/', 'public/img/weather/').replace('.gif', '.svg').replace('_', '-');
-      temp = temp.toFixed(0);
-      feels = Number(feels).toFixed(0);
-
-      // create tempurate object
-      tempurature = {
-        temp: temp,
-        weather: weather,
-        feels: 'Feels like ' + feels,
-        icon: icon
-      };
-      return tempurature;
-    }
-  };
-  request.send();
-}
-
 // use a set interval mixin for timer
 var SetIntervalMixin = {
   componentWillMount: function componentWillMount() {
@@ -309,10 +277,6 @@ var App = _react2['default'].createClass({
     var today = (0, _getDay2['default'])();
     var time = (0, _time2['default'])();
 
-    if (tempurature !== undefined) {
-      this.setState({ temp: tempurature.temp, weather: tempurature.weather, degree: '°F', feels: tempurature.feels, icon: tempurature.icon });
-    }
-
     // make calls by the day change
     if (today !== currentDay || currentDay === undefined) {
       currentDay = today;
@@ -322,8 +286,6 @@ var App = _react2['default'].createClass({
     // make calls by the hour change
     if (time.hours !== currentHour || currentHour === undefined) {
       currentHour = time.hours;
-      getTemp();
-      // call latest version of config
     }
 
     //set the state
@@ -336,7 +298,7 @@ var App = _react2['default'].createClass({
       _react2['default'].createElement(_reactMonthDay2['default'], null),
       _react2['default'].createElement(_day2['default'], null),
       _react2['default'].createElement(_clock2['default'], { hours: this.state.hours, minutes: this.state.minutes, seconds: this.state.seconds, diem: this.state.diem }),
-      _react2['default'].createElement(_temp2['default'], { temp: this.state.temp, weather: this.state.weather, degree: this.state.degree, feels: this.state.feels, icon: this.state.icon }),
+      _react2['default'].createElement(_temp2['default'], { city: 'San_francisco', degree: 'F', api: '837fa9da3834f77b' }),
       _react2['default'].createElement(_tasks2['default'], { day: this.state.day, daily: this.state.daily }),
       _react2['default'].createElement(_mlb2['default'], { day: this.state.day }),
       _react2['default'].createElement(_stock2['default'], { stock: 'NFLX' })
@@ -564,21 +526,56 @@ var _react2 = _interopRequireDefault(_react);
 var Temp = _react2['default'].createClass({
   displayName: 'Temp',
 
+  getInitialState: function getInitialState() {
+    return {};
+  },
+  componentDidMount: function componentDidMount() {
+    var component = this;
+    var degree = this.props.degree;
+    var request = new XMLHttpRequest();
+    request.open('GET', 'http://api.wunderground.com/api/' + this.props.api + '/conditions/q/CA/' + this.props.city + '.json', true);
+
+    request.onload = function () {
+      if (request.status >= 200 && request.status < 400) {
+        var data = JSON.parse(request.responseText);
+        var temp = data.current_observation.temp_f;
+        var weather = data.current_observation.weather;
+        var feels = data.current_observation.feelslike_f;
+        var icon = data.current_observation.icon_url;
+        icon = icon.replace('http://icons.wxug.com/i/c/k/', 'public/img/weather/').replace('.gif', '.svg').replace('_', '-');
+        temp = temp.toFixed(0);
+        feels = Number(feels).toFixed(0);
+
+        // create tempurate object
+        var tempurature = {
+          temp: temp,
+          weather: weather,
+          feels: 'Feels like ' + feels,
+          icon: icon,
+          degree: degree
+        };
+        component.setState(tempurature);
+      }
+    };
+    request.send();
+  },
   render: function render() {
     return _react2['default'].createElement(
       'p',
       { className: 'temp' },
-      this.props.temp,
-      this.props.degree,
+      this.state.temp,
+      '°',
+      this.state.degree,
       ' ',
-      this.props.weather,
+      this.state.weather,
       ' ',
-      _react2['default'].createElement('img', { src: this.props.icon }),
+      _react2['default'].createElement('img', { src: this.state.icon }),
       _react2['default'].createElement(
         'span',
         { className: 'small' },
-        this.props.feels,
-        this.props.degree
+        this.state.feels,
+        '°',
+        this.state.degree
       )
     );
   }

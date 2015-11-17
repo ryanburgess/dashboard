@@ -16,38 +16,6 @@ let currentHour;
 let daily;
 let stock_symbol;
 
-// tempuratur API
-var tempurature;
-function getTemp() {
-  let city = config.settings.city;
-  city = city.replace(/ /g, '_');
-  let request = new XMLHttpRequest();
-  request.open('GET', 'http://api.wunderground.com/api/'+ config.api.weather +'/conditions/q/CA/'+ city +'.json', true);
-
-  request.onload = function() {
-    if (request.status >= 200 && request.status < 400) {
-      let data = JSON.parse(request.responseText);
-      let temp = data.current_observation.temp_f;
-      let weather = data.current_observation.weather;
-      let feels = data.current_observation.feelslike_f;
-      let icon = data.current_observation.icon_url;
-      icon = icon.replace('http://icons.wxug.com/i/c/k/', 'public/img/weather/').replace('.gif', '.svg').replace('_', '-');
-      temp = temp.toFixed(0);
-      feels = Number(feels).toFixed(0);
-
-      // create tempurate object
-      tempurature = {
-        temp: temp,
-        weather: weather,
-        feels: 'Feels like ' + feels,
-        icon: icon
-      }
-      return tempurature;
-    }
-  };
-  request.send();
-}
-
 // use a set interval mixin for timer
 var SetIntervalMixin = {
   componentWillMount: function componentWillMount() {
@@ -99,10 +67,6 @@ var App = React.createClass({
     let today = getDay();
     let time = renderTime();
 
-    if(tempurature !== undefined){
-      this.setState({temp: tempurature.temp, weather: tempurature.weather, degree: '°F', feels: tempurature.feels, icon: tempurature.icon});
-    }
-
     // make calls by the day change
     if(today !== currentDay || currentDay === undefined){
       currentDay = today;
@@ -112,8 +76,6 @@ var App = React.createClass({
     // make calls by the hour change
     if(time.hours !== currentHour || currentHour === undefined){
       currentHour = time.hours;
-      getTemp();
-      // call latest version of config
     }
 
     //set the state
@@ -125,7 +87,7 @@ var App = React.createClass({
         <MonthDay />
         <Day />
         <Clock hours={this.state.hours} minutes={this.state.minutes} seconds={this.state.seconds} diem={this.state.diem} />
-        <Temp temp={this.state.temp} weather={this.state.weather} degree={this.state.degree} feels={this.state.feels} icon={this.state.icon} />
+        <Temp city="San_francisco" degree='F' api='837fa9da3834f77b' />
         <Tasks day={this.state.day} daily={this.state.daily} />
         <MLB day={this.state.day} />
         <Stock stock="NFLX" />
