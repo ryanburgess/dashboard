@@ -6,9 +6,10 @@
 // ------------------------------------------------------------
 
 .flickr{
-  padding-top:30px;
-  padding-right:30px;
   background-repeat: no-repeat;
   background-size: 100% 100%;
   background-size: cover;
+  position: absolute;
+  height:100%;
+  width:100%;
 }
