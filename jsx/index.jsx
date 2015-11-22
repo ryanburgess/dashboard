@@ -10,86 +10,12 @@ import MLB from './mlb';
 import getDay from './get-day';
 import renderTime from './time';
 import Stock from './stock';
-var config;
-var currentDay;
-var currentHour;
-var daily;
+import config from '../config.json';
 
-// get the config file
-function load() {
-  let request = new XMLHttpRequest();
-  request.open('GET', 'config.json', true);
-
-  request.onload = function() {
-    if (request.status >= 200 && request.status < 400) {
-      let data = JSON.parse(request.responseText);
-      config = data;
-      daily = data.tasks;
-    }
-  };
-  request.send();
-}
-load();
-
-// tempuratur API
-var tempurature;
-function getTemp() {
-  let city = config.settings.city;
-  city = city.replace(/ /g, '_');
-  let request = new XMLHttpRequest();
-  request.open('GET', 'http://api.wunderground.com/api/'+ config.api.weather +'/conditions/q/CA/'+ city +'.json', true);
-
-  request.onload = function() {
-    if (request.status >= 200 && request.status < 400) {
-      let data = JSON.parse(request.responseText);
-      let temp = data.current_observation.temp_f;
-      let weather = data.current_observation.weather;
-      let feels = data.current_observation.feelslike_f;
-      let icon = data.current_observation.icon_url;
-      icon = icon.replace('http://icons.wxug.com/i/c/k/', 'public/img/weather/').replace('.gif', '.svg').replace('_', '-');
-      temp = temp.toFixed(0);
-      feels = Number(feels).toFixed(0);
-
-      // create tempurate object
-      tempurature = {
-        temp: temp,
-        weather: weather,
-        feels: 'Feels like ' + feels,
-        icon: icon
-      }
-      return tempurature;
-    }
-  };
-  request.send();
-}
-
-// get date from stock api
-var stock;
-function getStock(){
-  let symbol = config.stock.symbol;
-
-  let request = new XMLHttpRequest();
-  request.open('GET', 'http://stockz-api.herokuapp.com/api/?s='+ symbol, true);
-
-  request.onload = function() {
-    if (request.status >= 200 && request.status < 400) {
-      let data = JSON.parse(request.responseText);
-
-      stock = {
-        company: data[0].company,
-        percent_change: data[0].percent_change,
-        previous: data[0].previous,
-        price_change: data[0].price_change,
-        price: data[0].stock_number,
-        symbol: data[0].symbol,
-        up_down: data[0].up_down
-      }
-
-      return stock;
-    }
-  };
-  request.send();
-}
+let currentDay;
+let currentHour;
+let hourUpdate = 0;
+let dayUpdate = 0;
 
 // use a set interval mixin for timer
 var SetIntervalMixin = {
@@ -120,7 +46,7 @@ var SetIntervalMixin = {
 var App = React.createClass({
   mixins: [SetIntervalMixin],
   getInitialState() {
-    return {day: getDay(), daily: ['']};
+    return {day: getDay(), daily: config.tasks, stock: config.stock.symbol, city: config.settings.city, degree: config.settings.degree, weatherApi: config.api.weather};
   },
   componentDidMount() {
     this.setInterval(this.tick, 1000);
@@ -128,29 +54,19 @@ var App = React.createClass({
   tick() {
     let today = getDay();
     let time = renderTime();
-
-    if(tempurature !== undefined){
-      this.setState({temp: tempurature.temp, weather: tempurature.weather, degree: '°F', feels: tempurature.feels, icon: tempurature.icon});
-    }
-
-    if(stock !== undefined){
-      this.setState({stock: stock.price, stock_symbol: stock.symbol, stock_previous: stock.previous, up_down: stock.up_down});
-    }
-
+  
     // make calls by the day change
     if(today !== currentDay || currentDay === undefined){
+      dayUpdate++;
       currentDay = today;
-      this.setState({day: today, daily: daily});
+      this.setState({day: today, daily: config.tasks, dayUpdate: dayUpdate});
     }
 
     // make calls by the hour change
     if(time.hours !== currentHour || currentHour === undefined){
+      hourUpdate++;
       currentHour = time.hours;
-      getStock();
-      getTemp();
-      // call latest version of config
-      load();
-      this.setState({daily: daily, stock: stock.price, stock_symbol: stock.symbol, stock_previous: stock.previous, up_down: stock.up_down});
+      this.setState({hourUpdate: hourUpdate});
     }
 
     //set the state
@@ -160,12 +76,12 @@ var App = React.createClass({
     return (
       <div>
         <MonthDay />
-        <Day day={this.state.day} />
+        <Day dayUpdate={this.state.dayUpdate} />
         <Clock hours={this.state.hours} minutes={this.state.minutes} seconds={this.state.seconds} diem={this.state.diem} />
-        <Temp temp={this.state.temp} weather={this.state.weather} degree={this.state.degree} feels={this.state.feels} icon={this.state.icon} />
-        <Tasks day={this.state.day} daily={this.state.daily} />
-        <MLB day={this.state.day} />
-        <Stock stock={this.state.stock} stock_symbol={this.state.stock_symbol} stock_previous={this.state.stock_previous} up_down={this.state.up_down} />
+        <Temp city={this.state.city} degree={this.state.degree} api={this.state.weatherApi} hourUpdate={this.state.hourUpdate} />
+        <Tasks day={this.state.day} daily={this.state.daily} dayUpdate={this.state.dayUpdate} />
+        <MLB day={this.state.day} dayUpdate={this.state.dayUpdate} />
+        <Stock stock={this.state.stock} hourUpdate={this.state.hourUpdate} />
       </div>
     );
   }

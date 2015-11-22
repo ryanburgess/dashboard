@@ -16,7 +16,8 @@ _react2['default'].render(_react2['default'].createElement(_index2['default'], n
 },{"./index":6,"react":426}],2:[function(require,module,exports){
 module.exports={ 
   "settings": {
-    "city": "San Francisco"
+    "city": "San Francisco",
+    "degree": "F"
   },
   "api": {
     "weather": "837fa9da3834f77b"
@@ -85,6 +86,10 @@ var _react2 = _interopRequireDefault(_react);
 var Clock = _react2['default'].createClass({
   displayName: 'Clock',
 
+  getInitialState: function getInitialState() {
+    return {};
+  },
+  componentDidMount: function componentDidMount() {},
   render: function render() {
     return _react2['default'].createElement(
       'p',
@@ -114,15 +119,40 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var update = 0;
 var Day = _react2['default'].createClass({
   displayName: 'Day',
 
+  getInitialState: function getInitialState() {
+    return {};
+  },
+  componentDidMount: function componentDidMount() {
+    var d = new Date();
+    var weekday = new Array(7);
+    weekday[0] = 'Sunday';
+    weekday[1] = 'Monday';
+    weekday[2] = 'Tuesday';
+    weekday[3] = 'Wednesday';
+    weekday[4] = 'Thursday';
+    weekday[5] = 'Friday';
+    weekday[6] = 'Saturday';
+
+    var day = weekday[d.getDay()];
+
+    this.setState({ day: day });
+  },
   render: function render() {
-    var day = this.props.day;
+
+    // run update
+    if (this.props.hourUpdate > update) {
+      update = this.props.hourUpdate;
+      this.componentDidMount();
+    }
+
     return _react2['default'].createElement(
       'p',
       { className: 'day' },
-      day
+      this.state.day
     );
   }
 });
@@ -201,86 +231,14 @@ var _stock = require('./stock');
 
 var _stock2 = _interopRequireDefault(_stock);
 
-var config;
-var currentDay;
-var currentHour;
-var daily;
+var _configJson = require('../config.json');
 
-// get the config file
-function load() {
-  var request = new XMLHttpRequest();
-  request.open('GET', 'config.json', true);
+var _configJson2 = _interopRequireDefault(_configJson);
 
-  request.onload = function () {
-    if (request.status >= 200 && request.status < 400) {
-      var data = JSON.parse(request.responseText);
-      config = data;
-      daily = data.tasks;
-    }
-  };
-  request.send();
-}
-load();
-
-// tempuratur API
-var tempurature;
-function getTemp() {
-  var city = config.settings.city;
-  city = city.replace(/ /g, '_');
-  var request = new XMLHttpRequest();
-  request.open('GET', 'http://api.wunderground.com/api/' + config.api.weather + '/conditions/q/CA/' + city + '.json', true);
-
-  request.onload = function () {
-    if (request.status >= 200 && request.status < 400) {
-      var data = JSON.parse(request.responseText);
-      var temp = data.current_observation.temp_f;
-      var weather = data.current_observation.weather;
-      var feels = data.current_observation.feelslike_f;
-      var icon = data.current_observation.icon_url;
-      icon = icon.replace('http://icons.wxug.com/i/c/k/', 'public/img/weather/').replace('.gif', '.svg').replace('_', '-');
-      temp = temp.toFixed(0);
-      feels = Number(feels).toFixed(0);
-
-      // create tempurate object
-      tempurature = {
-        temp: temp,
-        weather: weather,
-        feels: 'Feels like ' + feels,
-        icon: icon
-      };
-      return tempurature;
-    }
-  };
-  request.send();
-}
-
-// get date from stock api
-var stock;
-function getStock() {
-  var symbol = config.stock.symbol;
-
-  var request = new XMLHttpRequest();
-  request.open('GET', 'http://stockz-api.herokuapp.com/api/?s=' + symbol, true);
-
-  request.onload = function () {
-    if (request.status >= 200 && request.status < 400) {
-      var data = JSON.parse(request.responseText);
-
-      stock = {
-        company: data[0].company,
-        percent_change: data[0].percent_change,
-        previous: data[0].previous,
-        price_change: data[0].price_change,
-        price: data[0].stock_number,
-        symbol: data[0].symbol,
-        up_down: data[0].up_down
-      };
-
-      return stock;
-    }
-  };
-  request.send();
-}
+var currentDay = undefined;
+var currentHour = undefined;
+var hourUpdate = 0;
+var dayUpdate = 0;
 
 // use a set interval mixin for timer
 var SetIntervalMixin = {
@@ -313,7 +271,7 @@ var App = _react2['default'].createClass({
 
   mixins: [SetIntervalMixin],
   getInitialState: function getInitialState() {
-    return { day: (0, _getDay2['default'])(), daily: [''] };
+    return { day: (0, _getDay2['default'])(), daily: _configJson2['default'].tasks, stock: _configJson2['default'].stock.symbol, city: _configJson2['default'].settings.city, degree: _configJson2['default'].settings.degree, weatherApi: _configJson2['default'].api.weather };
   },
   componentDidMount: function componentDidMount() {
     this.setInterval(this.tick, 1000);
@@ -322,28 +280,18 @@ var App = _react2['default'].createClass({
     var today = (0, _getDay2['default'])();
     var time = (0, _time2['default'])();
 
-    if (tempurature !== undefined) {
-      this.setState({ temp: tempurature.temp, weather: tempurature.weather, degree: '°F', feels: tempurature.feels, icon: tempurature.icon });
-    }
-
-    if (stock !== undefined) {
-      this.setState({ stock: stock.price, stock_symbol: stock.symbol, stock_previous: stock.previous, up_down: stock.up_down });
-    }
-
     // make calls by the day change
     if (today !== currentDay || currentDay === undefined) {
+      dayUpdate++;
       currentDay = today;
-      this.setState({ day: today, daily: daily });
+      this.setState({ day: today, daily: _configJson2['default'].tasks, dayUpdate: dayUpdate });
     }
 
     // make calls by the hour change
     if (time.hours !== currentHour || currentHour === undefined) {
+      hourUpdate++;
       currentHour = time.hours;
-      getStock();
-      getTemp();
-      // call latest version of config
-      load();
-      this.setState({ daily: daily, stock: stock.price, stock_symbol: stock.symbol, stock_previous: stock.previous, up_down: stock.up_down });
+      this.setState({ hourUpdate: hourUpdate });
     }
 
     //set the state
@@ -354,19 +302,19 @@ var App = _react2['default'].createClass({
       'div',
       null,
       _react2['default'].createElement(_reactMonthDay2['default'], null),
-      _react2['default'].createElement(_day2['default'], { day: this.state.day }),
+      _react2['default'].createElement(_day2['default'], { dayUpdate: this.state.dayUpdate }),
       _react2['default'].createElement(_clock2['default'], { hours: this.state.hours, minutes: this.state.minutes, seconds: this.state.seconds, diem: this.state.diem }),
-      _react2['default'].createElement(_temp2['default'], { temp: this.state.temp, weather: this.state.weather, degree: this.state.degree, feels: this.state.feels, icon: this.state.icon }),
-      _react2['default'].createElement(_tasks2['default'], { day: this.state.day, daily: this.state.daily }),
-      _react2['default'].createElement(_mlb2['default'], { day: this.state.day }),
-      _react2['default'].createElement(_stock2['default'], { stock: this.state.stock, stock_symbol: this.state.stock_symbol, stock_previous: this.state.stock_previous, up_down: this.state.up_down })
+      _react2['default'].createElement(_temp2['default'], { city: this.state.city, degree: this.state.degree, api: this.state.weatherApi, hourUpdate: this.state.hourUpdate }),
+      _react2['default'].createElement(_tasks2['default'], { day: this.state.day, daily: this.state.daily, dayUpdate: this.state.dayUpdate }),
+      _react2['default'].createElement(_mlb2['default'], { day: this.state.day, dayUpdate: this.state.dayUpdate }),
+      _react2['default'].createElement(_stock2['default'], { stock: this.state.stock, hourUpdate: this.state.hourUpdate })
     );
   }
 });
 
 module.exports = App;
 
-},{"./clock":3,"./day":4,"./get-day":5,"./mlb":7,"./stock":8,"./tasks":9,"./temp":10,"./time":11,"cheerio":205,"react":426,"react-month-day":271,"request":427}],7:[function(require,module,exports){
+},{"../config.json":2,"./clock":3,"./day":4,"./get-day":5,"./mlb":7,"./stock":8,"./tasks":9,"./temp":10,"./time":11,"cheerio":205,"react":426,"react-month-day":271,"request":427}],7:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -482,39 +430,66 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var update = 0;
+
 var Stock = _react2['default'].createClass({
   displayName: 'Stock',
 
+  getInitialState: function getInitialState() {
+    return {};
+  },
+  componentDidMount: function componentDidMount() {
+    var component = this;
+    var request = new XMLHttpRequest();
+    request.open('GET', 'http://stockz-api.herokuapp.com/api/?s=' + this.props.stock, true);
+
+    request.onload = function () {
+      if (request.status >= 200 && request.status < 400) {
+        var data = JSON.parse(request.responseText);
+        component.setState(data[0]);
+      }
+    };
+    request.send();
+  },
   render: function render() {
-    var stock = this.props.stock;
-    var symbol = this.props.stock_symbol;
-    var previous = this.props.stock_previous;
-    var image = 'public/img/stock/' + this.props.up_down + '.svg';
+    var asset = this.state.up_down;
+    var image = 'public/img/stock/' + asset + '.svg';
+
+    // avoid undefined missing image
+    if (asset === undefined) {
+      image = '';
+    }
+
+    // run update
+    if (this.props.hourUpdate > update) {
+      update = this.props.hourUpdate;
+      this.componentDidMount();
+    }
+
     return _react2['default'].createElement(
       'div',
       { className: 'stock' },
       _react2['default'].createElement(
         'span',
         { className: 'symbol' },
-        symbol
+        this.state.symbol
       ),
       _react2['default'].createElement(
         'span',
         { className: 'price' },
         ' $',
-        stock
+        this.state.stock_number
       ),
       _react2['default'].createElement('img', { src: image }),
       _react2['default'].createElement(
         'p',
         { className: 'small' },
         'Previous: $',
-        previous
+        this.state.previous
       )
     );
   }
 });
-
 module.exports = Stock;
 
 },{"react":426}],9:[function(require,module,exports){
@@ -530,8 +505,13 @@ var Tasks = _react2['default'].createClass({
   displayName: 'Tasks',
 
   render: function render() {
+    var daily = [''];
     var today = this.props.day;
-    var daily = this.props.daily;
+
+    if (this.props.daily !== undefined) {
+      daily = this.props.daily;
+    }
+
     return _react2['default'].createElement(
       'ul',
       { className: 'tasks' },
@@ -562,24 +542,67 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var update = 0;
 var Temp = _react2['default'].createClass({
   displayName: 'Temp',
 
+  getInitialState: function getInitialState() {
+    return {};
+  },
+  componentDidMount: function componentDidMount() {
+    var component = this;
+    var degree = this.props.degree;
+    var request = new XMLHttpRequest();
+    request.open('GET', 'http://api.wunderground.com/api/' + this.props.api + '/conditions/q/CA/' + this.props.city + '.json', true);
+
+    request.onload = function () {
+      if (request.status >= 200 && request.status < 400) {
+        var data = JSON.parse(request.responseText);
+        var temp = data.current_observation.temp_f;
+        var weather = data.current_observation.weather;
+        var feels = data.current_observation.feelslike_f;
+        var icon = data.current_observation.icon_url;
+        icon = icon.replace('http://icons.wxug.com/i/c/k/', 'public/img/weather/').replace('.gif', '.svg').replace('_', '-');
+        temp = temp.toFixed(0);
+        feels = Number(feels).toFixed(0);
+
+        // create tempurate object
+        var tempurature = {
+          temp: temp,
+          weather: weather,
+          feels: 'Feels like ' + feels,
+          icon: icon,
+          degree: degree
+        };
+        component.setState(tempurature);
+      }
+    };
+    request.send();
+  },
   render: function render() {
+
+    // run update
+    if (this.props.hourUpdate > update) {
+      update = this.props.hourUpdate;
+      this.componentDidMount();
+    }
+
     return _react2['default'].createElement(
       'p',
       { className: 'temp' },
-      this.props.temp,
-      this.props.degree,
+      this.state.temp,
+      '°',
+      this.state.degree,
       ' ',
-      this.props.weather,
+      this.state.weather,
       ' ',
-      _react2['default'].createElement('img', { src: this.props.icon }),
+      _react2['default'].createElement('img', { src: this.state.icon }),
       _react2['default'].createElement(
         'span',
         { className: 'small' },
-        this.props.feels,
-        this.props.degree
+        this.state.feels,
+        '°',
+        this.state.degree
       )
     );
   }
