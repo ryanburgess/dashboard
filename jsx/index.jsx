@@ -1,7 +1,7 @@
 import React from 'react';
 import cheerio from 'cheerio';
 import request from 'request';
-import MonthDay from 'react-month-day';
+import MonthDay from './month-day';
 import Day from './day';
 import Clock from './clock';
 import Temp from './temp';
@@ -75,7 +75,7 @@ var App = React.createClass({
   render() {
     return (
       <div>
-        <MonthDay />
+        <MonthDay dayUpdate={this.state.dayUpdate} />
         <Day dayUpdate={this.state.dayUpdate} />
         <Clock hours={this.state.hours} minutes={this.state.minutes} seconds={this.state.seconds} diem={this.state.diem} />
         <Temp city={this.state.city} degree={this.state.degree} api={this.state.weatherApi} hourUpdate={this.state.hourUpdate} />

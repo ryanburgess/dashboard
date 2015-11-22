@@ -1,10 +1,10 @@
 import React from 'react';
 let update = 0;
 const Day = React.createClass({
-  getInitialState: function() {
+  getInitialState() {
     return {};
   },
-  componentDidMount: function() {
+  componentDidMount() {
     let d = new Date();
     let weekday = new Array(7);
     weekday[0]=  'Sunday';
@@ -19,11 +19,11 @@ const Day = React.createClass({
 
     this.setState({day: day});
   },
-  render: function() {
+  render() {
 
     // run update
-    if(this.props.hourUpdate > update){
-      update = this.props.hourUpdate;
+    if(this.props.dayUpdate > update){
+      update = this.props.dayUpdate;
       this.componentDidMount();
     }
 
