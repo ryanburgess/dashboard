@@ -1,0 +1,14 @@
+// File Name: _flickr.scss
+// Description: Styles for background images pulling from flickr
+// Used by: style.scss, 
+// Dependencies: 
+// Date created: 22/11/2015
+// ------------------------------------------------------------
+
+.flickr{
+  padding-top:30px;
+  padding-right:30px;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-size: cover;
+}

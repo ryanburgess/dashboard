@@ -1,5 +1,5 @@
 # Dashboard
-Dashboard to display weather, stock, clock, date.
+Dashboard to display time, weather, stock, clock, date, to do tasks, flickr photos.
 
 Created with React. Using the [Wunder Ground API](http://api.wunderground.com/) for the weather.
 
@@ -9,7 +9,6 @@ Created with React. Using the [Wunder Ground API](http://api.wunderground.com/) 
 * Pull in TV schedule API
 * Use user location (maybe)
 * Add more sports and options to follow teams
-* Add background images pulling from Flickr
 * Add world clock option
 * Create better config (alignment, color, updates, array of stocks, show/not show components, arrangement)
 * Pull in birthdays
