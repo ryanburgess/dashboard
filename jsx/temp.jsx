@@ -1,5 +1,5 @@
 import React from 'react';
-
+let update = 0;
 const Temp = React.createClass({
   getInitialState: function() {
     return {};
@@ -35,6 +35,13 @@ const Temp = React.createClass({
     request.send();
   },
   render() {
+
+    // run update
+    if(this.props.hourUpdate > update){
+      update = this.props.hourUpdate;
+      this.componentDidMount();
+    }
+
     return (
       <p className='temp'>
         {this.state.temp}°{this.state.degree} {this.state.weather} <img src={this.state.icon} />

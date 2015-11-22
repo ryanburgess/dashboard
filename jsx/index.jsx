@@ -10,11 +10,12 @@ import MLB from './mlb';
 import getDay from './get-day';
 import renderTime from './time';
 import Stock from './stock';
-let config;
+import config from '../config.json';
+
 let currentDay;
 let currentHour;
-let daily;
-let stock_symbol;
+let hourUpdate = 0;
+let dayUpdate = 0;
 
 // use a set interval mixin for timer
 var SetIntervalMixin = {
@@ -45,37 +46,27 @@ var SetIntervalMixin = {
 var App = React.createClass({
   mixins: [SetIntervalMixin],
   getInitialState() {
-    return {day: getDay(), daily: ['']};
+    return {day: getDay(), daily: config.tasks, stock: config.stock.symbol, city: config.settings.city, degree: config.settings.degree, weatherApi: config.api.weather};
   },
   componentDidMount() {
-    let request = new XMLHttpRequest();
-    request.open('GET', 'config.json', true);
-
-    request.onload = function() {
-      let component = this;
-      if (request.status >= 200 && request.status < 400) {
-        let data = JSON.parse(request.responseText);
-        config = data;
-        daily = data.tasks;
-        stock_symbol = config.stock.symbol;
-      }
-    };
-    request.send();
     this.setInterval(this.tick, 1000);
   },
   tick() {
     let today = getDay();
     let time = renderTime();
-
+  
     // make calls by the day change
     if(today !== currentDay || currentDay === undefined){
+      dayUpdate++;
       currentDay = today;
-      this.setState({day: today, daily: daily});
+      this.setState({day: today, daily: config.tasks, dayUpdate: dayUpdate});
     }
 
     // make calls by the hour change
     if(time.hours !== currentHour || currentHour === undefined){
+      hourUpdate++;
       currentHour = time.hours;
+      this.setState({hourUpdate: hourUpdate});
     }
 
     //set the state
@@ -85,12 +76,12 @@ var App = React.createClass({
     return (
       <div>
         <MonthDay />
-        <Day />
+        <Day dayUpdate={this.state.dayUpdate} />
         <Clock hours={this.state.hours} minutes={this.state.minutes} seconds={this.state.seconds} diem={this.state.diem} />
-        <Temp city="San_francisco" degree='F' api='837fa9da3834f77b' />
-        <Tasks day={this.state.day} daily={this.state.daily} />
-        <MLB day={this.state.day} />
-        <Stock stock="NFLX" />
+        <Temp city={this.state.city} degree={this.state.degree} api={this.state.weatherApi} hourUpdate={this.state.hourUpdate} />
+        <Tasks day={this.state.day} daily={this.state.daily} dayUpdate={this.state.dayUpdate} />
+        <MLB day={this.state.day} dayUpdate={this.state.dayUpdate} />
+        <Stock stock={this.state.stock} hourUpdate={this.state.hourUpdate} />
       </div>
     );
   }

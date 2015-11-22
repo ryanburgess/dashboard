@@ -16,7 +16,8 @@ _react2['default'].render(_react2['default'].createElement(_index2['default'], n
 },{"./index":6,"react":426}],2:[function(require,module,exports){
 module.exports={ 
   "settings": {
-    "city": "San Francisco"
+    "city": "San Francisco",
+    "degree": "F"
   },
   "api": {
     "weather": "837fa9da3834f77b"
@@ -85,6 +86,10 @@ var _react2 = _interopRequireDefault(_react);
 var Clock = _react2['default'].createClass({
   displayName: 'Clock',
 
+  getInitialState: function getInitialState() {
+    return {};
+  },
+  componentDidMount: function componentDidMount() {},
   render: function render() {
     return _react2['default'].createElement(
       'p',
@@ -114,6 +119,7 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var update = 0;
 var Day = _react2['default'].createClass({
   displayName: 'Day',
 
@@ -136,6 +142,13 @@ var Day = _react2['default'].createClass({
     this.setState({ day: day });
   },
   render: function render() {
+
+    // run update
+    if (this.props.hourUpdate > update) {
+      update = this.props.hourUpdate;
+      this.componentDidMount();
+    }
+
     return _react2['default'].createElement(
       'p',
       { className: 'day' },
@@ -218,11 +231,14 @@ var _stock = require('./stock');
 
 var _stock2 = _interopRequireDefault(_stock);
 
-var config = undefined;
+var _configJson = require('../config.json');
+
+var _configJson2 = _interopRequireDefault(_configJson);
+
 var currentDay = undefined;
 var currentHour = undefined;
-var daily = undefined;
-var stock_symbol = undefined;
+var hourUpdate = 0;
+var dayUpdate = 0;
 
 // use a set interval mixin for timer
 var SetIntervalMixin = {
@@ -255,22 +271,9 @@ var App = _react2['default'].createClass({
 
   mixins: [SetIntervalMixin],
   getInitialState: function getInitialState() {
-    return { day: (0, _getDay2['default'])(), daily: [''] };
+    return { day: (0, _getDay2['default'])(), daily: _configJson2['default'].tasks, stock: _configJson2['default'].stock.symbol, city: _configJson2['default'].settings.city, degree: _configJson2['default'].settings.degree, weatherApi: _configJson2['default'].api.weather };
   },
   componentDidMount: function componentDidMount() {
-    var request = new XMLHttpRequest();
-    request.open('GET', 'config.json', true);
-
-    request.onload = function () {
-      var component = this;
-      if (request.status >= 200 && request.status < 400) {
-        var data = JSON.parse(request.responseText);
-        config = data;
-        daily = data.tasks;
-        stock_symbol = config.stock.symbol;
-      }
-    };
-    request.send();
     this.setInterval(this.tick, 1000);
   },
   tick: function tick() {
@@ -279,13 +282,16 @@ var App = _react2['default'].createClass({
 
     // make calls by the day change
     if (today !== currentDay || currentDay === undefined) {
+      dayUpdate++;
       currentDay = today;
-      this.setState({ day: today, daily: daily });
+      this.setState({ day: today, daily: _configJson2['default'].tasks, dayUpdate: dayUpdate });
     }
 
     // make calls by the hour change
     if (time.hours !== currentHour || currentHour === undefined) {
+      hourUpdate++;
       currentHour = time.hours;
+      this.setState({ hourUpdate: hourUpdate });
     }
 
     //set the state
@@ -296,19 +302,19 @@ var App = _react2['default'].createClass({
       'div',
       null,
       _react2['default'].createElement(_reactMonthDay2['default'], null),
-      _react2['default'].createElement(_day2['default'], null),
+      _react2['default'].createElement(_day2['default'], { dayUpdate: this.state.dayUpdate }),
       _react2['default'].createElement(_clock2['default'], { hours: this.state.hours, minutes: this.state.minutes, seconds: this.state.seconds, diem: this.state.diem }),
-      _react2['default'].createElement(_temp2['default'], { city: 'San_francisco', degree: 'F', api: '837fa9da3834f77b' }),
-      _react2['default'].createElement(_tasks2['default'], { day: this.state.day, daily: this.state.daily }),
-      _react2['default'].createElement(_mlb2['default'], { day: this.state.day }),
-      _react2['default'].createElement(_stock2['default'], { stock: 'NFLX' })
+      _react2['default'].createElement(_temp2['default'], { city: this.state.city, degree: this.state.degree, api: this.state.weatherApi, hourUpdate: this.state.hourUpdate }),
+      _react2['default'].createElement(_tasks2['default'], { day: this.state.day, daily: this.state.daily, dayUpdate: this.state.dayUpdate }),
+      _react2['default'].createElement(_mlb2['default'], { day: this.state.day, dayUpdate: this.state.dayUpdate }),
+      _react2['default'].createElement(_stock2['default'], { stock: this.state.stock, hourUpdate: this.state.hourUpdate })
     );
   }
 });
 
 module.exports = App;
 
-},{"./clock":3,"./day":4,"./get-day":5,"./mlb":7,"./stock":8,"./tasks":9,"./temp":10,"./time":11,"cheerio":205,"react":426,"react-month-day":271,"request":427}],7:[function(require,module,exports){
+},{"../config.json":2,"./clock":3,"./day":4,"./get-day":5,"./mlb":7,"./stock":8,"./tasks":9,"./temp":10,"./time":11,"cheerio":205,"react":426,"react-month-day":271,"request":427}],7:[function(require,module,exports){
 'use strict';
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
@@ -424,6 +430,8 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var update = 0;
+
 var Stock = _react2['default'].createClass({
   displayName: 'Stock',
 
@@ -450,6 +458,12 @@ var Stock = _react2['default'].createClass({
     // avoid undefined missing image
     if (asset === undefined) {
       image = '';
+    }
+
+    // run update
+    if (this.props.hourUpdate > update) {
+      update = this.props.hourUpdate;
+      this.componentDidMount();
     }
 
     return _react2['default'].createElement(
@@ -491,8 +505,13 @@ var Tasks = _react2['default'].createClass({
   displayName: 'Tasks',
 
   render: function render() {
+    var daily = [''];
     var today = this.props.day;
-    var daily = this.props.daily;
+
+    if (this.props.daily !== undefined) {
+      daily = this.props.daily;
+    }
+
     return _react2['default'].createElement(
       'ul',
       { className: 'tasks' },
@@ -523,6 +542,7 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var update = 0;
 var Temp = _react2['default'].createClass({
   displayName: 'Temp',
 
@@ -560,6 +580,13 @@ var Temp = _react2['default'].createClass({
     request.send();
   },
   render: function render() {
+
+    // run update
+    if (this.props.hourUpdate > update) {
+      update = this.props.hourUpdate;
+      this.componentDidMount();
+    }
+
     return _react2['default'].createElement(
       'p',
       { className: 'temp' },

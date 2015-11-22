@@ -1,6 +1,11 @@
 import React from 'react';
 
 const Clock = React.createClass({
+  getInitialState: function() {
+    return {};
+  },
+  componentDidMount: function() {
+  },
   render() {
     return (
       <p className='clock'>

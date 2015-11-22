@@ -1,5 +1,5 @@
 import React from 'react';
-
+let update = 0;
 const Day = React.createClass({
   getInitialState: function() {
     return {};
@@ -20,6 +20,13 @@ const Day = React.createClass({
     this.setState({day: day});
   },
   render: function() {
+
+    // run update
+    if(this.props.hourUpdate > update){
+      update = this.props.hourUpdate;
+      this.componentDidMount();
+    }
+
     return (
       <p className='day'>{this.state.day}</p>
     );

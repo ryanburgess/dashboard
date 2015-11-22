@@ -2,8 +2,13 @@ import React from 'react';
 
 const Tasks = React.createClass({
   render() {
+    let daily = [''];
     let today = this.props.day;
-    let daily = this.props.daily;
+
+    if(this.props.daily !== undefined){
+      daily = this.props.daily;
+    }
+
     return (
       <ul className='tasks'>
           {daily.map(function(item, i){

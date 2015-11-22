@@ -1,5 +1,7 @@
 import React from 'react';
 
+let update = 0;
+
 const Stock = React.createClass({
   getInitialState: function() {
     return {};
@@ -16,6 +18,7 @@ const Stock = React.createClass({
       }
     };
     request.send();
+    
   },
   render: function(){
     let asset = this.state.up_down;
@@ -24,6 +27,12 @@ const Stock = React.createClass({
     // avoid undefined missing image
     if(asset === undefined){
       image = '';
+    }
+
+    // run update
+    if(this.props.hourUpdate > update){
+      update = this.props.hourUpdate;
+      this.componentDidMount();
     }
 
     return(
