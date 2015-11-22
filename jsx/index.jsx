@@ -10,6 +10,7 @@ import MLB from './mlb';
 import getDay from './get-day';
 import renderTime from './time';
 import Stock from './stock';
+import Flickr from './flickr';
 import config from '../config.json';
 
 let currentDay;
@@ -46,7 +47,7 @@ var SetIntervalMixin = {
 var App = React.createClass({
   mixins: [SetIntervalMixin],
   getInitialState() {
-    return {day: getDay(), daily: config.tasks, stock: config.stock.symbol, city: config.settings.city, degree: config.settings.degree, weatherApi: config.api.weather};
+    return {day: getDay(), daily: config.tasks, stock: config.stock.symbol, city: config.settings.city, degree: config.settings.degree, weatherApi: config.api.weather, flickrApi: config.api.flickr};
   },
   componentDidMount() {
     this.setInterval(this.tick, 1000);
@@ -74,15 +75,17 @@ var App = React.createClass({
   },
   render() {
     return (
-      <div>
-        <MonthDay dayUpdate={this.state.dayUpdate} />
-        <Day dayUpdate={this.state.dayUpdate} />
-        <Clock hours={this.state.hours} minutes={this.state.minutes} seconds={this.state.seconds} diem={this.state.diem} />
-        <Temp city={this.state.city} degree={this.state.degree} api={this.state.weatherApi} hourUpdate={this.state.hourUpdate} />
-        <Tasks day={this.state.day} daily={this.state.daily} dayUpdate={this.state.dayUpdate} />
-        <MLB day={this.state.day} dayUpdate={this.state.dayUpdate} />
-        <Stock stock={this.state.stock} hourUpdate={this.state.hourUpdate} />
-      </div>
+      <Flickr hourUpdate={this.state.hourUpdate} city={this.state.city} api={this.state.flickrApi}>
+        <div className="content">
+          <MonthDay dayUpdate={this.state.dayUpdate} />
+          <Day dayUpdate={this.state.dayUpdate} />
+          <Clock hours={this.state.hours} minutes={this.state.minutes} seconds={this.state.seconds} diem={this.state.diem} />
+          <Temp city={this.state.city} degree={this.state.degree} api={this.state.weatherApi} hourUpdate={this.state.hourUpdate} />
+          <Tasks day={this.state.day} daily={this.state.daily} dayUpdate={this.state.dayUpdate} />
+          <MLB day={this.state.day} dayUpdate={this.state.dayUpdate} />
+          <Stock stock={this.state.stock} hourUpdate={this.state.hourUpdate} />
+        </div>
+      </Flickr>
     );
   }
 });
