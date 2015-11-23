@@ -177,16 +177,17 @@ var Flickr = _react2['default'].createClass({
   displayName: 'Flickr',
 
   getInitialState: function getInitialState() {
+    update = 0;
     api = this.props.api;
     city = this.props.city;
+    city = city.replace(' ', '+');
     return { photo: '' };
   },
   componentDidMount: function componentDidMount() {
-    update = this.props.hourUpdate;
     var component = this;
     var request = new XMLHttpRequest();
     var page = Math.floor(Math.random() * 1000 + 1);
-    request.open('GET', 'https://api.flickr.com/services/rest/?method=flickr.photos.search&page=' + page + '&per_page=1&api_key=' + api + '&text=' + city + '%20scenic&extras=&format=json&nojsoncallback=1&extras=description,license,date_upload,date_taken,owner_name,icon_server,original_format,last_update,geo,tags,machine_tags,o_dims,views,media,path_alias,url_t,url_s,url_q,url_m,url_n,url_z,url_c,url_l', true);
+    request.open('GET', 'https://api.flickr.com/services/rest/?method=flickr.photos.search&page=' + page + '&per_page=1&api_key=' + api + '&text=' + city + '+scenic&extras=&format=json&nojsoncallback=1&extras=description,license,date_upload,date_taken,owner_name,icon_server,original_format,last_update,geo,tags,machine_tags,o_dims,views,media,path_alias,url_t,url_s,url_q,url_m,url_n,url_z,url_c,url_l', true);
 
     request.onload = function () {
       if (request.status >= 200 && request.status < 400) {
@@ -203,9 +204,11 @@ var Flickr = _react2['default'].createClass({
       backgroundImage: 'url(' + this.state.photo + ')'
     };
 
+    var hourUpdate = this.props.hourUpdate;
+
     // run update
-    if (this.props.hourUpdate > update) {
-      update = this.props.hourUpdate;
+    if (hourUpdate > update) {
+      update = hourUpdate;
       this.componentDidMount();
     }
 
@@ -364,7 +367,7 @@ var App = _react2['default'].createClass({
   render: function render() {
     return _react2['default'].createElement(
       _flickr2['default'],
-      { hourUpdate: this.state.hourUpdate, city: this.state.city, api: this.state.flickrApi },
+      { hourUpdate: this.state.hours, city: this.state.city, api: this.state.flickrApi },
       _react2['default'].createElement(
         'div',
         { className: 'content' },

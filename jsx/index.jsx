@@ -75,7 +75,7 @@ var App = React.createClass({
   },
   render() {
     return (
-      <Flickr hourUpdate={this.state.hourUpdate} city={this.state.city} api={this.state.flickrApi}>
+      <Flickr hourUpdate={this.state.hours} city={this.state.city} api={this.state.flickrApi}>
         <div className="content">
           <MonthDay dayUpdate={this.state.dayUpdate} />
           <Day dayUpdate={this.state.dayUpdate} />
