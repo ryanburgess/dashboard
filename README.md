@@ -5,6 +5,12 @@ Created with React. Using the [Wunder Ground API](http://api.wunderground.com/) 
 
 ![Screenshot of dashboard](https://raw.github.com/ryanburgess/dashboard/master/screenshot.png)
 
+#Setup
+* Run `npm install`
+* Create `config.json` from `config_example.json` and replace the placeholder items.
+* Run `gulp scripts compress`
+* Open `index.html` in the browser.
+
 #TODO
 * Pull in TV schedule API
 * Use user location (maybe)
