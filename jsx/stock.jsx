@@ -3,10 +3,10 @@ import React from 'react';
 let update = 0;
 
 const Stock = React.createClass({
-  getInitialState: function() {
+  getInitialState() {
     return {};
   },
-  componentDidMount: function() {
+  componentDidMount() {
     let component = this;
     let request = new XMLHttpRequest();
     request.open('GET', 'http://stockz-api.herokuapp.com/api/?s='+ this.props.stock, true);
@@ -20,18 +20,18 @@ const Stock = React.createClass({
     request.send();
     
   },
-  render: function(){
-    let asset = this.state.up_down;
-    let image = 'public/img/stock/' + asset + '.svg';
+  render(){
+    const {hourUpdate, up_down} = this.props;
+    let image = 'public/img/stock/' + up_down + '.svg';
 
     // avoid undefined missing image
-    if(asset === undefined){
+    if(up_down === undefined){
       image = '';
     }
 
     // run update
-    if(this.props.hourUpdate > update){
-      update = this.props.hourUpdate;
+    if(hourUpdate > update){
+      update = hourUpdate;
       this.componentDidMount();
     }
 

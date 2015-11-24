@@ -20,10 +20,10 @@ const Day = React.createClass({
     this.setState({day: day});
   },
   render() {
-
+    const {dayUpdate} = this.props;
     // run update
-    if(this.props.dayUpdate > update){
-      update = this.props.dayUpdate;
+    if(dayUpdate > update){
+      update = dayUpdate;
       this.componentDidMount();
     }
 
