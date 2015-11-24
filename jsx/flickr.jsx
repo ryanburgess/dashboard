@@ -2,6 +2,7 @@ import React from 'react';
 let update;
 let api;
 let city;
+let firstLoad = true;
 
 const Flickr = React.createClass({
   getInitialState() {
@@ -15,7 +16,7 @@ const Flickr = React.createClass({
     let component = this;
     let request = new XMLHttpRequest();
     request.open('GET', 'https://api.flickr.com/services/rest/?method=flickr.photos.search&page=1&per_page=50&api_key=' + api +
-    '&text='+ city +'+scenic&extras=&format=json&nojsoncallback=1&extras=description,license,date_upload,date_taken,owner_name,icon_server,original_format,last_update,geo,tags,machine_tags,o_dims,views,media,path_alias,url_t,url_s,url_q,url_m,url_n,url_z,url_c,url_l', true);
+    '&text='+ city +'+scenic+city&extras=&format=json&content_type=1&accuracy=11&nojsoncallback=1&extras=description,license,date_upload,date_taken,owner_name,icon_server,original_format,last_update,geo,tags,machine_tags,o_dims,views,media,path_alias,url_t,url_s,url_q,url_m,url_n,url_z,url_c,url_l', true);
 
     request.onload = function() {
       if (request.status >= 200 && request.status < 400) {
@@ -35,9 +36,10 @@ const Flickr = React.createClass({
 
 
     // run update
-    if(hourUpdate > update){
+    if(hourUpdate > update && firstLoad === false){
       update = hourUpdate;
       this.componentDidMount();
+      firstLoad = false;
     }
 
     return (
