@@ -193,13 +193,13 @@ var Flickr = _react2['default'].createClass({
   componentDidMount: function componentDidMount() {
     var component = this;
     var request = new XMLHttpRequest();
-    var page = Math.floor(Math.random() * 1000 + 1);
-    request.open('GET', 'https://api.flickr.com/services/rest/?method=flickr.photos.search&page=' + page + '&per_page=1&api_key=' + api + '&text=' + city + '+scenic&extras=&format=json&nojsoncallback=1&extras=description,license,date_upload,date_taken,owner_name,icon_server,original_format,last_update,geo,tags,machine_tags,o_dims,views,media,path_alias,url_t,url_s,url_q,url_m,url_n,url_z,url_c,url_l', true);
+    request.open('GET', 'https://api.flickr.com/services/rest/?method=flickr.photos.search&page=1&per_page=50&api_key=' + api + '&text=' + city + '+scenic&extras=&format=json&nojsoncallback=1&extras=description,license,date_upload,date_taken,owner_name,icon_server,original_format,last_update,geo,tags,machine_tags,o_dims,views,media,path_alias,url_t,url_s,url_q,url_m,url_n,url_z,url_c,url_l', true);
 
     request.onload = function () {
       if (request.status >= 200 && request.status < 400) {
         var data = JSON.parse(request.responseText);
-        var photo = data.photos.photo[0].url_l;
+        var pickPhoto = Math.floor(Math.random() * 50 + 1);
+        var photo = data.photos.photo[pickPhoto].url_l;
         component.setState({ photo: photo });
       }
     };
