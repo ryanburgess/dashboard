@@ -92,18 +92,24 @@ var Clock = _react2['default'].createClass({
   },
   componentDidMount: function componentDidMount() {},
   render: function render() {
+    var _props = this.props;
+    var hours = _props.hours;
+    var minutes = _props.minutes;
+    var seconds = _props.seconds;
+    var diem = _props.diem;
+
     return _react2['default'].createElement(
       'p',
       { className: 'clock' },
-      this.props.hours,
+      hours,
       ':',
-      this.props.minutes,
+      minutes,
       ':',
-      this.props.seconds,
+      seconds,
       _react2['default'].createElement(
         'span',
         { className: 'diem' },
-        this.props.diem
+        diem
       )
     );
   }
@@ -143,10 +149,11 @@ var Day = _react2['default'].createClass({
     this.setState({ day: day });
   },
   render: function render() {
+    var dayUpdate = this.props.dayUpdate;
 
     // run update
-    if (this.props.dayUpdate > update) {
-      update = this.props.dayUpdate;
+    if (dayUpdate > update) {
+      update = dayUpdate;
       this.componentDidMount();
     }
 
@@ -199,12 +206,13 @@ var Flickr = _react2['default'].createClass({
     request.send();
   },
   render: function render() {
+    var _props = this.props;
+    var hourUpdate = _props.hourUpdate;
+    var children = _props.children;
 
     var divStyle = {
       backgroundImage: 'url(' + this.state.photo + ')'
     };
-
-    var hourUpdate = this.props.hourUpdate;
 
     // run update
     if (hourUpdate > update) {
@@ -215,7 +223,7 @@ var Flickr = _react2['default'].createClass({
     return _react2['default'].createElement(
       'div',
       { className: 'flickr', style: divStyle },
-      this.props.children
+      children
     );
   }
 });
@@ -567,17 +575,20 @@ var Stock = _react2['default'].createClass({
     request.send();
   },
   render: function render() {
-    var asset = this.state.up_down;
-    var image = 'public/img/stock/' + asset + '.svg';
+    var _props = this.props;
+    var hourUpdate = _props.hourUpdate;
+    var up_down = _props.up_down;
+
+    var image = 'public/img/stock/' + up_down + '.svg';
 
     // avoid undefined missing image
-    if (asset === undefined) {
+    if (up_down === undefined) {
       image = '';
     }
 
     // run update
-    if (this.props.hourUpdate > update) {
-      update = this.props.hourUpdate;
+    if (hourUpdate > update) {
+      update = hourUpdate;
       this.componentDidMount();
     }
 
@@ -695,10 +706,11 @@ var Temp = _react2['default'].createClass({
     request.send();
   },
   render: function render() {
+    var hourUpdate = this.props.hourUpdate;
 
     // run update
-    if (this.props.hourUpdate > update) {
-      update = this.props.hourUpdate;
+    if (hourUpdate > update) {
+      update = hourUpdate;
       this.componentDidMount();
     }
 

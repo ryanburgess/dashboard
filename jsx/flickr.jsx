@@ -28,12 +28,11 @@ const Flickr = React.createClass({
     request.send();
   },
   render() {
-
+    const {hourUpdate, children} = this.props;
     let divStyle = {
       backgroundImage: 'url(' + this.state.photo + ')'
     };
 
-    let hourUpdate = this.props.hourUpdate;
 
     // run update
     if(hourUpdate > update){
@@ -43,7 +42,7 @@ const Flickr = React.createClass({
 
     return (
       <div className='flickr' style={divStyle}>
-          {this.props.children}
+          {children}
       </div>
     );
   }

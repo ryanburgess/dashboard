@@ -7,10 +7,11 @@ const Clock = React.createClass({
   componentDidMount: function() {
   },
   render() {
+    const {hours, minutes, seconds, diem} = this.props;
     return (
       <p className='clock'>
-        {this.props.hours}:{this.props.minutes}:{this.props.seconds}
-        <span className='diem'>{this.props.diem}</span>
+        {hours}:{minutes}:{seconds}
+        <span className='diem'>{diem}</span>
       </p>
     );
   }

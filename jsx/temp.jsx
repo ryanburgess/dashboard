@@ -1,10 +1,10 @@
 import React from 'react';
 let update = 0;
 const Temp = React.createClass({
-  getInitialState: function() {
+  getInitialState() {
     return {};
   },
-  componentDidMount: function() {
+  componentDidMount() {
     let component = this;
     let degree = this.props.degree;
     let request = new XMLHttpRequest();
@@ -35,10 +35,10 @@ const Temp = React.createClass({
     request.send();
   },
   render() {
-
+    const {hourUpdate} = this.props;
     // run update
-    if(this.props.hourUpdate > update){
-      update = this.props.hourUpdate;
+    if(hourUpdate > update){
+      update = hourUpdate;
       this.componentDidMount();
     }
 
