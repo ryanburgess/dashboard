@@ -21,7 +21,7 @@ module.exports={
   },
   "api": {
     "weather": "837fa9da3834f77b",
-    "flickr": "949e98778755d1982f537d56236bbb42"
+    "flickr": "1c34c9e83f11d3e57030c21133cfd830"
   },
   "stock": {
     "show": false,
@@ -179,6 +179,7 @@ var _react2 = _interopRequireDefault(_react);
 var update = undefined;
 var api = undefined;
 var city = undefined;
+var firstLoad = true;
 
 var Flickr = _react2['default'].createClass({
   displayName: 'Flickr',
@@ -193,7 +194,7 @@ var Flickr = _react2['default'].createClass({
   componentDidMount: function componentDidMount() {
     var component = this;
     var request = new XMLHttpRequest();
-    request.open('GET', 'https://api.flickr.com/services/rest/?method=flickr.photos.search&page=1&per_page=50&api_key=' + api + '&text=' + city + '+scenic&extras=&format=json&nojsoncallback=1&extras=description,license,date_upload,date_taken,owner_name,icon_server,original_format,last_update,geo,tags,machine_tags,o_dims,views,media,path_alias,url_t,url_s,url_q,url_m,url_n,url_z,url_c,url_l', true);
+    request.open('GET', 'https://api.flickr.com/services/rest/?method=flickr.photos.search&page=1&per_page=50&api_key=' + api + '&text=' + city + '+scenic+city&extras=&format=json&content_type=1&accuracy=11&nojsoncallback=1&extras=description,license,date_upload,date_taken,owner_name,icon_server,original_format,last_update,geo,tags,machine_tags,o_dims,views,media,path_alias,url_t,url_s,url_q,url_m,url_n,url_z,url_c,url_l', true);
 
     request.onload = function () {
       if (request.status >= 200 && request.status < 400) {
@@ -213,6 +214,10 @@ var Flickr = _react2['default'].createClass({
     var divStyle = {
       backgroundImage: 'url(' + this.state.photo + ')'
     };
+
+    if (update === 0) {
+      update = hourUpdate;
+    }
 
     // run update
     if (hourUpdate > update) {
