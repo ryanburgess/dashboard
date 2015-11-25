@@ -576,14 +576,13 @@ var Stock = _react2['default'].createClass({
     request.send();
   },
   render: function render() {
-    var _props = this.props;
-    var hourUpdate = _props.hourUpdate;
-    var up_down = _props.up_down;
+    var hourUpdate = this.props.hourUpdate;
 
-    var image = 'public/img/stock/' + up_down + '.svg';
+    var upDown = this.state.up_down;
+    var image = 'public/img/stock/' + upDown + '.svg';
 
     // avoid undefined missing image
-    if (up_down === undefined) {
+    if (upDown === undefined) {
       image = '';
     }
 
