@@ -215,12 +215,8 @@ var Flickr = _react2['default'].createClass({
       backgroundImage: 'url(' + this.state.photo + ')'
     };
 
-    if (update === 0) {
-      update = hourUpdate;
-    }
-
     // run update
-    if (hourUpdate > update) {
+    if (hourUpdate > update || this.state.photo === undefined) {
       update = hourUpdate;
       this.componentDidMount();
     }
