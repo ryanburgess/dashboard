@@ -6,6 +6,7 @@
 *.log
 *.css
 *.min.js
+public/js/*.js
 node_modules/
 test.html
 stock.html
