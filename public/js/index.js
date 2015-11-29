@@ -64,13 +64,18 @@ module.exports={
     },
     {
       "day": "All",
-      "task": "Walk Chico",
+      "task": "Walk the dog",
       "img": "dog.svg"
     },
     {
       "day": "Friday",
       "task": "Go to the gym",
       "img": "gym.svg"
+    },
+    {
+      "day": "Saturday",
+      "task": "Read a book",
+      "img": "read.svg"
     },
     {
       "day": "Sunday",
