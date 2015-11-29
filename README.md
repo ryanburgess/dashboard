@@ -5,7 +5,7 @@ Dashboard to display time, weather, stock, clock, date, to do tasks, flickr phot
 
 Created with React and Express.
 
-![Screenshot of dashboard](https://raw.github.com/ryanburgess/dashboard/master/screenshot.png)
+![Screenshot of dashboard](https://raw.github.com/ryanburgess/dashboard/master/screenshot.jpg)
 
 #Setup
 * Run `npm install`
