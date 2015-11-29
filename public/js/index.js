@@ -583,7 +583,7 @@ var Stock = _react2['default'].createClass({
     var hourUpdate = this.props.hourUpdate;
 
     var upDown = this.state.up_down;
-    var image = 'img/stock/' + upDown + '.svg';
+    var image = 'public/img/stock/' + upDown + '.svg';
 
     // avoid undefined missing image
     if (upDown === undefined) {
@@ -647,7 +647,7 @@ var Tasks = _react2['default'].createClass({
       { className: 'tasks' },
       daily.map(function (item, i) {
         if (item.day === today || item.day === 'All') {
-          var image = 'img/tasks/' + item.img;
+          var image = 'public/img/tasks/' + item.img;
           return _react2['default'].createElement(
             'li',
             { key: i },
@@ -692,7 +692,7 @@ var Temp = _react2['default'].createClass({
         var weather = data.current_observation.weather;
         var feels = data.current_observation.feelslike_f;
         var icon = data.current_observation.icon_url;
-        icon = icon.replace('http://icons.wxug.com/i/c/k/', 'img/weather/').replace('.gif', '.svg').replace('_', '-');
+        icon = icon.replace('http://icons.wxug.com/i/c/k/', 'public/img/weather/').replace('.gif', '.svg').replace('_', '-');
         temp = temp.toFixed(0);
         feels = Number(feels).toFixed(0);
 

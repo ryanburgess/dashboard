@@ -23,7 +23,7 @@ const Stock = React.createClass({
   render(){
     const {hourUpdate} = this.props;
     const upDown = this.state.up_down;
-    let image = 'img/stock/' + upDown + '.svg';
+    let image = 'public/img/stock/' + upDown + '.svg';
 
     // avoid undefined missing image
     if(upDown === undefined){
