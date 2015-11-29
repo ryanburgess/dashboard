@@ -13,7 +13,7 @@ const Tasks = React.createClass({
       <ul className='tasks'>
           {daily.map(function(item, i){
             if(item.day === today || item.day === 'All'){
-              let image = 'public/img/tasks/' + item.img;
+              let image = 'img/tasks/' + item.img;
               return <li key={i}>{item.task} <img src={image} /></li>;
             }
           })}

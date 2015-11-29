@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import App from './index';
 
-React.render(<App />, window.document.querySelector("#target"));
+ReactDOM.render(<App />, target);
