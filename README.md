@@ -3,15 +3,16 @@ Dashboard to display time, weather, stock, clock, date, to do tasks, flickr phot
 
 [DEMO](http://ryanburgess.github.io/dashboard/)
 
-Created with React. Using the [Wunder Ground API](http://api.wunderground.com/) for the weather.
+Created with React and Express.
 
 ![Screenshot of dashboard](https://raw.github.com/ryanburgess/dashboard/master/screenshot.png)
 
 #Setup
 * Run `npm install`
-* Create `config.json` from `config_example.json` and replace the placeholder items.
+* Create `config.json` from `config_example.json` and replace the placeholder items. Get a [Flickr API Key](https://www.flickr.com/services/api/misc.api_keys.html) and a [Wunder Ground API](http://api.wunderground.com/)
 * Run `gulp scripts compress`
-* Open `index.html` in the browser.
+* Open `npm start`.
+* Load `http://localhost:3000` in the browser.
 
 #TODO
 * Pull in TV schedule API
