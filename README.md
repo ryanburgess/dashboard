@@ -1,6 +1,8 @@
 # Dashboard
 Dashboard to display time, weather, stock, clock, date, to do tasks, flickr photos.
 
+[DEMO](http://ryanburgess.github.io/dashboard/)
+
 Created with React. Using the [Wunder Ground API](http://api.wunderground.com/) for the weather.
 
 ![Screenshot of dashboard](https://raw.github.com/ryanburgess/dashboard/master/screenshot.png)
