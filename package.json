@@ -9,9 +9,9 @@
   "author": "Ryan Burgess @burgessdryan",
   "license": "MIT",
   "dependencies": {
-    "fbemitter": "^2.0.0",
-    "react": "^0.13.3",
-    "weather-js": "^1.0.2"
+    "ejs": "^2.3.4",
+    "express": "^4.13.3",
+    "react": "^0.14.3"
   },
   "devDependencies": {
     "babel": "^5.1.11",
