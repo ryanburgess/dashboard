@@ -44,6 +44,7 @@ const Flickr = React.createClass({
     this.setState({photo: flickrPhotos[pickPhoto]});
   },
   render() {
+    let component = this;
     const {hourUpdate, children} = this.props;
     let divStyle = {
       backgroundImage: 'url(' + this.state.photo + ')'
@@ -57,12 +58,13 @@ const Flickr = React.createClass({
     // run update
     if(hourUpdate > update){
       update = hourUpdate;
-      //this.loadPhotos();
+      this.loadPhotos();
     }
 
     return (
       <div className='flickr' style={divStyle}>
           {children}
+          <button className='change' onClick={component.loadPhotos}></button>
       </div>
     );
   }
