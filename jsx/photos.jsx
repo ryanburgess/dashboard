@@ -1,9 +1,11 @@
 import React from 'react';
-let update;
-let api;
-let city;
+import ReactDOM from 'react-dom';
+import config from '../config.json';
+
 let flickrPhotos = [];
 let removedPhotos = JSON.parse(localStorage.getItem('remove'));
+let city;
+let api;
 
 if(removedPhotos === null){
   removedPhotos = [];
@@ -11,11 +13,10 @@ if(removedPhotos === null){
 
 const Flickr = React.createClass({
   getInitialState() {
-    update = 0;
-    api = this.props.api;
-    city = this.props.city;
+    city = config.settings.city;
     city = city.replace(' ', '+');
-    return {photo: ''};
+    api = config.api.flickr;
+    return {photos: flickrPhotos};
   },
   componentDidMount() {
     let component = this;
@@ -27,45 +28,36 @@ const Flickr = React.createClass({
       if (request.status >= 200 && request.status < 400) {
         let data = JSON.parse(request.responseText);
         let photos = data.photos.photo;
+
         photos.map(function(photo){
-          if(photo.url_l !== undefined && removedPhotos.indexOf(photo.url_n) < 0){
-            flickrPhotos.push(photo.url_l);
+          if(photo.url_n !== undefined && removedPhotos.indexOf(photo.url_n) < 0){
+            flickrPhotos.push(photo.url_n);
           }
         });
 
-        component.loadPhotos();
+        component.setState({photos: flickrPhotos})
       }
     };
     request.send();
 
   },
-  loadPhotos(){
-    let pickPhoto = Math.floor((Math.random() * flickrPhotos.length));
-    this.setState({photo: flickrPhotos[pickPhoto]});
+  handleClick(item) {
+    removedPhotos.push(item);
+    localStorage.setItem('remove', JSON.stringify(removedPhotos));
   },
   render() {
-    const {hourUpdate, children} = this.props;
-    let divStyle = {
-      backgroundImage: 'url(' + this.state.photo + ')'
-    };
-
-    // set update to hourUpdate value
-    if(update === 0 && hourUpdate !== undefined){
-      update = hourUpdate;
-    }
-
-    // run update
-    if(hourUpdate > update){
-      update = hourUpdate;
-      //this.loadPhotos();
-    }
-
+    let component = this;
+    let photos = this.state.photos;
     return (
-      <div className='flickr' style={divStyle}>
-          {children}
-      </div>
+      <ul className='photos'>
+        {photos.map(function(photo, i){
+          return <li key={i} onClick={component.handleClick.bind(this, photo)}><img src={photo} /></li>;
+        })}
+      </ul>
     );
   }
 });
 
 module.exports = Flickr;
+
+ReactDOM.render(<Flickr />, target);

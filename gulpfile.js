@@ -40,6 +40,25 @@ gulp.task('scripts', function() {
     .pipe(gulp.dest('public/js/'));
 });
 
+gulp.task('photos', function() {
+ var photoFile = './jsx/photos.jsx';
+
+  var bundler = browserify({
+    extensions: ['.js', '.es6.js', '.jsx'],
+    transform: ['babelify']
+  });
+
+  bundler.add(photoFile);
+
+  var stream = bundler.bundle();
+  stream.on('error', function (err) { console.error(err.toString()) });
+
+  stream
+    .pipe(source(photoFile))
+    .pipe(rename('photos.js'))
+    .pipe(gulp.dest('public/js/'));
+});
+
 gulp.task('compress', function() {
   return gulp.src('./public/js/index.js')
     .pipe(uglify())
