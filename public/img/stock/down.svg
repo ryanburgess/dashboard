@@ -3,8 +3,15 @@
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 404.308 404.309" style="enable-background:new 0 0 404.308 404.309;"
 	 xml:space="preserve">
+  <defs>
+    <filter id="shadow" x="0" y="0" width="200%" height="200%">
+      <feOffset result="offOut" in="SourceAlpha" dx="20" dy="20" />
+      <feGaussianBlur result="blurOut" in="offOut" stdDeviation="10" />
+      <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+    </filter>
+  </defs>
 <g>
-	<path style="fill:#ffffff;" d="M0,101.08h404.308L202.151,303.229L0,101.08z"/>
+	<path filter="url(#shadow)" style="fill:#ffffff;" d="M0,101.08h404.308L202.151,303.229L0,101.08z"/>
 </g>
 <g>
 </g>
