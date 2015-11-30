@@ -4,7 +4,7 @@
   "description": "Morning dashboard",
   "main": "app.js",
   "scripts": {
-    "preinstall": "gulp scripts compress",
+    "postinstall": "gulp scripts compress",
     "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
