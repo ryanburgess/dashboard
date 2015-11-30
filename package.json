@@ -5,14 +5,16 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "postinstall": "gulp scripts && gulp compress && gulp sass"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Ryan Burgess @burgessdryan",
   "license": "MIT",
   "dependencies": {
     "ejs": "^2.3.4",
     "express": "^4.13.3",
-    "react": "^0.14.3",
+    "react": "^0.14.3"
+  },
+  "devDependencies": {
     "babel": "^5.1.11",
     "babelify": "^6.0.2",
     "browserify": "^9.0.8",
@@ -24,7 +26,5 @@
     "gulp-sass": "^2.0.4",
     "gulp-uglify": "^1.4.2",
     "vinyl-source-stream": "^1.1.0"
-  },
-  "devDependencies": {
   }
 }
