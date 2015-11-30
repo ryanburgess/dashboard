@@ -4,8 +4,5 @@
 *.tmp
 .sass-cache
 *.log
-*.css
-*.min.js
-public/js/*.js
 node_modules/
 config.json
