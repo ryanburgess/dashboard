@@ -183,7 +183,12 @@ var _react2 = _interopRequireDefault(_react);
 var update = undefined;
 var api = undefined;
 var city = undefined;
-var firstLoad = true;
+var flickrPhotos = [];
+var removedPhotos = JSON.parse(localStorage.getItem('remove'));
+
+if (removedPhotos === null) {
+  removedPhotos = [];
+}
 
 var Flickr = _react2['default'].createClass({
   displayName: 'Flickr',
@@ -198,17 +203,26 @@ var Flickr = _react2['default'].createClass({
   componentDidMount: function componentDidMount() {
     var component = this;
     var request = new XMLHttpRequest();
-    request.open('GET', 'https://api.flickr.com/services/rest/?method=flickr.photos.search&page=1&per_page=50&api_key=' + api + '&text=' + city + '+scenic+city&extras=&format=json&content_type=1&accuracy=11&nojsoncallback=1&extras=description,license,date_upload,date_taken,owner_name,icon_server,original_format,last_update,geo,tags,machine_tags,o_dims,views,media,path_alias,url_t,url_s,url_q,url_m,url_n,url_z,url_c,url_l', true);
+    request.open('GET', 'https://api.flickr.com/services/rest/?method=flickr.photos.search&page=1&per_page=150&api_key=' + api + '&text=' + city + '+scenic+city&extras=&format=json&content_type=1&accuracy=11&nojsoncallback=1&extras=description,license,date_upload,date_taken,owner_name,icon_server,original_format,last_update,geo,tags,machine_tags,o_dims,views,media,path_alias,url_t,url_s,url_q,url_m,url_n,url_z,url_c,url_l', true);
 
     request.onload = function () {
       if (request.status >= 200 && request.status < 400) {
         var data = JSON.parse(request.responseText);
-        var pickPhoto = Math.floor(Math.random() * 50 + 1);
-        var photo = data.photos.photo[pickPhoto].url_l;
-        component.setState({ photo: photo });
+        var photos = data.photos.photo;
+        photos.map(function (photo) {
+          if (photo.url_l !== undefined && removedPhotos.indexOf(photo.url_n) < 0) {
+            flickrPhotos.push(photo.url_l);
+          }
+        });
+
+        component.loadPhotos();
       }
     };
     request.send();
+  },
+  loadPhotos: function loadPhotos() {
+    var pickPhoto = Math.floor(Math.random() * flickrPhotos.length);
+    this.setState({ photo: flickrPhotos[pickPhoto] });
   },
   render: function render() {
     var _props = this.props;
@@ -219,10 +233,15 @@ var Flickr = _react2['default'].createClass({
       backgroundImage: 'url(' + this.state.photo + ')'
     };
 
-    // run update
-    if (hourUpdate > update || this.state.photo === undefined) {
+    // set update to hourUpdate value
+    if (update === 0 && hourUpdate !== undefined) {
       update = hourUpdate;
-      this.componentDidMount();
+    }
+
+    // run update
+    if (hourUpdate > update) {
+      update = hourUpdate;
+      //this.loadPhotos();
     }
 
     return _react2['default'].createElement(
