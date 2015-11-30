@@ -6,6 +6,10 @@ app.get('/', function (req, res) {
   res.render('./index.ejs', {});
 })
 
+app.get('/photos', function (req, res) {
+  res.render('./photos.ejs', {});
+})
+
 app.use(express.static(__dirname + '/public'));
 
 var port = process.env.PORT || 3000;
