@@ -2,84 +2,70 @@ import React from 'react';
 import config from '../config.json';
 const teams = config.sports.mlb;
 
-var output = [];
-Array.prototype.contains = function(obj) {
-  var i = this.length;
-  while (i--) {
-    if (this[i] === obj) {
-      return true;
-    }
-  }
-  return false;
-}
-var getGames = () => {
-  let d = new Date();
-  let m = d.getMonth() + 1;
-  let dd = d.getDate();
-  let y = d.getFullYear();
+let output = [];
+const getGames = () => {
+  const d = new Date();
+  const m = d.getMonth() + 1;
+  const dd = d.getDate();
+  const y = d.getFullYear();
 
-  if(m <= 9){
+  if(m <= 9) {
     m = '0' + m;
   }
-  if(dd <= 9){
+  if(dd <= 9) {
     dd = '0' + dd;
   }
 
-  let request = new XMLHttpRequest();
-  request.open('GET', 'http://gd2.mlb.com/components/game/mlb/year_'+ y +'/month_'+ m +'/day_'+ dd +'/master_scoreboard.json', true);
+  const request = new XMLHttpRequest();
+  request.open('GET', 'http://gd2.mlb.com/components/game/mlb/year_' + y + '/month_'
+    + m + '/day_' + dd + '/master_scoreboard.json', true);
 
-  request.onload = function() {
+  request.onload = () => {
     if (request.status >= 200 && request.status < 400) {
-      let data = JSON.parse(request.responseText);
-      let games = data.data.games.game;
+      const data = JSON.parse(request.responseText);
+      const games = data.data.games.game;
       output = [];
-      
-      if(games !== undefined){
-        if(games.length !== undefined){
-          games.map(function(game, i){
-            let away = game.away_team_city;
-            let home = game.home_team_city;
-            let time = game.time;
-            let timeZone = game.time_zone;
-            let venue = game.venue;
-            let awayTeam = game.away_team_name;
-            let homeTeam = game.home_team_name;
+      if(games !== undefined) {
+        if(games.length !== undefined) {
+          games.map(function(game) {
+            const time = game.time;
+            const timeZone = game.time_zone;
+            const awayTeam = game.away_team_name;
+            const homeTeam = game.home_team_name;
 
             // only output teams in the config file
-            if(teams.contains(homeTeam) || teams.contains(awayTeam)){
-              output.push(homeTeam + ' vs. '  + awayTeam + ' ' + time + ' ' + timeZone);
+            if(teams.indexOf(homeTeam) > -1 || teams.indexOf(awayTeam) > -1) {
+              output.push(homeTeam + ' vs. ' + awayTeam + ' ' + time + ' ' + timeZone);
             }
           });
-        }else{
-          let away = games.away_team_city;
-          let home = games.home_team_city;
-          let time = games.time;
-          let timeZone = games.time_zone;
-          let venue = games.venue;
-          let awayTeam = games.away_team_name;
-          let homeTeam = games.home_team_name;
+        } else {
+          const time = games.time;
+          const timeZone = games.time_zone;
+          const awayTeam = games.away_team_name;
+          const homeTeam = games.home_team_name;
 
           // only output teams in the config file
-          if(teams.contains(homeTeam) || teams.contains(awayTeam)){
-            output.push(homeTeam + ' vs. '  + awayTeam + ' ' + time + ' ' + timeZone);
+          if(teams.indexOf(homeTeam) > -1 || teams.indexOf(awayTeam) > -1) {
+            output.push(homeTeam + ' vs. ' + awayTeam + ' ' + time + ' ' + timeZone);
           }
         }
       }
     }
   };
   request.send();
-}
+};
 
-var MLB = React.createClass({
+const MLB = React.createClass({
+  displayName: 'MLB',
   getInitialState() {
     getGames();
-    return {games: output};
+    return { games: output };
   },
   render() {
     return (
       <ul className='mlb'>
-        {output.map(function(item, i){
-          return <li key={i}>{item}</li>;
+        {output.map(function(item, i) {
+          return <li key={i}>{ item }</li>;
         })}
       </ul>
     );
