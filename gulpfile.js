@@ -72,6 +72,6 @@ gulp.task('sass', function () {
 
 gulp.task('watch', function() {
   gulp.watch('sass/**/*.scss', ['sass']);
-  gulp.watch(['./jsx/**/*'], ['lint'/*, 'scripts', 'compress'*/]);
+  gulp.watch(['./jsx/**/*'], ['lint', 'scripts', 'compress']);
 });
 gulp.task('default', ['watch']);
