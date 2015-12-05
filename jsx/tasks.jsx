@@ -1,25 +1,25 @@
 import React from 'react';
 
 const Tasks = React.createClass({
+  displayName: 'Tasks',
   render() {
     let daily = [''];
-    let today = this.props.day;
+    const today = this.props.day;
 
-    if(this.props.daily !== undefined){
+    if(this.props.daily !== undefined) {
       daily = this.props.daily;
     }
 
     return (
       <ul className='tasks'>
-          {daily.map(function(item, i){
-            if(item.day === today || item.day === 'All'){
-              let image = 'img/tasks/' + item.img;
+          {daily.map(function(item, i) {
+            if(item.day === today || item.day === 'All') {
+              const image = 'img/tasks/' + item.img;
               return <li key={i}>{item.task} <img src={image} /></li>;
             }
           })}
       </ul>
     );
-    
   }
 });
 

@@ -10,12 +10,7 @@ var replace = require('gulp-replace');
 
 gulp.task('lint', function () {
   return gulp.src(['jsx/**/*'])
-  .pipe(eslint({
-    rules: {
-      'strict': 2,
-      'quotes': 1
-    }
-  }))
+  .pipe(eslint())
   .pipe(eslint.format())
   .pipe(eslint.failAfterError());
 });
@@ -77,6 +72,6 @@ gulp.task('sass', function () {
 
 gulp.task('watch', function() {
   gulp.watch('sass/**/*.scss', ['sass']);
-  gulp.watch(['./jsx/**/*'], ['scripts', 'compress']);
+  gulp.watch(['./jsx/**/*'], ['lint'/*, 'scripts', 'compress'*/]);
 });
 gulp.task('default', ['watch']);

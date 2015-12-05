@@ -1,16 +1,17 @@
-module.exports = function() {
+module.exports = () => {
+  'use stict';
+  const currentTime = new Date();
   let output;
-  let currentTime = new Date();
   let diem = 'AM';
   let h = currentTime.getHours();
   let m = currentTime.getMinutes();
   let s = currentTime.getSeconds();
 
-  if (h == 0) {
+  if (h === 0) {
     h = 12;
-  } else if (h > 12) { 
+  }else if (h > 12) {
     h = h - 12;
-    diem='PM';
+    diem = 'PM';
   }
 
   if (m < 10) {
@@ -23,7 +24,7 @@ module.exports = function() {
     hours: h,
     minutes: m,
     seconds: s,
-    diem: diem
-  }
+    diem
+  };
   return output;
 };

@@ -1,13 +1,14 @@
 import React from 'react';
 let update = 0;
 const Day = React.createClass({
+  displayName: 'Day',
   getInitialState() {
     return {};
   },
   componentDidMount() {
-    let d = new Date();
-    let weekday = new Array(7);
-    weekday[0]=  'Sunday';
+    const d = new Date();
+    const weekday = new Array(7);
+    weekday[0] = 'Sunday';
     weekday[1] = 'Monday';
     weekday[2] = 'Tuesday';
     weekday[3] = 'Wednesday';
@@ -15,20 +16,20 @@ const Day = React.createClass({
     weekday[5] = 'Friday';
     weekday[6] = 'Saturday';
 
-    let day = weekday[d.getDay()];
+    const day = weekday[d.getDay()];
 
-    this.setState({day: day});
+    this.setState({ day });
   },
   render() {
-    const {dayUpdate} = this.props;
+    const { dayUpdate } = this.props;
     // run update
-    if(dayUpdate > update){
+    if(dayUpdate > update) {
       update = dayUpdate;
       this.componentDidMount();
     }
 
     return (
-      <p className='day'>{this.state.day}</p>
+      <p className='day'>{ this.state.day }</p>
     );
   }
 });
