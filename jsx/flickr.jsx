@@ -16,7 +16,7 @@ const Flickr = React.createClass({
     api = this.props.api;
     city = this.props.city;
     city = city.replace(' ', '+');
-    return { photo: '' };
+    return { photo: '', removePhotoClass: 'hide photo-skip' };
   },
   componentDidMount() {
     const component = this;
@@ -43,14 +43,26 @@ const Flickr = React.createClass({
     request.send();
 
   },
+  removePhoto(item) {
+    removedPhotos.push(item);
+    localStorage.setItem('remove', JSON.stringify(removedPhotos));
+    this.loadPhotos();
+  },
   loadPhotos() {
     const pickPhoto = Math.floor((Math.random() * flickrPhotos.length));
     this.setState({ photo: flickrPhotos[pickPhoto] });
+    this.hideRemovePhoto();
+  },
+  hideRemovePhoto() {
+    this.setState({ removePhotoClass: 'hide photo-skip' });
+  },
+  showRemovePhoto() {
+    this.setState({ removePhotoClass: 'photo-skip' });
   },
   render() {
     const component = this;
     const { hourUpdate, children } = this.props;
-    console.log(this.state.photo);
+
     const divStyle = {
       backgroundImage: 'url(' + this.state.photo + ')'
     };
@@ -69,7 +81,13 @@ const Flickr = React.createClass({
     return (
       <div className='flickr' style={ divStyle }>
           { children }
-          <button className='change' onClick={ component.loadPhotos }></button>
+          <button className='change' onClick={ component.showRemovePhoto }></button>
+          <div className={ this.state.removePhotoClass }>
+            <h2>Remove photo</h2>
+            <button className='yes' onClick={ component.loadPhotos.bind(this, this.state.photo) }>Yes</button>
+            <button className='no' onClick={ component.loadPhotos }>No, just skip</button>
+            <button className='cancel' onClick={ component.hideRemovePhoto }>Cancel</button>
+          </div>
       </div>
     );
   }

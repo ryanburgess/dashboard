@@ -7,6 +7,7 @@ var source = require('vinyl-source-stream');
 var eslint = require('gulp-eslint');
 var uglify = require('gulp-uglify');
 var replace = require('gulp-replace');
+var livereload = require('gulp-livereload');
 
 gulp.task('lint', function () {
   return gulp.src(['jsx/**/*'])
@@ -67,10 +68,12 @@ gulp.task('sass', function () {
   return gulp.src('sass/**/*.scss')
     .pipe(sass())
     .pipe(minifyCSS())
-    .pipe(gulp.dest('./public/css/'));
+    .pipe(gulp.dest('./public/css/'))
+    .pipe(livereload());
 });
 
 gulp.task('watch', function() {
+  livereload.listen();
   gulp.watch('sass/**/*.scss', ['sass']);
   gulp.watch(['./jsx/**/*'], ['lint', 'scripts', 'compress']);
 });

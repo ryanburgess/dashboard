@@ -195,7 +195,7 @@ var Flickr = _react2['default'].createClass({
     api = this.props.api;
     city = this.props.city;
     city = city.replace(' ', '+');
-    return { photo: '' };
+    return { photo: '', removePhotoClass: 'hide photo-skip' };
   },
   componentDidMount: function componentDidMount() {
     var component = this;
@@ -217,9 +217,21 @@ var Flickr = _react2['default'].createClass({
     };
     request.send();
   },
+  removePhoto: function removePhoto(item) {
+    removedPhotos.push(item);
+    localStorage.setItem('remove', JSON.stringify(removedPhotos));
+    this.loadPhotos();
+  },
   loadPhotos: function loadPhotos() {
     var pickPhoto = Math.floor(Math.random() * flickrPhotos.length);
     this.setState({ photo: flickrPhotos[pickPhoto] });
+    this.hideRemovePhoto();
+  },
+  hideRemovePhoto: function hideRemovePhoto() {
+    this.setState({ removePhotoClass: 'hide photo-skip' });
+  },
+  showRemovePhoto: function showRemovePhoto() {
+    this.setState({ removePhotoClass: 'photo-skip' });
   },
   render: function render() {
     var component = this;
@@ -227,7 +239,6 @@ var Flickr = _react2['default'].createClass({
     var hourUpdate = _props.hourUpdate;
     var children = _props.children;
 
-    console.log(this.state.photo);
     var divStyle = {
       backgroundImage: 'url(' + this.state.photo + ')'
     };
@@ -247,7 +258,31 @@ var Flickr = _react2['default'].createClass({
       'div',
       { className: 'flickr', style: divStyle },
       children,
-      _react2['default'].createElement('button', { className: 'change', onClick: component.loadPhotos })
+      _react2['default'].createElement('button', { className: 'change', onClick: component.showRemovePhoto }),
+      _react2['default'].createElement(
+        'div',
+        { className: this.state.removePhotoClass },
+        _react2['default'].createElement(
+          'h2',
+          null,
+          'Remove photo'
+        ),
+        _react2['default'].createElement(
+          'button',
+          { className: 'yes', onClick: component.loadPhotos.bind(this, this.state.photo) },
+          'Yes'
+        ),
+        _react2['default'].createElement(
+          'button',
+          { className: 'no', onClick: component.loadPhotos },
+          'No, just skip'
+        ),
+        _react2['default'].createElement(
+          'button',
+          { className: 'cancel', onClick: component.hideRemovePhoto },
+          'Cancel'
+        )
+      )
     );
   }
 });
