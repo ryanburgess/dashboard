@@ -84,7 +84,7 @@ const Flickr = React.createClass({
           <button className='change' onClick={ component.showRemovePhoto }></button>
           <div className={ this.state.removePhotoClass }>
             <h2>Remove photo</h2>
-            <button className='yes' onClick={ component.loadPhotos.bind(this, this.state.photo) }>Yes</button>
+            <button className='yes' onClick={ component.removePhoto.bind(this, this.state.photo) }>Yes</button>
             <button className='no' onClick={ component.loadPhotos }>No, just skip</button>
             <button className='cancel' onClick={ component.hideRemovePhoto }>Cancel</button>
           </div>
