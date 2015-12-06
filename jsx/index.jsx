@@ -9,6 +9,7 @@ import getDay from './get-day';
 import renderTime from './time';
 import Stock from './stock';
 import Flickr from './flickr';
+import Menu from './menu';
 import config from '../config.json';
 
 let currentDay;
@@ -74,6 +75,7 @@ const App = React.createClass({
     return (
       <Flickr hourUpdate={ this.state.hours } city={ this.state.city } api={ this.state.flickrApi }>
         <div className='content'>
+          <Menu city={ this.state.city } degrees={ this.state.degree } />
           <MonthDay dayUpdate={ this.state.dayUpdate } />
           <Day dayUpdate={ this.state.dayUpdate } />
           <Clock hours={ this.state.hours } minutes={ this.state.minutes }

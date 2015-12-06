@@ -1,0 +1,65 @@
+// File Name: _menu.scss
+// Description: Settines menu
+// Used by: style.scss, 
+// Dependencies: 
+// Date created: 05/12/2015
+// ------------------------------------------------------------
+
+.menu-button{
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  background: url(../img/menu.svg) no-repeat;
+  width: 30px;
+  height: 30px;
+  border:none;
+  z-index: 2;
+}
+
+.settings{
+  text-align: left;
+  background: rgba(255, 255, 255, 0.7);
+  padding:100px 30px 30px 30px;
+  color: #333;
+  position: absolute;
+  top: 0;
+  left: 0;
+  @include rem("font-size", 16);
+  text-shadow: none;
+
+  label{
+    margin-right: 5px;
+  }
+
+  input{
+    padding: 2px 5px;
+    border:none;
+    @include roundedCorners(5);
+  }
+
+  legend{
+    @include rem("font-size", 22);
+    margin-bottom: 10px;
+  }
+
+  fieldset{
+    margin-bottom: 30px;
+  }
+
+  .buttons{
+    float:right;
+  }
+  .save{
+    
+  }
+  .cancel{
+    @include rem("font-size", 14);
+    margin-right: 5px;
+    color:#333;
+    text-decoration: none;
+
+    &:hover, &:focus{
+      text-decoration: underline;
+    }
+  }
+}
