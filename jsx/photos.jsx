@@ -59,4 +59,4 @@ const Flickr = React.createClass({
 });
 
 module.exports = Flickr;
-ReactDOM.render(<Flickr />, 'target');
+ReactDOM.render(<Flickr />, target);
