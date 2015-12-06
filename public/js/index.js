@@ -200,7 +200,7 @@ var Flickr = _react2['default'].createClass({
   componentDidMount: function componentDidMount() {
     var component = this;
     var request = new XMLHttpRequest();
-    request.open('GET', 'https://api.flickr.com/services/rest/?method=flickr.photos.search&page=1&per_page=150&api_key=' + api + '&text=' + city + '+scenic+city&extras=&format=json&content_type=1&accuracy=11&nojsoncallback=1', true);
+    request.open('GET', 'https://api.flickr.com/services/rest/?method=flickr.photos.search&page=1&per_page=150&api_key=' + api + '&text=' + city + '+scenic+city&extras=&format=json&content_type=1&accuracy=11&nojsoncallback=1' + '&extras=description%2Clicense%2Cdate_upload%2Cdate_taken%2Cowner_name%2Cicon_server%2Coriginal_format' + '%2Clast_update%2Cgeo%2Ctags%2Cmachine_tags%2Co_dims%2Cviews%2Cmedia%2Cpath_alias%2Curl_t%2Curl_s' + '%2Curl_q%2Curl_m%2Curl_n%2Curl_z%2Curl_c%2Curl_l', true);
 
     request.onload = function () {
       if (request.status >= 200 && request.status < 400) {
@@ -227,6 +227,7 @@ var Flickr = _react2['default'].createClass({
     var hourUpdate = _props.hourUpdate;
     var children = _props.children;
 
+    console.log(this.state.photo);
     var divStyle = {
       backgroundImage: 'url(' + this.state.photo + ')'
     };
