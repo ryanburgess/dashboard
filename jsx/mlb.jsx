@@ -5,8 +5,8 @@ const teams = config.sports.mlb;
 let output = [];
 const getGames = () => {
   const d = new Date();
-  const m = d.getMonth() + 1;
-  const dd = d.getDate();
+  let m = d.getMonth() + 1;
+  let dd = d.getDate();
   const y = d.getFullYear();
 
   if(m <= 9) {

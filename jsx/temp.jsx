@@ -15,10 +15,10 @@ const Temp = React.createClass({
     request.onload = () => {
       if (request.status >= 200 && request.status < 400) {
         const data = JSON.parse(request.responseText);
-        const temp = data.current_observation.temp_f;
+        let temp = data.current_observation.temp_f;
         const weather = data.current_observation.weather;
-        const feels = data.current_observation.feelslike_f;
-        const icon = data.current_observation.icon_url;
+        let feels = data.current_observation.feelslike_f;
+        let icon = data.current_observation.icon_url;
         icon = icon.replace('http://icons.wxug.com/i/c/k/', 'img/weather/').replace('.gif', '.svg').replace('_', '-');
         temp = temp.toFixed(0);
         feels = Number(feels).toFixed(0);
