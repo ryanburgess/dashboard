@@ -40,6 +40,9 @@ const Flickr = React.createClass({
     request.send();
 
   },
+  removePhoto() {
+
+  },
   loadPhotos() {
     const pickPhoto = Math.floor((Math.random() * flickrPhotos.length));
     this.setState({ photo: flickrPhotos[pickPhoto] });
@@ -66,6 +69,12 @@ const Flickr = React.createClass({
       <div className='flickr' style={ divStyle }>
           { children }
           <button className='change' onClick={ component.loadPhotos }></button>
+          <div className='photo-skip'>
+            <h2>Remove photo</h2>
+            <button className='yes' onClick={ component.loadPhotos.bind(this, this.state.photo) }>Yes</button>
+            <button className='no' onClick={ component.loadPhotos }>No, just skip</button>
+            <button className='cancel'>Cancel</button>
+          </div>
       </div>
     );
   }
