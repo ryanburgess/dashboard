@@ -69,7 +69,7 @@ gulp.task('sass', function () {
     .pipe(sass())
     .pipe(minifyCSS())
     .pipe(gulp.dest('./public/css/'))
-    .pipe(livereload());
+    .pipe(livereload({ start: true }));
 });
 
 gulp.task('watch', function() {

@@ -18,9 +18,9 @@
 
 .settings{
   text-align: left;
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(0, 0, 0, 0.7);
   padding:100px 30px 30px 30px;
-  color: #333;
+  color: white;
   position: absolute;
   top: 0;
   left: 0;
@@ -50,16 +50,25 @@
     float:right;
   }
   .save{
-    
+    border:2px solid white;
+    @include roundedCorners(5);
+    color: white;
+    background: none;
+
+    &:hover, &:focus{
+      border:2px solid #ccc;
+    }
+  }
+  a, button{
+    color:white;
+
+    &:hover, &:focus{
+      color: #ccc;
+    }
   }
   .cancel{
     @include rem("font-size", 14);
-    margin-right: 5px;
-    color:#333;
+    margin-right: 10px;
     text-decoration: none;
-
-    &:hover, &:focus{
-      text-decoration: underline;
-    }
   }
 }

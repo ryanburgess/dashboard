@@ -4,5 +4,6 @@
 *.tmp
 .sass-cache
 *.log
+*.min.js
 node_modules/
 config.json
