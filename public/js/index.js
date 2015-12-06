@@ -269,7 +269,7 @@ var Flickr = _react2['default'].createClass({
         ),
         _react2['default'].createElement(
           'button',
-          { className: 'yes', onClick: component.loadPhotos.bind(this, this.state.photo) },
+          { className: 'yes', onClick: component.removePhoto.bind(this, this.state.photo) },
           'Yes'
         ),
         _react2['default'].createElement(
