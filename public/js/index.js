@@ -195,12 +195,12 @@ var Flickr = _react2['default'].createClass({
     api = this.props.api;
     city = this.props.city;
     city = city.replace(' ', '+');
-    return { photo: '' };
+    return { photo: '', removePhotoClass: 'hide photo-skip' };
   },
   componentDidMount: function componentDidMount() {
     var component = this;
     var request = new XMLHttpRequest();
-    request.open('GET', 'https://api.flickr.com/services/rest/?method=flickr.photos.search&page=1&per_page=150&api_key=' + api + '&text=' + city + '+scenic+city&extras=&format=json&content_type=1&accuracy=11&nojsoncallback=1', true);
+    request.open('GET', 'https://api.flickr.com/services/rest/?method=flickr.photos.search&page=1&per_page=150&api_key=' + api + '&text=' + city + '+scenic+city&extras=&format=json&content_type=1&accuracy=11&nojsoncallback=1' + '&extras=description%2Clicense%2Cdate_upload%2Cdate_taken%2Cowner_name%2Cicon_server%2Coriginal_format' + '%2Clast_update%2Cgeo%2Ctags%2Cmachine_tags%2Co_dims%2Cviews%2Cmedia%2Cpath_alias%2Curl_t%2Curl_s' + '%2Curl_q%2Curl_m%2Curl_n%2Curl_z%2Curl_c%2Curl_l', true);
 
     request.onload = function () {
       if (request.status >= 200 && request.status < 400) {
@@ -217,10 +217,21 @@ var Flickr = _react2['default'].createClass({
     };
     request.send();
   },
-  removePhoto: function removePhoto() {},
+  removePhoto: function removePhoto(item) {
+    removedPhotos.push(item);
+    localStorage.setItem('remove', JSON.stringify(removedPhotos));
+    this.loadPhotos();
+  },
   loadPhotos: function loadPhotos() {
     var pickPhoto = Math.floor(Math.random() * flickrPhotos.length);
     this.setState({ photo: flickrPhotos[pickPhoto] });
+    this.hideRemovePhoto();
+  },
+  hideRemovePhoto: function hideRemovePhoto() {
+    this.setState({ removePhotoClass: 'hide photo-skip' });
+  },
+  showRemovePhoto: function showRemovePhoto() {
+    this.setState({ removePhotoClass: 'photo-skip' });
   },
   render: function render() {
     var component = this;
@@ -247,10 +258,10 @@ var Flickr = _react2['default'].createClass({
       'div',
       { className: 'flickr', style: divStyle },
       children,
-      _react2['default'].createElement('button', { className: 'change', onClick: component.loadPhotos }),
+      _react2['default'].createElement('button', { className: 'change', onClick: component.showRemovePhoto }),
       _react2['default'].createElement(
         'div',
-        { className: 'photo-skip' },
+        { className: this.state.removePhotoClass },
         _react2['default'].createElement(
           'h2',
           null,
@@ -268,7 +279,7 @@ var Flickr = _react2['default'].createClass({
         ),
         _react2['default'].createElement(
           'button',
-          { className: 'cancel' },
+          { className: 'cancel', onClick: component.hideRemovePhoto },
           'Cancel'
         )
       )
