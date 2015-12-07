@@ -24,4 +24,5 @@ Created with React and Express.
 * Word of the day
 * Pull in Trello
 * Pull in Google Calendar
-
+* Black background option
+* Multiple stocks at one time
