@@ -1,0 +1,102 @@
+// File Name: _menu.scss
+// Description: Settines menu
+// Used by: style.scss, 
+// Dependencies: 
+// Date created: 05/12/2015
+// ------------------------------------------------------------
+
+.menu-button{
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  background: url(../img/menu.svg) no-repeat;
+  width: 30px;
+  height: 30px;
+  border:none;
+  z-index: 2;
+}
+
+.settings{
+  text-align: left;
+  background: rgba(0, 0, 0, 0.7);
+  padding:100px 30px 30px 30px;
+  color: white;
+  position: absolute;
+  top: 0;
+  left: 0;
+  @include rem("font-size", 16);
+  text-shadow: none;
+
+  select{
+    margin-left: 5px;
+  }
+
+  input{
+    padding: 2px 5px;
+    margin-left: 5px;
+    border:none;
+    @include roundedCorners(5);
+  }
+
+  legend{
+    @include rem("font-size", 22);
+    margin-bottom: 10px;
+    border-bottom:1px solid white;
+    width:100%;
+    padding-bottom:5px;
+  }
+
+  fieldset{
+    margin-bottom: 30px;
+  }
+  .split{
+    margin-top:10px;
+  }
+  .buttons{
+    @extend %right;
+    margin-bottom: 30px;
+    @extend %clearfix;
+  }
+  .save{
+    border:2px solid white;
+    @include roundedCorners(5);
+    color: white;
+    background: none;
+    padding: 5px 10px;
+    @include rem("font-size", 18);
+
+    &:hover, &:focus{
+      border:2px solid #ccc;
+    }
+  }
+  a, button{
+    color:white;
+
+    &:hover, &:focus{
+      color: #ccc;
+    }
+  }
+  .cancel{
+    margin-right: 10px;
+    text-decoration: none;
+  }
+
+  .issues{
+    clear:both;
+    text-align: center;
+    padding-top: 30px;
+    border-top:1px solid white;
+
+    a{
+      text-decoration: none;
+      border:2px solid white;
+      @include roundedCorners(5);
+      padding: 5px 10px;
+
+      &:hover, &:focus{
+        border:2px solid #ccc;
+        color:#ccc;
+      }
+    }
+  }
+}

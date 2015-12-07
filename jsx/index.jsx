@@ -9,12 +9,24 @@ import getDay from './get-day';
 import renderTime from './time';
 import Stock from './stock';
 import Flickr from './flickr';
+import Menu from './menu';
 import config from '../config.json';
+import storage from './local-storage';
 
 let currentDay;
 let currentHour;
 let hourUpdate = 0;
 let dayUpdate = 0;
+
+// set storage of settings
+storage(config.settings.city, config.settings.state, config.settings.degree, config.stock.symbol);
+
+// stored settings
+const storedItems = {
+  'city': localStorage.getItem('city'),
+  'state': localStorage.getItem('state'),
+  'degrees': localStorage.getItem('degrees')
+};
 
 // use a set interval mixin for timer
 const SetIntervalMixin = {
@@ -46,8 +58,9 @@ const App = React.createClass({
   displayName: 'MorningDashboard',
   mixins: [SetIntervalMixin],
   getInitialState() {
-    return { day: getDay(), daily: config.tasks, stock: config.stock.symbol, city: config.settings.city,
-      degree: config.settings.degree, weatherApi: config.api.weather, flickrApi: config.api.flickr };
+    return { day: getDay(), daily: config.tasks, stock: config.stock.symbol, city: storedItems.city,
+      state: storedItems.state, degree: storedItems.degrees, weatherApi: config.api.weather,
+       flickrApi: config.api.flickr };
   },
   componentDidMount() {
     this.setInterval(this.tick, 1000);
@@ -74,12 +87,14 @@ const App = React.createClass({
     return (
       <Flickr hourUpdate={ this.state.hours } city={ this.state.city } api={ this.state.flickrApi }>
         <div className='content'>
+          <Menu city={ this.state.city } state={ this.state.state } degrees={ this.state.degree }
+           stock={ this.state.stock } />
           <MonthDay dayUpdate={ this.state.dayUpdate } />
           <Day dayUpdate={ this.state.dayUpdate } />
           <Clock hours={ this.state.hours } minutes={ this.state.minutes }
           seconds={this.state.seconds} diem={ this.state.diem } />
-          <Temp city={ this.state.city } degree={ this.state.degree } api={ this.state.weatherApi }
-          hourUpdate={ this.state.hourUpdate } />
+          <Temp city={ this.state.city } state={ this.state.state } degree={ this.state.degree }
+           api={ this.state.weatherApi } hourUpdate={ this.state.hourUpdate } />
           <Tasks day={this.state.day } daily={ this.state.daily} dayUpdate={ this.state.dayUpdate } />
           <MLB day={ this.state.day } dayUpdate={ this.state.dayUpdate } />
           <Stock stock={ this.state.stock } hourUpdate={ this.state.hourUpdate } />

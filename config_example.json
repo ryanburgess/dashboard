@@ -1,6 +1,8 @@
 { 
   "settings": {
-    "city": "<your_city>"
+    "city": "<your_city>", // eg: San Francisco
+    "state": "<your_state_code", // eg: CA
+    "degree": "F" // eg: F or C
   },
   "api": {
     "weather": "<your_api_token>",
