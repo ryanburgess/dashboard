@@ -15,8 +15,15 @@ import storage from './local-storage';
 
 let currentDay;
 let currentHour;
+<<<<<<< HEAD
 let hourUpdate = 0;
 let dayUpdate = 0;
+=======
+let currentFif;
+let hourUpdate = 0;
+let dayUpdate = 0;
+let fifteenUpdate = 0;
+>>>>>>> d45a9c67457775c005984bcbbd70add72b3c2491
 
 // set storage of settings
 storage(config.settings.city, config.settings.state, config.settings.degree, config.stock.symbol);
@@ -69,6 +76,18 @@ const App = React.createClass({
   tick() {
     const today = getDay();
     const time = renderTime();
+<<<<<<< HEAD
+=======
+    const mins = Number(time.minutes);
+
+    // make calls every 15 minutes
+    if((mins === 15 || mins === 30 || mins === 45 || currentFif === undefined) && currentFif !== mins) {
+      fifteenUpdate++;
+      currentFif = mins;
+      this.setState({ fifteen: fifteenUpdate });
+    }
+
+>>>>>>> d45a9c67457775c005984bcbbd70add72b3c2491
     // make calls by the day change
     if(today !== currentDay || currentDay === undefined) {
       dayUpdate++;
@@ -86,7 +105,11 @@ const App = React.createClass({
   },
   render() {
     return (
+<<<<<<< HEAD
       <Flickr hourUpdate={ this.state.hours } city={ this.state.city } api={ this.state.flickrApi }>
+=======
+      <Flickr hourUpdate={ this.state.fifteen } city={ this.state.city } api={ this.state.flickrApi }>
+>>>>>>> d45a9c67457775c005984bcbbd70add72b3c2491
         <div className='content'>
           <Menu city={ this.state.city } state={ this.state.state } degrees={ this.state.degree }
            stock={ this.state.stock } />
