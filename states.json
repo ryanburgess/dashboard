@@ -7,20 +7,12 @@
    "state": "Alabama"
 },
 {
-   "value": "AB",
-   "state": "Alberta"
-},
-{
    "value": "AR",
    "state": "Arkansas"
 },
 {
    "value": "AZ",
    "state": "Arizona"
-},
-{
-   "value": "BC",
-   "state": "British Columbia"
 },
 {
    "value": "CA",
@@ -87,10 +79,6 @@
    "state": "Massachusetts"
 },
 {
-   "value": "MB",
-   "state": "Manitoba"
-},
-{
    "value": "MD",
    "state": "Maryland"
 },
@@ -131,14 +119,6 @@
    "state": "Nebraska"
 },
 {
-   "value": "NB",
-   "state": "New Brunswick"
-},
-{
-   "value": "NF",
-   "state": "Newfoundland"
-},
-{
    "value": "NH",
    "state": "New Hampshire"
 },
@@ -159,28 +139,12 @@
    "state": "New York"
 },
 {
-   "value": "NT",
-   "state": "Northwest Territories"
-},
-{
-   "value": "NS",
-   "state": "Nova Scotia"
-},
-{
-   "value": "NU",
-   "state": "Nunavut"
-},
-{
    "value": "OH",
    "state": "Ohio"
 },
 {
    "value": "OK",
    "state": "Oklahoma"
-},
-{
-   "value": "ON",
-   "state": "Ontario"
 },
 {
    "value": "OR",
@@ -191,24 +155,12 @@
    "state": "Pennsylvania"
 },
 {
-   "value": "PE",
-   "state": "Prince Edward Island"
-},
-{
    "value": "PR",
    "state": "Puerto Rico"
 },
 {
-   "value": "QC",
-   "state": "Quebec"
-},
-{
    "value": "RI",
    "state": "Rhode Island"
-},
-{
-   "value": "SK",
-   "state": "Saskatchewan"
 },
 {
    "value": "SC",
@@ -253,8 +205,4 @@
 {
    "value": "WY",
    "state": "Wyoming"
-},
-{
-   "value": "YT",
-   "state": "Yukon Territory"
 }]
