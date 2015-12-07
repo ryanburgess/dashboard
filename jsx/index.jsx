@@ -87,7 +87,8 @@ const App = React.createClass({
     return (
       <Flickr hourUpdate={ this.state.hours } city={ this.state.city } api={ this.state.flickrApi }>
         <div className='content'>
-          <Menu city={ this.state.city } state={ this.state.state } degrees={ this.state.degree } />
+          <Menu city={ this.state.city } state={ this.state.state } degrees={ this.state.degree }
+           stock={ this.state.stock } />
           <MonthDay dayUpdate={ this.state.dayUpdate } />
           <Day dayUpdate={ this.state.dayUpdate } />
           <Clock hours={ this.state.hours } minutes={ this.state.minutes }

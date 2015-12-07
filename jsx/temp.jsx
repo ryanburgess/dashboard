@@ -15,17 +15,16 @@ const Temp = React.createClass({
     request.onload = () => {
       if (request.status >= 200 && request.status < 400) {
         const data = JSON.parse(request.responseText);
-        console.log(data.current_observation);
 
         // get the tempurature
         let temp;
         let feels;
         if(degree === 'C') {
           temp = data.current_observation.temp_c;
-          data.current_observation.feelslike_c;
+          feels = data.current_observation.feelslike_c;
         }else {
           temp = data.current_observation.temp_f;
-          data.current_observation.feelslike_f;
+          feels = data.current_observation.feelslike_f;
         }
 
         const weather = data.current_observation.weather;

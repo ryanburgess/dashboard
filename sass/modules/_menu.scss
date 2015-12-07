@@ -27,12 +27,13 @@
   @include rem("font-size", 16);
   text-shadow: none;
 
-  label{
-    margin-right: 5px;
+  select{
+    margin-left: 5px;
   }
 
   input{
     padding: 2px 5px;
+    margin-left: 5px;
     border:none;
     @include roundedCorners(5);
   }
@@ -40,20 +41,29 @@
   legend{
     @include rem("font-size", 22);
     margin-bottom: 10px;
+    border-bottom:1px solid white;
+    width:100%;
+    padding-bottom:5px;
   }
 
   fieldset{
     margin-bottom: 30px;
   }
-
+  .split{
+    margin-top:10px;
+  }
   .buttons{
-    float:right;
+    @extend %right;
+    margin-bottom: 30px;
+    @extend %clearfix;
   }
   .save{
     border:2px solid white;
     @include roundedCorners(5);
     color: white;
     background: none;
+    padding: 5px 10px;
+    @include rem("font-size", 18);
 
     &:hover, &:focus{
       border:2px solid #ccc;
@@ -67,8 +77,26 @@
     }
   }
   .cancel{
-    @include rem("font-size", 14);
     margin-right: 10px;
     text-decoration: none;
+  }
+
+  .issues{
+    clear:both;
+    text-align: center;
+    padding-top: 30px;
+    border-top:1px solid white;
+
+    a{
+      text-decoration: none;
+      border:2px solid white;
+      @include roundedCorners(5);
+      padding: 5px 10px;
+
+      &:hover, &:focus{
+        border:2px solid #ccc;
+        color:#ccc;
+      }
+    }
   }
 }

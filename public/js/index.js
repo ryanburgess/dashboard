@@ -448,7 +448,8 @@ var App = _react2['default'].createClass({
       _react2['default'].createElement(
         'div',
         { className: 'content' },
-        _react2['default'].createElement(_menu2['default'], { city: this.state.city, state: this.state.state, degrees: this.state.degree }),
+        _react2['default'].createElement(_menu2['default'], { city: this.state.city, state: this.state.state, degrees: this.state.degree,
+          stock: this.state.stock }),
         _react2['default'].createElement(_monthDay2['default'], { dayUpdate: this.state.dayUpdate }),
         _react2['default'].createElement(_day2['default'], { dayUpdate: this.state.dayUpdate }),
         _react2['default'].createElement(_clock2['default'], { hours: this.state.hours, minutes: this.state.minutes,
@@ -518,7 +519,7 @@ var Menu = _react2['default'].createClass({
   displayName: 'Menu',
   getInitialState: function getInitialState() {
     return { settingsClass: 'hide settings', settingsOpen: false, city: this.props.city, degrees: this.props.degrees,
-      state: this.props.state };
+      state: this.props.state, stock: this.props.stock };
   },
   componentDidMount: function componentDidMount() {},
   showOpenClose: function showOpenClose() {
@@ -546,7 +547,8 @@ var Menu = _react2['default'].createClass({
     var updateSettings = {
       'city': this.state.city,
       'state': this.state.state,
-      'degrees': this.state.degrees
+      'degrees': this.state.degrees,
+      'stock': this.state.stock
     };
 
     // save updated settings to local storage
@@ -554,6 +556,9 @@ var Menu = _react2['default'].createClass({
 
     // hide settings
     this.hideSettings();
+
+    // reload the page to update settings
+    location.reload();
   },
   render: function render() {
     var component = this;
@@ -584,11 +589,11 @@ var Menu = _react2['default'].createClass({
               onChange: component.onChanged.bind(this, 'city') }),
             _react2['default'].createElement(
               'div',
-              null,
+              { className: 'split' },
               _react2['default'].createElement(
                 'label',
                 { htmlFor: 'state' },
-                'State / Province'
+                'State / Province:'
               ),
               _react2['default'].createElement(
                 'select',
@@ -615,17 +620,33 @@ var Menu = _react2['default'].createClass({
             _react2['default'].createElement(
               'label',
               { htmlFor: 'celcius' },
-              'Celcius'
+              'Celcius',
+              _react2['default'].createElement('input', { type: 'radio', id: 'celcius', name: 'degrees', value: 'C', checked: this.state.degrees === 'C',
+                onChange: component.onChanged.bind(this, 'degrees') })
             ),
-            _react2['default'].createElement('input', { type: 'radio', id: 'celcius', name: 'degrees', value: 'C', checked: this.state.degrees === 'C',
-              onChange: component.onChanged.bind(this, 'degrees') }),
             _react2['default'].createElement(
               'label',
               { htmlFor: 'fahrenheit' },
-              'Fahrenheit'
+              'Fahrenheit',
+              _react2['default'].createElement('input', { type: 'radio', id: 'fahrenheit', name: 'degrees', value: 'F', checked: this.state.degrees === 'F',
+                onChange: component.onChanged.bind(this, 'degrees') })
+            )
+          ),
+          _react2['default'].createElement(
+            'fieldset',
+            null,
+            _react2['default'].createElement(
+              'legend',
+              null,
+              'Stock Settings'
             ),
-            _react2['default'].createElement('input', { type: 'radio', id: 'fahrenheit', name: 'degrees', value: 'F', checked: this.state.degrees === 'F',
-              onChange: component.onChanged.bind(this, 'degrees') })
+            _react2['default'].createElement(
+              'label',
+              { htmlFor: 'stock-symbol' },
+              'Stock Symbol:'
+            ),
+            _react2['default'].createElement('input', { type: 'text', id: 'stock-symbol', defaultValue: this.state.stock,
+              onChange: component.onChanged.bind(this, 'stock') })
           ),
           _react2['default'].createElement(
             'div',
@@ -640,6 +661,15 @@ var Menu = _react2['default'].createClass({
               { className: 'save' },
               'Save'
             )
+          )
+        ),
+        _react2['default'].createElement(
+          'div',
+          { className: 'issues' },
+          _react2['default'].createElement(
+            'a',
+            { href: 'https://github.com/ryanburgess/dashboard/issues', target: '_blank' },
+            'Submit issues'
           )
         )
       )
@@ -918,17 +948,16 @@ var Temp = _react2['default'].createClass({
     request.onload = function () {
       if (request.status >= 200 && request.status < 400) {
         var data = JSON.parse(request.responseText);
-        console.log(data.current_observation);
 
         // get the tempurature
         var temp = undefined;
         var feels = undefined;
         if (degree === 'C') {
           temp = data.current_observation.temp_c;
-          data.current_observation.feelslike_c;
+          feels = data.current_observation.feelslike_c;
         } else {
           temp = data.current_observation.temp_f;
-          data.current_observation.feelslike_f;
+          feels = data.current_observation.feelslike_f;
         }
 
         var weather = data.current_observation.weather;

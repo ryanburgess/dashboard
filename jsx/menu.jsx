@@ -6,7 +6,7 @@ const Menu = React.createClass({
   displayName: 'Menu',
   getInitialState() {
     return { settingsClass: 'hide settings', settingsOpen: false, city: this.props.city, degrees: this.props.degrees,
-     state: this.props.state };
+     state: this.props.state, stock: this.props.stock };
   },
   componentDidMount() {
   },
@@ -35,7 +35,8 @@ const Menu = React.createClass({
     const updateSettings = {
       'city': this.state.city,
       'state': this.state.state,
-      'degrees': this.state.degrees
+      'degrees': this.state.degrees,
+      'stock': this.state.stock
     };
 
     // save updated settings to local storage
@@ -43,6 +44,9 @@ const Menu = React.createClass({
 
     // hide settings
     this.hideSettings();
+
+    // reload the page to update settings
+    location.reload();
   },
   render() {
     const component = this;
@@ -56,8 +60,8 @@ const Menu = React.createClass({
               <label htmlFor='city'>City:</label>
               <input type='text' id='city' defaultValue={ this.state.city }
                onChange={ component.onChanged.bind(this, 'city') } />
-               <div>
-                 <label htmlFor='state'>State / Province</label>
+               <div className='split'>
+                 <label htmlFor='state'>State / Province:</label>
                  <select name='state' id='state' defaultValue={ this.state.state }
                   onChange={ component.onChanged.bind(this, 'state') }>
                    {states.map(function(item, i) {
@@ -68,18 +72,27 @@ const Menu = React.createClass({
             </fieldset>
             <fieldset>
               <legend>Weather Settings</legend>
-              <label htmlFor='celcius'>Celcius</label>
+              <label htmlFor='celcius'>Celcius
               <input type='radio' id='celcius' name='degrees' value='C' checked={ this.state.degrees === 'C' }
-               onChange={ component.onChanged.bind(this, 'degrees') } />
-              <label htmlFor='fahrenheit'>Fahrenheit</label>
+                onChange={ component.onChanged.bind(this, 'degrees') } /></label>
+              <label htmlFor='fahrenheit'>Fahrenheit
               <input type='radio' id='fahrenheit' name='degrees' value='F' checked={ this.state.degrees === 'F' }
-               onChange={ component.onChanged.bind(this, 'degrees') } />
+                onChange={ component.onChanged.bind(this, 'degrees') } /></label>
+            </fieldset>
+            <fieldset>
+              <legend>Stock Settings</legend>
+              <label htmlFor='stock-symbol'>Stock Symbol:</label>
+              <input type='text' id='stock-symbol' defaultValue={ this.state.stock }
+               onChange={ component.onChanged.bind(this, 'stock') } />
             </fieldset>
             <div className='buttons'>
               <a href='#' className='cancel' onClick={ component.hideSettings }>Cancel</a>
               <button className='save'>Save</button>
             </div>
           </form>
+          <div className='issues'>
+            <a href='https://github.com/ryanburgess/dashboard/issues' target='_blank'>Submit issues</a>
+          </div>
         </div>
       </div>
     );

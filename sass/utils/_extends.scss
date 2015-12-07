@@ -5,3 +5,7 @@
 %right {
   float: right;
 }
+
+%clearfix {
+  @include clearfix();
+}
