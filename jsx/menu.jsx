@@ -62,7 +62,7 @@ const Menu = React.createClass({
               <input type='text' id='city' defaultValue={ this.state.city }
                onChange={ component.onChanged.bind(this, 'city') } />
                <div className='split'>
-                 <label htmlFor='state'>State / Province:</label>
+                 <label htmlFor='state'>State:</label>
                  <select name='state' id='state' defaultValue={ this.state.state }
                   onChange={ component.onChanged.bind(this, 'state') }>
                    {states.map(function(item, i) {
