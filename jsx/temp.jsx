@@ -9,18 +9,29 @@ const Temp = React.createClass({
     const component = this;
     const degree = this.props.degree;
     const request = new XMLHttpRequest();
-    request.open('GET', 'http://api.wunderground.com/api/' + this.props.api + '/conditions/q/CA/'
+    request.open('GET', 'http://api.wunderground.com/api/' + this.props.api + '/conditions/q/' + this.props.state + '/'
       + this.props.city + '.json', true);
 
     request.onload = () => {
       if (request.status >= 200 && request.status < 400) {
         const data = JSON.parse(request.responseText);
-        let temp = data.current_observation.temp_f;
+        console.log(data.current_observation);
+
+        // get the tempurature
+        let temp;
+        let feels;
+        if(degree === 'C') {
+          temp = data.current_observation.temp_c;
+          data.current_observation.feelslike_c;
+        }else {
+          temp = data.current_observation.temp_f;
+          data.current_observation.feelslike_f;
+        }
+
         const weather = data.current_observation.weather;
-        let feels = data.current_observation.feelslike_f;
         let icon = data.current_observation.icon_url;
         icon = icon.replace('http://icons.wxug.com/i/c/k/', 'img/weather/').replace('.gif', '.svg').replace('_', '-');
-        temp = temp.toFixed(0);
+        temp = Number(temp).toFixed(0);
         feels = Number(feels).toFixed(0);
 
         // create tempurate object

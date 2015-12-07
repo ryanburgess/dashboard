@@ -1,9 +1,12 @@
 import React from 'react';
+import updateStorage from './update-storage';
+import states from '../states.json';
 
 const Menu = React.createClass({
   displayName: 'Menu',
   getInitialState() {
-    return { settingsClass: 'hide settings', settingsOpen: false, city: this.props.city, degrees: this.props.degrees };
+    return { settingsClass: 'hide settings', settingsOpen: false, city: this.props.city, degrees: this.props.degrees,
+     state: this.props.state };
   },
   componentDidMount() {
   },
@@ -29,6 +32,15 @@ const Menu = React.createClass({
     // prevent form from submitting
     event.preventDefault();
 
+    const updateSettings = {
+      'city': this.state.city,
+      'state': this.state.state,
+      'degrees': this.state.degrees
+    };
+
+    // save updated settings to local storage
+    updateStorage(updateSettings);
+
     // hide settings
     this.hideSettings();
   },
@@ -44,6 +56,15 @@ const Menu = React.createClass({
               <label htmlFor='city'>City:</label>
               <input type='text' id='city' defaultValue={ this.state.city }
                onChange={ component.onChanged.bind(this, 'city') } />
+               <div>
+                 <label htmlFor='state'>State / Province</label>
+                 <select name='state' id='state' defaultValue={ this.state.state }
+                  onChange={ component.onChanged.bind(this, 'state') }>
+                   {states.map(function(item, i) {
+                      return <option key={ i } value={ item.value }>{ item.state }</option>;
+                    })}
+                 </select>
+                </div>
             </fieldset>
             <fieldset>
               <legend>Weather Settings</legend>
