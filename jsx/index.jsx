@@ -25,16 +25,17 @@ storage(config.settings.city, config.settings.state, config.settings.degree, con
 const storedItems = {
   'city': localStorage.getItem('city'),
   'state': localStorage.getItem('state'),
-  'degrees': localStorage.getItem('degrees')
+  'degrees': localStorage.getItem('degrees'),
+  'stock': localStorage.getItem('stock')
 };
 
 // use a set interval mixin for timer
 const SetIntervalMixin = {
-  componentWillMount: function componentWillMount() {
+  componentWillMount() {
     this.intervals = [];
   },
 
-  componentWillUnmount: function componentWillUnmount() {
+  componentWillUnmount() {
     this.intervals.map(clearInterval);
   },
 
@@ -58,7 +59,7 @@ const App = React.createClass({
   displayName: 'MorningDashboard',
   mixins: [SetIntervalMixin],
   getInitialState() {
-    return { day: getDay(), daily: config.tasks, stock: config.stock.symbol, city: storedItems.city,
+    return { day: getDay(), daily: config.tasks, stock: storedItems.stock, city: storedItems.city,
       state: storedItems.state, degree: storedItems.degrees, weatherApi: config.api.weather,
        flickrApi: config.api.flickr };
   },
