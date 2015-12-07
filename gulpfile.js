@@ -32,7 +32,7 @@ gulp.task('scripts', function() {
 
   stream
     .pipe(source(entryFile))
-    .pipe(rename('index.js'))
+    .pipe(rename('dashboard.js'))
     .pipe(gulp.dest('public/js/'));
 });
 
@@ -56,7 +56,7 @@ gulp.task('photos', function() {
 });
 
 gulp.task('compress', function() {
-  return gulp.src('./public/js/index.js')
+  return gulp.src('./public/js/dashboard.js')
     .pipe(uglify())
     .pipe(rename({
        extname: '.min.js'

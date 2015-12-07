@@ -27,6 +27,7 @@ const Menu = React.createClass({
     const change = {};
     change[name] = event.target.value;
     this.setState(change);
+    console.log(change);
   },
   saveSettings(event) {
     // prevent form from submitting
