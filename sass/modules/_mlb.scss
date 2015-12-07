@@ -1,0 +1,11 @@
+// File Name: _mlb.scss
+// Description: Display today's game if Giants or Blue Jays are playing 
+// Used by: style.scss, 
+// Dependencies: 
+// Date created: 04/10/2015
+// ------------------------------------------------------------
+
+.mlb{
+  @include rem("font-size", 34);
+  margin-top: 40px;
+}

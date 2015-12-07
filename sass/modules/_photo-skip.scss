@@ -1,0 +1,47 @@
+// File Name: _photo-skip.scss
+// Description: Skip and remove photos from the background
+// Used by: style.scss, 
+// Dependencies: 
+// Date created: 05/12/2015
+// ------------------------------------------------------------
+
+.photo-skip{
+  background: rgba(255, 255, 255, 0.7);
+  padding:30px;
+  color: #333;
+  position: absolute;
+  bottom: 80px;
+  left: 20px;
+  @include roundedCorners(5);
+  text-align: center;
+
+  h2{
+    @include rem("font-size", 24);
+  }
+
+  &:after{
+    content:"";
+    position: absolute;
+    bottom:-10px;
+    left: 15px;
+    width: 0; 
+    height: 0;
+    @include arrow("down", rgba(255, 255, 255, 0.7), 10);
+  }
+
+  button{
+    margin-left: 20px;
+    padding: 5px 10px;
+    @include rem("font-size", 18);
+    border:2px solid #333;
+    @include roundedCorners(5);
+
+    &:first-child{
+      margin-left:0;
+    }
+
+    &:hover, &:focus{
+      background: #ccc;
+    }
+  }
+}

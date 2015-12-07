@@ -1,0 +1,9 @@
+// File Name: _day.scss
+// Description: Style for day
+// Used by: style.scss, 
+// Dependencies: 
+// Date created: 12/09/2015
+// ------------------------------------------------------------
+.day{
+  @include rem("font-size", $regularSize + 20);
+}

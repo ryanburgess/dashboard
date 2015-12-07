@@ -1,0 +1,13 @@
+// File Name: _clock.scss
+// Description: Styles for the clock
+// Used by: style.scss, 
+// Dependencies: 
+// Date created: 12/09/2015
+// ------------------------------------------------------------
+.clock{
+  @include rem("font-size", $regularSize + 50);
+
+  .diem{
+    @include rem("font-size", $regularSize / 3);
+  }
+}

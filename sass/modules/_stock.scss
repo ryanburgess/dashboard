@@ -1,0 +1,17 @@
+// File Name: _stock.scss
+// Description: Styles for stock
+// Used by: style.scss, 
+// Dependencies: 
+// Date created: 08/11/2015
+// ------------------------------------------------------------
+
+.stock{
+  img{
+    width: 30px;
+    margin-left:5px;
+  }
+  .small{
+    display: block;
+    @include rem("font-size", $regularSize / 2);
+  }
+}
