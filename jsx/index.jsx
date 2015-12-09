@@ -21,14 +21,15 @@ let dayUpdate = 0;
 let fifteenUpdate = 0;
 
 // set storage of settings
-storage(config.settings.city, config.settings.state, config.settings.degree, config.stock.symbol);
+storage(config.settings.city, config.settings.state, config.settings.degree, config.stock.symbol, 'flickr');
 
 // stored settings
 const storedItems = {
   'city': localStorage.getItem('city'),
   'state': localStorage.getItem('state'),
   'degrees': localStorage.getItem('degrees'),
-  'stock': localStorage.getItem('stock')
+  'stock': localStorage.getItem('stock'),
+  'background': localStorage.getItem('background')
 };
 
 // use a set interval mixin for timer
