@@ -1,5 +1,8 @@
 var express = require('express');
+var cheerio = require('cheerio');
+var request = require('request');
 var app = express();
+var stock = [];
 
 app.get('/', function (req, res) {
   res.render('./index.ejs', {});
@@ -10,8 +13,6 @@ app.get('/photos', function (req, res) {
 });
 
 app.get('/stock/', function (req, res) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Headers', 'X-Requested-With');
   var qr = req.query.s;
   
   if(qr !== undefined){

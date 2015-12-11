@@ -10,7 +10,7 @@ const Stock = React.createClass({
   componentDidMount() {
     const component = this;
     const request = new XMLHttpRequest();
-    request.open('GET', 'http://stockz-api.herokuapp.com/api/?s=' + this.props.stock, true);
+    request.open('GET', '/stock?s=' + this.props.stock, true);
 
     request.onload = () => {
       if (request.status >= 200 && request.status < 400) {
