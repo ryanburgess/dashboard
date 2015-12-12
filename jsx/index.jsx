@@ -21,7 +21,7 @@ let dayUpdate = 0;
 let fifteenUpdate = 0;
 
 // set storage of settings
-storage(config.settings.city, config.settings.state, config.settings.degree, config.stock.symbol, 'flickr');
+storage(config.settings.city, config.settings.state, config.settings.degree, config.stock.symbol, 'photos');
 
 // stored settings
 const storedItems = {
@@ -29,7 +29,7 @@ const storedItems = {
   'state': localStorage.getItem('state'),
   'degrees': localStorage.getItem('degrees'),
   'stock': localStorage.getItem('stock'),
-  'background': localStorage.getItem('background')
+  'backgroundType': localStorage.getItem('backgroundType')
 };
 
 // use a set interval mixin for timer
@@ -64,7 +64,7 @@ const App = React.createClass({
   getInitialState() {
     return { day: getDay(), daily: config.tasks, stock: storedItems.stock, city: storedItems.city,
       state: storedItems.state, degree: storedItems.degrees, weatherApi: config.api.weather,
-       flickrApi: config.api.flickr };
+       flickrApi: config.api.flickr, backgroundType: storedItems.backgroundType };
   },
   componentDidMount() {
     this.setInterval(this.tick, 1000);
@@ -98,10 +98,11 @@ const App = React.createClass({
   },
   render() {
     return (
-      <Flickr hourUpdate={ this.state.fifteen } city={ this.state.city } api={ this.state.flickrApi }>
+      <Flickr hourUpdate={ this.state.fifteen } city={ this.state.city } api={ this.state.flickrApi }
+       backgroundType={ this.state.backgroundType }>
         <div className='content'>
           <Menu city={ this.state.city } state={ this.state.state } degrees={ this.state.degree }
-           stock={ this.state.stock } />
+           stock={ this.state.stock } backgroundType={ this.state.backgroundType } />
           <MonthDay dayUpdate={ this.state.dayUpdate } />
           <Day dayUpdate={ this.state.dayUpdate } />
           <Clock hours={ this.state.hours } minutes={ this.state.minutes }

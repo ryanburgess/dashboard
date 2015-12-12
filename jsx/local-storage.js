@@ -1,11 +1,11 @@
-module.exports = (city, state, degree, stock, background) => {
+module.exports = (city, state, degree, stock, backgroundType) => {
   'use stict';
 
   const storedCity = localStorage.getItem('city');
   const storedDegree = localStorage.getItem('degrees');
   const storedStock = localStorage.getItem('stock');
   const storedState = localStorage.getItem('state');
-  const storedBackground = localStorage.getItem('background');
+  const storedBackground = localStorage.getItem('backgroundType');
 
   // if local storage city is not yet set, use the config settings city and set local storage
   if(storedCity === null) {
@@ -29,6 +29,6 @@ module.exports = (city, state, degree, stock, background) => {
 
   // if local storage background is not yet set, use the config settings background and set local storage
   if(storedBackground === null) {
-    localStorage.setItem('background', background);
+    localStorage.setItem('backgroundType', backgroundType);
   }
 };

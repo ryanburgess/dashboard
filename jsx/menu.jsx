@@ -6,7 +6,7 @@ const Menu = React.createClass({
   displayName: 'Menu',
   getInitialState() {
     return { settingsClass: 'hide settings', settingsOpen: false, city: this.props.city, degrees: this.props.degrees,
-     state: this.props.state, stock: this.props.stock };
+     state: this.props.state, stock: this.props.stock, backgroundType: this.props.backgroundType };
   },
   componentDidMount() {
   },
@@ -37,7 +37,8 @@ const Menu = React.createClass({
       'city': this.state.city,
       'state': this.state.state,
       'degrees': this.state.degrees,
-      'stock': this.state.stock
+      'stock': this.state.stock,
+      'backgroundType': this.state.backgroundType
     };
 
     // save updated settings to local storage
@@ -85,6 +86,15 @@ const Menu = React.createClass({
               <label htmlFor='stock-symbol'>Stock Symbol:</label>
               <input type='text' id='stock-symbol' defaultValue={ this.state.stock }
                onChange={ component.onChanged.bind(this, 'stock') } />
+            </fieldset>
+            <fieldset>
+              <legend>Background Settings</legend>
+              <label htmlFor='background'>Background</label>
+              <select name='background' id='background' defaultValue={ this.state.backgroundType }
+                  onChange={ component.onChanged.bind(this, 'backgroundType') }>
+                  <option value='black'>Black</option>
+                  <option value='photos'>Photos</option>
+              </select>
             </fieldset>
             <div className='buttons'>
               <a href='#' className='cancel' onClick={ component.hideSettings }>Cancel</a>
