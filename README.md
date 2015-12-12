@@ -26,5 +26,4 @@ Created with React and Express.
 * Pull in Google Calendar
 * Multiple stocks at one time
 * Animate photo transitions
-* Animate menus opening and closing
 * Add tasks to settings menu
