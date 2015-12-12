@@ -5,6 +5,10 @@
 // Date created: 05/12/2015
 // ------------------------------------------------------------
 
+$startSlide: -500px;
+$endSlide: 0px;
+$duration: .5s;
+
 .menu-button{
   position: absolute;
   top: 30px;
@@ -16,6 +20,22 @@
   z-index: 2;
 }
 
+.slideIn{
+  animation-name: slideIn;
+  animation-duration: $duration;
+  animation-fill-mode: forwards;
+}
+
+.slideOut{
+  animation-name: slideOut;
+  animation-duration: $duration;
+  animation-fill-mode: forwards;
+}
+
+@include keyframes(slideIn) {0%{ left:$startSlide; } 100%{ left:$endSlide; }}
+
+@include keyframes(slideOut) {0%{ left:$endSlide; } 100%{ left:$startSlide; }}
+
 .settings{
   text-align: left;
   background: rgba(0, 0, 0, 0.7);
@@ -23,7 +43,6 @@
   color: white;
   position: absolute;
   top: 0;
-  left: 0;
   @include rem("font-size", 16);
   text-shadow: none;
 
