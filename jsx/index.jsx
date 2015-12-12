@@ -15,25 +15,21 @@ import storage from './local-storage';
 
 let currentDay;
 let currentHour;
-<<<<<<< HEAD
-let hourUpdate = 0;
-let dayUpdate = 0;
-=======
 let currentFif;
 let hourUpdate = 0;
 let dayUpdate = 0;
 let fifteenUpdate = 0;
->>>>>>> d45a9c67457775c005984bcbbd70add72b3c2491
 
 // set storage of settings
-storage(config.settings.city, config.settings.state, config.settings.degree, config.stock.symbol);
+storage(config.settings.city, config.settings.state, config.settings.degree, config.stock.symbol, 'photos');
 
 // stored settings
 const storedItems = {
   'city': localStorage.getItem('city'),
   'state': localStorage.getItem('state'),
   'degrees': localStorage.getItem('degrees'),
-  'stock': localStorage.getItem('stock')
+  'stock': localStorage.getItem('stock'),
+  'backgroundType': localStorage.getItem('backgroundType')
 };
 
 // use a set interval mixin for timer
@@ -68,7 +64,7 @@ const App = React.createClass({
   getInitialState() {
     return { day: getDay(), daily: config.tasks, stock: storedItems.stock, city: storedItems.city,
       state: storedItems.state, degree: storedItems.degrees, weatherApi: config.api.weather,
-       flickrApi: config.api.flickr };
+       flickrApi: config.api.flickr, backgroundType: storedItems.backgroundType };
   },
   componentDidMount() {
     this.setInterval(this.tick, 1000);
@@ -76,8 +72,6 @@ const App = React.createClass({
   tick() {
     const today = getDay();
     const time = renderTime();
-<<<<<<< HEAD
-=======
     const mins = Number(time.minutes);
 
     // make calls every 15 minutes
@@ -87,7 +81,6 @@ const App = React.createClass({
       this.setState({ fifteen: fifteenUpdate });
     }
 
->>>>>>> d45a9c67457775c005984bcbbd70add72b3c2491
     // make calls by the day change
     if(today !== currentDay || currentDay === undefined) {
       dayUpdate++;
@@ -105,14 +98,11 @@ const App = React.createClass({
   },
   render() {
     return (
-<<<<<<< HEAD
-      <Flickr hourUpdate={ this.state.hours } city={ this.state.city } api={ this.state.flickrApi }>
-=======
-      <Flickr hourUpdate={ this.state.fifteen } city={ this.state.city } api={ this.state.flickrApi }>
->>>>>>> d45a9c67457775c005984bcbbd70add72b3c2491
+      <Flickr hourUpdate={ this.state.fifteen } city={ this.state.city } api={ this.state.flickrApi }
+       backgroundType={ this.state.backgroundType }>
         <div className='content'>
           <Menu city={ this.state.city } state={ this.state.state } degrees={ this.state.degree }
-           stock={ this.state.stock } />
+           stock={ this.state.stock } backgroundType={ this.state.backgroundType } />
           <MonthDay dayUpdate={ this.state.dayUpdate } />
           <Day dayUpdate={ this.state.dayUpdate } />
           <Clock hours={ this.state.hours } minutes={ this.state.minutes }

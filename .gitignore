@@ -5,6 +5,5 @@
 .sass-cache
 *.log
 dashboard.js
-*.min.js
 node_modules/
 config.json

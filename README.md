@@ -24,4 +24,7 @@ Created with React and Express.
 * Word of the day
 * Pull in Trello
 * Pull in Google Calendar
-
+* Multiple stocks at one time
+* Animate photo transitions
+* Animate menus opening and closing
+* Add tasks to settings menu
