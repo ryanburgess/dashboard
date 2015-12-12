@@ -18,10 +18,10 @@ const Menu = React.createClass({
     }
   },
   showSettings() {
-    this.setState({ settingsClass: 'settings', settingsOpen: true });
+    this.setState({ settingsClass: 'slideIn settings', settingsOpen: true });
   },
   hideSettings() {
-    this.setState({ settingsClass: 'hide settings', settingsOpen: false });
+    this.setState({ settingsClass: 'slideOut settings', settingsOpen: false });
   },
   onChanged(name, event) {
     const change = {};
