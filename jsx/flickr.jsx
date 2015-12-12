@@ -53,13 +53,13 @@ const Flickr = React.createClass({
   loadPhotos() {
     const pickPhoto = Math.floor((Math.random() * flickrPhotos.length));
     this.setState({ photo: flickrPhotos[pickPhoto] });
-    this.hideRemovePhoto();
+    //this.hideRemovePhoto();
   },
   hideRemovePhoto() {
-    this.setState({ removePhotoClass: 'hide photo-skip' });
+    this.setState({ removePhotoClass: 'fadeDown photo-skip' });
   },
   showRemovePhoto() {
-    this.setState({ removePhotoClass: 'photo-skip' });
+    this.setState({ removePhotoClass: 'fadeUp photo-skip' });
   },
   render() {
     const component = this;
