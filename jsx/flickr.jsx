@@ -20,28 +20,30 @@ const Flickr = React.createClass({
   },
   componentDidMount() {
     const component = this;
-    const request = new XMLHttpRequest();
-    request.open('GET', 'https://api.flickr.com/services/rest/?method=flickr.photos.search&page=1&per_page=150&api_key='
-      + api + '&text=' + city + '+scenic+city&extras=&format=json&content_type=1&accuracy=11&nojsoncallback=1' +
-      '&extras=description%2Clicense%2Cdate_upload%2Cdate_taken%2Cowner_name%2Cicon_server%2Coriginal_format' +
-      '%2Clast_update%2Cgeo%2Ctags%2Cmachine_tags%2Co_dims%2Cviews%2Cmedia%2Cpath_alias%2Curl_t%2Curl_s' +
-      '%2Curl_q%2Curl_m%2Curl_n%2Curl_z%2Curl_c%2Curl_l', true);
+    if(this.props.backgroundType === 'photos') {
+      const request = new XMLHttpRequest();
+      request.open('GET',
+        'https://api.flickr.com/services/rest/?method=flickr.photos.search&page=1&per_page=150&api_key='
+        + api + '&text=' + city + '+scenic+city&extras=&format=json&content_type=1&accuracy=11&nojsoncallback=1' +
+        '&extras=description%2Clicense%2Cdate_upload%2Cdate_taken%2Cowner_name%2Cicon_server%2Coriginal_format' +
+        '%2Clast_update%2Cgeo%2Ctags%2Cmachine_tags%2Co_dims%2Cviews%2Cmedia%2Cpath_alias%2Curl_t%2Curl_s' +
+        '%2Curl_q%2Curl_m%2Curl_n%2Curl_z%2Curl_c%2Curl_l', true);
 
-    request.onload = () => {
-      if (request.status >= 200 && request.status < 400) {
-        const data = JSON.parse(request.responseText);
-        const photos = data.photos.photo;
-        photos.map(function(photo) {
-          if(photo.url_l !== undefined && removedPhotos.indexOf(photo.url_n) < 0) {
-            flickrPhotos.push(photo.url_l);
-          }
-        });
+      request.onload = () => {
+        if (request.status >= 200 && request.status < 400) {
+          const data = JSON.parse(request.responseText);
+          const photos = data.photos.photo;
+          photos.map(function(photo) {
+            if(photo.url_l !== undefined && removedPhotos.indexOf(photo.url_n) < 0) {
+              flickrPhotos.push(photo.url_l);
+            }
+          });
 
-        component.loadPhotos();
-      }
-    };
-    request.send();
-
+          component.loadPhotos();
+        }
+      };
+      request.send();
+    }
   },
   removePhoto(item) {
     removedPhotos.push(item);
@@ -61,11 +63,18 @@ const Flickr = React.createClass({
   },
   render() {
     const component = this;
-    const { hourUpdate, children } = this.props;
+    const { hourUpdate, children, backgroundType } = this.props;
 
-    const divStyle = {
-      backgroundImage: 'url(' + this.state.photo + ')'
-    };
+    let divStyle;
+    if(backgroundType === 'photos') {
+      divStyle = {
+        backgroundImage: 'url(' + this.state.photo + ')'
+      };
+    }else {
+      divStyle = {
+        backgroundImage: backgroundType
+      };
+    }
 
     // set update to hourUpdate value
     if(update === 0 && hourUpdate !== undefined) {
@@ -73,7 +82,7 @@ const Flickr = React.createClass({
     }
 
     // run update
-    if(hourUpdate > update) {
+    if(hourUpdate > update && backgroundType === 'photos') {
       update = hourUpdate;
       this.loadPhotos();
     }
