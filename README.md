@@ -14,7 +14,7 @@ Created with React and Express.
 * Open `npm start`.
 * Load `http://localhost:3000` in the browser.
 
-#TODO
+##TODO
 * Pull in TV schedule API
 * Use user location (maybe)
 * Add more sports and options to follow teams
@@ -27,3 +27,12 @@ Created with React and Express.
 * Multiple stocks at one time
 * Animate photo transitions
 * Add tasks to settings menu
+
+## Contributing
+1. Fork it
+2. Run `npm install`
+3. Run Gulp `gulp`
+4. Create your feature branch (`git checkout -b my-new-feature`)
+5. Commit your changes (`git commit -am "Add some feature"`)
+6. Push to the branch (`git push origin my-new-feature`)
+7. Create new Pull Request
