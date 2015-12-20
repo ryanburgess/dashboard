@@ -8,6 +8,8 @@ var eslint = require('gulp-eslint');
 var uglify = require('gulp-uglify');
 var replace = require('gulp-replace');
 var livereload = require('gulp-livereload');
+var jsonlint = require("gulp-jsonlint");
+var jshintStyle = require('jshint-stylish');
 
 gulp.task('lint', function () {
   return gulp.src(['jsx/**/*'])
@@ -34,6 +36,13 @@ gulp.task('scripts', function() {
     .pipe(source(entryFile))
     .pipe(rename('dashboard.js'))
     .pipe(gulp.dest('public/js/'));
+});
+
+// JSON Lint
+gulp.task('jsonlint', function() {
+  return gulp.src(['./*.json'])
+    .pipe(jsonlint())
+    .pipe(jsonlint.reporter(jshintStyle));
 });
 
 gulp.task('photos', function() {
@@ -74,7 +83,9 @@ gulp.task('sass', function () {
 
 gulp.task('watch', function() {
   livereload.listen();
+  gulp.watch(['./*.json'], ['jsonlint']);
   gulp.watch('sass/**/*.scss', ['sass']);
   gulp.watch(['./jsx/**/*'], ['lint', 'scripts', 'compress']);
 });
 gulp.task('default', ['watch']);
+gulp.task('test', ['lint', 'jsonlint']);
