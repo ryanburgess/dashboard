@@ -74,8 +74,8 @@ const App = React.createClass({
     const time = renderTime();
     const mins = Number(time.minutes);
 
-    // make calls every 15 minutes
-    if((mins === 15 || mins === 30 || mins === 45 || currentFif === undefined) && currentFif !== mins) {
+    // make calls every 30 minutes
+    if((mins === 59 || mins === 30 || currentFif === undefined) && currentFif !== mins) {
       fifteenUpdate++;
       currentFif = mins;
       this.setState({ fifteen: fifteenUpdate });
