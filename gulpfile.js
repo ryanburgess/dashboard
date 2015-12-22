@@ -10,6 +10,7 @@ var replace = require('gulp-replace');
 var livereload = require('gulp-livereload');
 var jsonlint = require("gulp-jsonlint");
 var jshintStyle = require('jshint-stylish');
+var nodeunit = require('gulp-nodeunit');
 
 gulp.task('lint', function () {
   return gulp.src(['jsx/**/*'])
@@ -81,6 +82,17 @@ gulp.task('sass', function () {
     .pipe(livereload({ start: true }));
 });
 
+// nodeunit tests
+gulp.task('nodeunit', function () {
+  gulp.src('./tests/**/*.js')
+    .pipe(nodeunit({
+      reporter: 'junit',
+      reporterOptions: {
+        output: 'test-output'
+      }
+    }));
+});
+
 gulp.task('watch', function() {
   livereload.listen();
   gulp.watch(['./*.json'], ['jsonlint']);
@@ -88,4 +100,4 @@ gulp.task('watch', function() {
   gulp.watch(['./jsx/**/*'], ['lint', 'scripts', 'compress']);
 });
 gulp.task('default', ['watch']);
-gulp.task('test', ['lint', 'jsonlint']);
+gulp.task('test', ['lint', 'jsonlint', 'nodeunit']);
