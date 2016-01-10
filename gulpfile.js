@@ -10,6 +10,7 @@ var replace = require('gulp-replace');
 var livereload = require('gulp-livereload');
 var jsonlint = require("gulp-jsonlint");
 var jshintStyle = require('jshint-stylish');
+var sassyclean = require('gulp-sassyclean');
 
 gulp.task('lint', function () {
   return gulp.src(['jsx/**/*'])
@@ -81,10 +82,18 @@ gulp.task('sass', function () {
     .pipe(livereload({ start: true }));
 });
 
+gulp.task('sassyclean', function () {
+  return gulp.src(['./sass/*.scss'])
+    .pipe(sassyclean({
+      directory: 'modules',
+      remove: true
+    }));
+});
+
 gulp.task('watch', function() {
   livereload.listen();
   gulp.watch(['./*.json'], ['jsonlint']);
-  gulp.watch('sass/**/*.scss', ['sass']);
+  gulp.watch('sass/**/*.scss', ['sass', 'sassyclean']);
   gulp.watch(['./jsx/**/*'], ['lint', 'scripts', 'compress']);
 });
 gulp.task('default', ['watch']);
