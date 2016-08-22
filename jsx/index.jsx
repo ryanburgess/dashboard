@@ -3,7 +3,6 @@ import MonthDay from './month-day';
 import Day from './day';
 import Clock from './clock';
 import Temp from './temp';
-import Tasks from './tasks';
 import MLB from './mlb';
 import getDay from './get-day';
 import renderTime from './time';
@@ -62,7 +61,7 @@ const App = React.createClass({
   displayName: 'MorningDashboard',
   mixins: [SetIntervalMixin],
   getInitialState() {
-    return { day: getDay(), daily: config.tasks, stock: storedItems.stock, city: storedItems.city,
+    return { day: getDay(), stock: storedItems.stock, city: storedItems.city,
       state: storedItems.state, degree: storedItems.degrees, weatherApi: config.api.weather,
        flickrApi: config.api.flickr, backgroundType: storedItems.backgroundType };
   },
@@ -85,7 +84,7 @@ const App = React.createClass({
     if(today !== currentDay || currentDay === undefined) {
       dayUpdate++;
       currentDay = today;
-      this.setState({ day: today, daily: config.tasks, dayUpdate });
+      this.setState({ day: today, dayUpdate });
     }
     // make calls by the hour change
     if(time.hours !== currentHour || currentHour === undefined) {
@@ -109,7 +108,6 @@ const App = React.createClass({
           seconds={this.state.seconds} diem={ this.state.diem } />
           <Temp city={ this.state.city } state={ this.state.state } degree={ this.state.degree }
            api={ this.state.weatherApi } hourUpdate={ this.state.hourUpdate } />
-          <Tasks day={this.state.day } daily={ this.state.daily} dayUpdate={ this.state.dayUpdate } />
           <MLB day={ this.state.day } dayUpdate={ this.state.dayUpdate } />
           <Stock stock={ this.state.stock } hourUpdate={ this.state.hourUpdate } />
         </div>
