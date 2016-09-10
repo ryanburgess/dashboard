@@ -1,13 +1,13 @@
-var gulp = require('gulp');
-var sass = require('gulp-sass');
-var minifyCSS = require('gulp-minify-css');
-var browserify = require('browserify');
-var rename = require('gulp-rename');
-var source = require('vinyl-source-stream');
-var eslint = require('gulp-eslint');
-var uglify = require('gulp-uglify');
-var replace = require('gulp-replace');
-var livereload = require('gulp-livereload');
+const gulp = require('gulp');
+const sass = require('gulp-sass');
+const minifyCSS = require('gulp-minify-css');
+const browserify = require('browserify');
+const rename = require('gulp-rename');
+const source = require('vinyl-source-stream');
+const eslint = require('gulp-eslint');
+const uglify = require('gulp-uglify');
+const replace = require('gulp-replace');
+const livereload = require('gulp-livereload');
 
 gulp.task('lint', function () {
   return gulp.src(['jsx/**/*'])
